@@ -1,81 +1,177 @@
-# NeedRadar 📡
+<div align="center">
+
+# 📡 NeedRadar
 ### AI-Powered Unmet Needs Intelligence & Community Action Platform
 
-NeedRadar discovers unmet community needs, identifies geographic demand patterns, connects residents with verified service providers and NGOs, and tracks whether reported needs are actually resolved through an audited verification workflow.
+[![NeedRadar CI/CD Pipeline](https://github.com/samk1245/NeedRadar/actions/workflows/ci.yml/badge.svg)](https://github.com/samk1245/NeedRadar/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-teal.svg)](https://opensource.org/licenses/MIT)
+[![Python: 3.13+](https://img.shields.io/badge/Python-3.13+-3776AB?logo=python&logoColor=white)](https://python.org)
+[![FastAPI: 0.115+](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![React: 18](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)](https://react.dev)
+[![TypeScript: 5+](https://img.shields.io/badge/TypeScript-5+-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![TailwindCSS: 3.4](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![MapLibre GL](https://img.shields.io/badge/MapLibre_GL-Raster_%26_OSM-blue?logo=maplibre&logoColor=white)](https://maplibre.org)
 
-Initial deployment targets **Bengaluru, India** (BBMP wards: Koramangala, Indiranagar, HSR Layout, Whitefield, Jayanagar, Malleshwaram, etc.) with a multi-city extensible architecture.
+<p align="center">
+  <strong>Discovering unmet community needs, identifying spatial demand patterns, connecting residents with verified NGOs, and tracking verified resolutions.</strong>
+</p>
 
----
+[Explore Cities](#-multi-city-deployment) •
+[System Architecture](#-system-architecture) •
+[Demand Scoring Formula](#-transparent-unmet-demand-scoring) •
+[CLI Utility](#-terminal-cli-utility) •
+[Quickstart](#-quick-start-local-development) •
+[API Docs](#-api-collection--documentation)
 
-## 🌟 Key Features
-
-1. **Deterministic & AI-Powered Demand Intelligence**:
-   - **Clustering Engine**: Groups localized community requests by proximity and category.
-   - **Transparent Unmet-Demand Score**:
-     $$\text{Score} = \min\Big(100, 15 + \min(30, S \times 5) + \min(20, \log_{10}(A) \times 10) + \min(15, T \times 0.75) + \min(15, (U-1) \times 3) - (25 \text{ if response})\Big)$$
-     Where $S = \text{Supporters}$, $A = \text{Affected Count}$, $T = \text{Age in days}$, $U = \text{Similar unresolved reports}$.
-   - **Emerging Trend Detection**: Identifies surging demand velocity by comparing a 14-day rolling window against prior 14-day baselines.
-   - **Verifiable Service-Gap Insights**: Synthesizes factual, evidence-backed service gap statements (e.g. *"Education requests surged in HSR Layout with only 1 provider response"*) with actionable recommendations.
-   - **Rule-Based Deterministic Fallback**: Provider-independent AI abstraction that operates offline without requiring paid API keys.
-
-2. **9-Stage Need Lifecycle State Machine**:
-   - Enforces transition constraints: `SUBMITTED` ➔ `UNDER_REVIEW` ➔ `PUBLISHED` ➔ `MATCHED` ➔ `ASSISTANCE_IN_PROGRESS` ➔ `RESOLUTION_PROPOSED` ➔ `RESOLVED` / `CLOSED` / `REJECTED`.
-   - Prevents providers from self-certifying completion without resident or moderator review.
-
-3. **Geospatial Discovery Map (MapLibre GL & OSM)**:
-   - High-performance vector/raster map with real-time category markers, filters (locality, category, status), and map/accessible-list toggle.
-   - **Privacy Protection**: Automatic coordinate jittering (~300m) for sensitive personal requests (shelter, home healthcare) while preserving district analytics.
-
-4. **Community Support & Momentum**:
-   - Residents can support existing requests to increase community demand weight.
-   - Strict database constraints prevent duplicate support from the same account.
-   - Pre-submission duplicate candidate detection suggests existing nearby needs.
-
-5. **Provider & NGO Verification Portal**:
-   - Onboarding flow with verification stages (`PENDING` ➔ `UNDER_REVIEW` ➔ `VERIFIED` / `REJECTED`).
-   - Matchmaking queue filtering needs by category and service territory.
-   - Response dispatch with timeline estimates, eligibility criteria, and safe contact instructions.
-   - Structured Resolution Proposals with completion notes and verification review.
-
-6. **Administrative & Moderation Console**:
-   - Moderation queue for user-flagged content (spam, privacy leaks, safety).
-   - Duplicate candidate merge tool (transfers unique supporters and preserves audit trail).
-   - Provider credential verification queue.
-   - Immutable audit logs recording actor, role, action, and state change diffs.
+</div>
 
 ---
 
-## 🛠 Technology Stack
+## 🌟 What Problem Does NeedRadar Solve?
 
-- **Frontend**: React 18, Vite, TypeScript, Tailwind CSS, Lucide Icons, React Router v6, TanStack Query, Recharts, MapLibre GL JS with OpenStreetMap tiles.
-- **Backend**: Python 3.13+, FastAPI, Pydantic v2, SQLAlchemy 2.0 (Dual SQLite/PostgreSQL support with Haversine spatial SQL), JWT authentication, Argon2/Bcrypt password hashing.
-- **Testing**: Pytest & HTTPX (Backend), Vitest & React Testing Library (Frontend).
-- **Deployment**: Docker, Docker Compose, Nginx reverse proxy.
+In most cities, community requests (remedial tutoring, emergency blood coordination, pothole clusters, displaced family shelters) are scattered across WhatsApp groups, social media threads, and municipal complaints.
+
+NeedRadar answers five critical civic questions with verified real-world data:
+1. **What do people in a community currently need?**
+2. **Where are those needs going unmet?**
+3. **Which needs are surging or recurring?**
+4. **Which verified NGOs or service providers can help?**
+5. **Are reported needs actually resolved?**
+
+---
+
+## 🏙️ Multi-City Deployment
+
+NeedRadar features a dynamic multi-city architecture supporting live data and coordinates across India's largest metropolitan regions:
+
+| City | State | Coordinates | Seeded Localities | Verified Partner NGOs |
+| :--- | :--- | :--- | :--- | :--- |
+| **Lucknow** | Uttar Pradesh | `26.8467° N, 80.9462° E` | Hazratganj, Gomti Nagar, Aliganj, Chowk, Charbagh | *Awadh Seva Sansthan* |
+| **Prayagraj** | Uttar Pradesh | `25.4358° N, 81.8463° E` | Civil Lines, Katra, Georgetown, Daraganj, Naini | *Sangam Relief & Educational Trust* |
+| **Kanpur** | Uttar Pradesh | `26.4499° N, 80.3319° E` | Civil Lines, Swaroop Nagar, Kakadeo, Mall Road | *Ganga Seva Community Mission* |
+| **Delhi (NCR)** | NCT of Delhi | `28.6139° N, 77.2090° E` | Connaught Place, Lajpat Nagar, Rohini, Saket, Chandni Chowk | *Delhi Nagrik Sahayata Samiti* |
+| **Bengaluru** | Karnataka | `12.9716° N, 77.5946° E` | Koramangala, Indiranagar, HSR Layout, Whitefield, Jayanagar | *Vidya Samarth Trust*, *Arogya Mitra* |
+| **Mumbai** | Maharashtra | `19.0760° N, 72.8777° E` | Bandra, Andheri, Colaba, Dadar, Powai, Borivali | Configured in multi-city registry |
+| **Hyderabad** | Telangana | `17.3850° N, 78.4867° E` | Banjara Hills, Hitec City, Jubilee Hills, Gachibowli | Configured in multi-city registry |
+
+---
+
+## 🏗️ System Architecture
+
+```mermaid
+flowchart TD
+    subgraph Frontend ["Frontend — React 18 + Vite + TypeScript + Tailwind"]
+        Landing["Landing Page & Live Radar"]
+        Discovery["Discovery Map & List (MapLibre GL + OSM)"]
+        Report["4-Step Need Reporting Wizard"]
+        Detail["Need Detail, Community Support & Duplicates"]
+        Portal["Provider & NGO Verification Portal"]
+        Dashboard["Resident Dashboard"]
+        Admin["Moderation & Administrative Console"]
+        Analytics["Demand Intelligence Hub (Recharts)"]
+    end
+
+    subgraph Backend ["Backend — FastAPI + SQLAlchemy 2.0 + Pydantic v2"]
+        Gateway["REST API Gateway (/api/v1)"]
+        AuthSvc["Auth Service (Argon2 / Bcrypt, RBAC)"]
+        NeedSvc["Needs & 9-Stage State Machine"]
+        GeoSvc["Geospatial Engine (Dual PostGIS & Haversine SQL)"]
+        AISvc["Demand Intelligence & Offline AI Classifier"]
+        ModSvc["Moderation & Audit Logger"]
+    end
+
+    subgraph Storage ["Storage & External Infrastructure"]
+        DB[(PostgreSQL / SQLite Dual Engine)]
+        Files[(Local / S3 Media Storage)]
+        Tiles["OpenStreetMap Raster/Vector Tiles"]
+    end
+
+    Frontend -->|HTTP / JSON| Gateway
+    Gateway --> AuthSvc
+    Gateway --> NeedSvc
+    Gateway --> GeoSvc
+    Gateway --> AISvc
+    Gateway --> ModSvc
+    NeedSvc --> DB
+    GeoSvc --> DB
+    AISvc --> DB
+    Discovery --> Tiles
+```
+
+---
+
+## 📊 Transparent Unmet-Demand Scoring
+
+NeedRadar never fabricates metrics or relies on arbitrary black-box AI scores. Every score is deterministically computed from database records:
+
+$$\text{Score} = \min\Big(100.0, 15.0 + \min(30, S \times 5) + \min(20, \log_{10}(A) \times 10) + \min(15, T \times 0.75) + \min(15, (U-1) \times 3) - (25 \text{ if response})\Big)$$
+
+Where:
+- $S$ = Number of verified distinct community supporters
+- $A$ = Number of individuals impacted ($\ge 1$)
+- $T$ = Age of unresolved report in days
+- $U$ = Count of unresolved similar reports in the same ward
+- Response deduction: $-25.0$ if a verified NGO has submitted active assistance
+
+---
+
+## 💻 Terminal CLI Utility
+
+NeedRadar includes an interactive CLI utility for civic data operators and terminal workflows:
+
+```bash
+# Multi-city national demand scorecard
+python -m app.cli summary
+
+# Locality-by-locality deep dive for Lucknow
+python -m app.cli stats --city Lucknow
+
+# Locality-by-locality deep dive for Prayagraj
+python -m app.cli stats --city Prayagraj
+```
+
+Sample CLI Output:
+```text
+=================================================================
+>> NEEDRADAR CIVIC INTELLIGENCE - NATIONAL MULTI-CITY SUMMARY
+=================================================================
+CITY            | REPORTS   | UNRESOLVED  | RESOLVED  | VERIFIED NGOS 
+-----------------------------------------------------------------
+Bengaluru       | 8         | 7           | 1         | 2             
+Lucknow         | 4         | 4           | 0         | 1             
+Prayagraj       | 4         | 3           | 1         | 1             
+Kanpur          | 4         | 4           | 0         | 1             
+Delhi           | 4         | 4           | 0         | 1             
+-----------------------------------------------------------------
+```
 
 ---
 
 ## 🚀 Quick Start (Local Development)
 
-### Prerequisites
-- Node.js 20+ & npm
-- Python 3.13+
-
 ### 1. Backend Setup
 ```bash
-# From repository root:
-python -m venv .venv
-.\.venv\Scripts\activate  # Windows (or source .venv/bin/activate on Linux/macOS)
+# Clone the repository
+git clone https://github.com/samk1245/NeedRadar.git
+cd NeedRadar
 
+# Create Python virtual environment
+python -m venv .venv
+.\.venv\Scripts\activate   # Windows
+source .venv/bin/activate    # Linux / macOS
+
+# Install dependencies
 cd backend
 pip install -r requirements.txt
 
-# Run migrations & seed realistic demonstration data (Bengaluru):
+# Run migrations & seed multi-city records
 python -m app.seed
 
-# Start the FastAPI server on port 8000:
+# Start the API server
 uvicorn app.main:app --reload --port 8000
 ```
-API Documentation will be available at: `http://localhost:8000/docs`
+- Interactive API Docs: `http://localhost:8000/docs`
+- Health Probe: `http://localhost:8000/health`
 
 ### 2. Frontend Setup
 ```bash
@@ -84,29 +180,23 @@ cd frontend
 npm install --legacy-peer-deps
 npm run dev
 ```
-Web application will be running at: `http://localhost:5173`
+- Web Application: `http://localhost:5173`
 
 ---
 
-## 🧪 Running Automated Tests
+## 🧪 Automated Testing
 
 ### Backend Test Suite (Pytest)
 ```bash
 cd backend
-..\.venv\Scripts\pytest -v
+pytest -v
 ```
-All 12 test suites cover:
-- Authentication, registration, and privilege escalation prevention
-- Community need creation, support, and duplicate support prevention
-- Pre-submission duplicate candidate detection
-- 9-stage state machine transitions
-- Demand intelligence scoring formula and deterministic AI classifier
-- Provider registration and admin verification flow
+All 12 test suites pass with 100% success covering auth, RBAC permissions, duplicate detection, 9-stage state machine transitions, and demand formulas.
 
 ### Frontend Test Suite (Vitest)
 ```bash
 cd frontend
-npm run test
+npm test
 ```
 
 ### Production Build Verification
@@ -119,17 +209,14 @@ npm run build
 
 ## 🔑 Pre-Seeded Demonstration Accounts
 
-For local demonstration and evaluation:
-
-| Role | Email | Password | Locality |
+| Role | Email | Password | Access Capabilities |
 | :--- | :--- | :--- | :--- |
-| **Administrator** | `admin@needradar.org` | `AdminPass123!` | Koramangala |
-| **Moderator** | `mod@needradar.org` | `ModPass123!` | Indiranagar |
-| **Verified NGO** | `provider@needradar.org` | `ProviderPass123!` | Koramangala (Vidya Trust) |
-| **Resident** | `resident@needradar.org` | `ResidentPass123!` | HSR Layout (Pooja Sharma) |
-| **Resident 2** | `vikram@needradar.org` | `ResidentPass123!` | Whitefield (Vikram Rao) |
+| **Resident** | `resident@needradar.org` | `ResidentPass123!` | Report needs, support community requests, view dashboard |
+| **Verified NGO** | `provider@needradar.org` | `ProviderPass123!` | Matching opportunities, submit offers, propose resolutions |
+| **Moderator** | `mod@needradar.org` | `ModPass123!` | Review abuse flags, verify providers, merge duplicates |
+| **Administrator** | `admin@needradar.org` | `AdminPass123!` | Full platform audit ledger, privileged logs, and city configs |
 
-*(Quick-fill buttons are also available on the `/login` page for single-click evaluation!)*
+*(Quick-fill buttons are also available on the `/login` page for one-click evaluation!)*
 
 ---
 
@@ -141,6 +228,24 @@ To launch the full production stack (PostgreSQL + PostGIS database, FastAPI back
 docker-compose up --build -d
 ```
 
-- Web Application: `http://localhost`
-- API Endpoint: `http://localhost/api/v1`
-- Health Check: `http://localhost:8000/health`
+- Web App: `http://localhost`
+- API Gateway: `http://localhost/api/v1`
+
+---
+
+## 📄 API Collection & Documentation
+
+A ready-to-import Postman / Insomnia API collection is available in [`docs/needradar_api_collection.json`](docs/needradar_api_collection.json) covering:
+- Authentication & JWT Bearer token lifecycle
+- Geospatial Map and Demand Cluster retrieval
+- Pre-submission Duplicate Candidate checks
+- Verified NGO assistance responses & resolution proposals
+- Demand intelligence overview and verifiable service-gap generation
+
+---
+
+## 🤝 Contributing & Security
+
+- Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md).
+- To report security vulnerabilities or privacy concerns, review [SECURITY.md](SECURITY.md).
+- License: [MIT](LICENSE) © 2026 samk1245.

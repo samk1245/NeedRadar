@@ -1,0 +1,56 @@
+name: 🐛 Bug Report
+description: Create a report to help us improve NeedRadar
+title: "[BUG]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report an issue in NeedRadar!
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected Component
+      description: Which part of NeedRadar is affected?
+      options:
+        - Frontend / Discovery Map
+        - Frontend / Report Wizard
+        - Frontend / Demand Analytics
+        - Backend / FastAPI Routes
+        - Backend / Demand Intelligence Engine
+        - PostGIS / Database Queries
+        - CLI / Tooling
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: Describe what happened...
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this behavior?
+      value: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment Info
+      description: Browser, Node/Python version, OS (e.g. Chrome 124, Windows 11, Python 3.13)

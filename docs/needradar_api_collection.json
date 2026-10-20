@@ -1,0 +1,197 @@
+{
+  "info": {
+    "name": "NeedRadar REST API Collection",
+    "_postman_id": "needradar-api-collection-v1",
+    "description": "Production REST API collection for NeedRadar - AI-Powered Unmet Needs Intelligence & Community Action Platform.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Probes",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8000/health"
+          }
+        },
+        {
+          "name": "Readiness Check",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8000/ready"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login (Resident)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"resident@needradar.org\",\n  \"password\": \"ResidentPass123!\"\n}"
+            },
+            "url": "http://localhost:8000/api/v1/auth/login"
+          }
+        },
+        {
+          "name": "Login (Verified NGO)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"provider@needradar.org\",\n  \"password\": \"ProviderPass123!\"\n}"
+            },
+            "url": "http://localhost:8000/api/v1/auth/login"
+          }
+        },
+        {
+          "name": "Get Current User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": "http://localhost:8000/api/v1/auth/me"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Discovery & Geospatial Engine",
+      "item": [
+        {
+          "name": "Get Supported Cities",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8000/api/v1/discovery/cities"
+          }
+        },
+        {
+          "name": "Get Map Markers (Bengaluru)",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8000/api/v1/discovery/map?city=Bengaluru"
+          }
+        },
+        {
+          "name": "Get Map Markers (Lucknow)",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8000/api/v1/discovery/map?city=Lucknow"
+          }
+        },
+        {
+          "name": "Get Demand Clusters",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8000/api/v1/discovery/clusters?city=Bengaluru"
+          }
+        },
+        {
+          "name": "Get Emerging Trends",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8000/api/v1/discovery/trending?city=Bengaluru"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Community Needs Lifecycle",
+      "item": [
+        {
+          "name": "Check Pre-Submission Duplicates",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Need 5 Volunteers for Evening Tutoring Center\",\n  \"description\": \"Providing basic algebra and English assistance in HSR Layout.\",\n  \"category\": \"education\",\n  \"locality\": \"HSR Layout\",\n  \"latitude\": 12.9121,\n  \"longitude\": 77.6446,\n  \"affected_count\": 20\n}"
+            },
+            "url": "http://localhost:8000/api/v1/needs/check-duplicates"
+          }
+        },
+        {
+          "name": "Report a Community Need",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Weekend Mathematics Tutoring for 15 Students\",\n  \"description\": \"Remedial weekend tutoring for students ahead of final board exams.\",\n  \"category\": \"education\",\n  \"affected_count\": 15,\n  \"city\": \"Lucknow\",\n  \"locality\": \"Gomti Nagar\",\n  \"latitude\": 26.8504,\n  \"longitude\": 81.0006,\n  \"scope\": \"community\",\n  \"urgency\": \"high\",\n  \"desired_timeframe\": \"Next 2 weeks\",\n  \"is_sensitive\": false\n}"
+            },
+            "url": "http://localhost:8000/api/v1/needs"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Demand Intelligence & Analytics",
+      "item": [
+        {
+          "name": "Analytics Overview",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8000/api/v1/analytics/overview?city=Bengaluru"
+          }
+        },
+        {
+          "name": "Category Distribution",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8000/api/v1/analytics/categories?city=Bengaluru"
+          }
+        },
+        {
+          "name": "Service Gap Insights",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8000/api/v1/analytics/service-gaps?city=Bengaluru"
+          }
+        },
+        {
+          "name": "Weekly Activity Trends",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8000/api/v1/analytics/weekly?city=Bengaluru"
+          }
+        }
+      ]
+    }
+  ]
+}

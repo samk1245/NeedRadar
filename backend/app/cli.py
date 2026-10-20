@@ -1,0 +1,85 @@
+import sys
+import argparse
+from datetime import datetime, timezone
+from app.core.database import SessionLocal
+from app.models.need import Need, NeedStatus
+from app.models.organisation import Organisation, VerificationStatus
+from app.models.user import User
+from app.services.demand_intelligence import calculate_need_unmet_score, detect_emerging_trends, generate_service_gap_insights
+
+def print_header(title: str):
+    print("\n" + "=" * 65)
+    print(f">> NEEDRADAR CIVIC INTELLIGENCE - {title.upper()}")
+    print("=" * 65)
+
+def cmd_stats(args):
+    db = SessionLocal()
+    try:
+        city = args.city
+        print_header(f"PLATFORM METRICS [{city}]")
+        
+        needs_query = db.query(Need).filter(Need.city == city)
+        total_needs = needs_query.count()
+        unresolved = needs_query.filter(Need.status.notin_([NeedStatus.RESOLVED, NeedStatus.CLOSED, NeedStatus.REJECTED])).count()
+        resolved = needs_query.filter(Need.status == NeedStatus.RESOLVED).count()
+        
+        verified_orgs = db.query(Organisation).filter(
+            Organisation.city == city,
+            Organisation.verification_status == VerificationStatus.VERIFIED
+        ).count()
+        
+        print(f"  - Total Community Reports : {total_needs}")
+        print(f"  - Active Unresolved Demand: {unresolved}")
+        print(f"  - Verified Resolutions    : {resolved}")
+        print(f"  - Verified NGOs & Partners: {verified_orgs}")
+        
+        rate = (resolved / total_needs * 100.0) if total_needs > 0 else 0.0
+        print(f"  - Resolution Rate         : {rate:.1f}%\n")
+        
+        # Emerging Trends
+        trends = detect_emerging_trends(db, city=city)
+        if trends:
+            print("  * TOP DEMAND VELOCITY AREAS:")
+            for t in trends[:3]:
+                print(f"     - [{t['trend_direction'].upper()}] {t['locality']} ({t['category'].capitalize()}): +{t['percent_change']}% change ({t['current_count']} reports)")
+        print("=" * 65 + "\n")
+    finally:
+        db.close()
+
+def cmd_summary(args):
+    db = SessionLocal()
+    try:
+        print_header("NATIONAL MULTI-CITY SUMMARY")
+        cities = ["Bengaluru", "Lucknow", "Prayagraj", "Kanpur", "Delhi"]
+        
+        print(f"{'CITY':<15} | {'REPORTS':<9} | {'UNRESOLVED':<11} | {'RESOLVED':<9} | {'VERIFIED NGOS':<14}")
+        print("-" * 65)
+        for c in cities:
+            tot = db.query(Need).filter(Need.city == c).count()
+            unr = db.query(Need).filter(Need.city == c, Need.status.notin_([NeedStatus.RESOLVED, NeedStatus.CLOSED, NeedStatus.REJECTED])).count()
+            res = db.query(Need).filter(Need.city == c, Need.status == NeedStatus.RESOLVED).count()
+            orgs = db.query(Organisation).filter(Organisation.city == c, Organisation.verification_status == VerificationStatus.VERIFIED).count()
+            print(f"{c:<15} | {tot:<9} | {unr:<11} | {res:<9} | {orgs:<14}")
+        print("-" * 65 + "\n")
+    finally:
+        db.close()
+
+def main():
+    parser = argparse.ArgumentParser(description="NeedRadar Civic Intelligence Command Line Tool")
+    subparsers = parser.add_subparsers(dest="command")
+
+    p_stats = subparsers.add_parser("stats", help="Display civic scorecard for a city")
+    p_stats.add_argument("--city", default="Bengaluru", help="Target city (default: Bengaluru)")
+
+    p_summary = subparsers.add_parser("summary", help="Display multi-city national summary")
+
+    args = parser.parse_args()
+    if args.command == "stats":
+        cmd_stats(args)
+    elif args.command == "summary":
+        cmd_summary(args)
+    else:
+        cmd_summary(args)
+
+if __name__ == "__main__":
+    main()

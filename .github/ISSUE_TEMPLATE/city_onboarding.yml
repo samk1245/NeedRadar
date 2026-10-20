@@ -1,0 +1,36 @@
+name: 🏙️ New City Onboarding Request
+description: Request activation of a new city or municipal district in NeedRadar
+title: "[CITY]: Onboard "
+labels: ["city-expansion", "civic-data"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        NeedRadar expands civic coverage city by city. Provide the geographic and civic parameters below to add support.
+  - type: input
+    id: city_name
+    attributes:
+      label: City Name & State
+      placeholder: e.g. Varanasi, Uttar Pradesh
+    validations:
+      required: true
+  - type: input
+    id: center_coords
+    attributes:
+      label: Central Coordinates (Latitude, Longitude)
+      placeholder: e.g. 25.3176, 82.9739
+    validations:
+      required: true
+  - type: textarea
+    id: key_localities
+    attributes:
+      label: Key Neighborhoods / Wards
+      description: List primary wards or zones for initial spatial demand clustering.
+      placeholder: e.g. Lanka, Godowlia, Sigra, Bhelupur...
+    validations:
+      required: true
+  - type: textarea
+    id: official_helplines
+    attributes:
+      label: Verified Municipal / Emergency Helplines
+      description: Official emergency numbers and verified civic helplines for citizen safety.
