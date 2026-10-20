@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgis/postgis:16-3.4-alpine
+    container_name: needradar-db
+    restart: always
+    environment:
+      POSTGRES_USER: needradar
+      POSTGRES_PASSWORD: needradar_secure_pass
+      POSTGRES_DB: needradar
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U needradar"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: needradar-backend
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://needradar:needradar_secure_pass@db:5432/needradar
+      SECRET_KEY: needradar-production-secure-key-32chars-min-jwt
+      DEFAULT_CITY: Bengaluru
+      AI_PROVIDER: deterministic
+    ports:
+      - "8000:8000"
+    volumes:
+      - backend_uploads:/app/uploads
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: needradar-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+volumes:
+  pgdata:
+  backend_uploads:
