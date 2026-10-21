@@ -44,15 +44,22 @@ NeedRadar answers five critical civic questions with verified real-world data:
 
 NeedRadar features a dynamic multi-city architecture supporting live data and coordinates across India's largest metropolitan regions:
 
-| City | State | Coordinates | Seeded Localities | Verified Partner NGOs |
-| :--- | :--- | :--- | :--- | :--- |
-| **Lucknow** | Uttar Pradesh | `26.8467° N, 80.9462° E` | Hazratganj, Gomti Nagar, Aliganj, Chowk, Charbagh | *Awadh Seva Sansthan* |
-| **Prayagraj** | Uttar Pradesh | `25.4358° N, 81.8463° E` | Civil Lines, Katra, Georgetown, Daraganj, Naini | *Sangam Relief & Educational Trust* |
-| **Kanpur** | Uttar Pradesh | `26.4499° N, 80.3319° E` | Civil Lines, Swaroop Nagar, Kakadeo, Mall Road | *Ganga Seva Community Mission* |
-| **Delhi (NCR)** | NCT of Delhi | `28.6139° N, 77.2090° E` | Connaught Place, Lajpat Nagar, Rohini, Saket, Chandni Chowk | *Delhi Nagrik Sahayata Samiti* |
-| **Bengaluru** | Karnataka | `12.9716° N, 77.5946° E` | Koramangala, Indiranagar, HSR Layout, Whitefield, Jayanagar | *Vidya Samarth Trust*, *Arogya Mitra* |
-| **Mumbai** | Maharashtra | `19.0760° N, 72.8777° E` | Bandra, Andheri, Colaba, Dadar, Powai, Borivali | Configured in multi-city registry |
-| **Hyderabad** | Telangana | `17.3850° N, 78.4867° E` | Banjara Hills, Hitec City, Jubilee Hills, Gachibowli | Configured in multi-city registry |
+| City | Code | State | Coordinates | Landmark / Municipal Authority | Verified Partner NGO / Helpline |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Bengaluru** | `BLR` | Karnataka | `12.9716° N, 77.5946° E` | Vidhana Soudha / BBMP | *Vidya Samarth Trust*, *Arogya Mitra* (080-22660000) |
+| **Delhi (NCR)** | `DEL` | NCT of Delhi | `28.6139° N, 77.2090° E` | India Gate / MCD | *Delhi Nagrik Sahayata Samiti* (011-23415500) |
+| **Mumbai** | `BOM` | Maharashtra | `19.0760° N, 72.8777° E` | Gateway of India / BMC | *Mumbai Civic Care Alliance* (022-24308911) |
+| **Lucknow** | `LKO` | Uttar Pradesh | `26.8467° N, 80.9462° E` | Rumi Darwaza / LMC | *Awadh Seva Sansthan* (0522-2239081) |
+| **Prayagraj** | `PRG` | Uttar Pradesh | `25.4358° N, 81.8463° E` | Triveni Sangam / PNN | *Sangam Relief & Educational Trust* (0532-2401199) |
+| **Kanpur** | `KNP` | Uttar Pradesh | `26.4499° N, 80.3319° E` | JK Temple / KNN | *Ganga Seva & Community Action Mission* (0512-2543320) |
+| **Varanasi** | `VNS` | Uttar Pradesh | `25.3176° N, 82.9739° E` | Kashi Vishwanath / VNN | *Kashi Ganga Seva Samiti* (0542-2275400) |
+| **Hyderabad** | `HYD` | Telangana | `17.3850° N, 78.4867° E` | Charminar / GHMC | *Hyderabad Janahitha Foundation* (040-23396780) |
+| **Chennai** | `MAA` | Tamil Nadu | `13.0827° N, 80.2707° E` | Marina Beach / GCC | *Chennai Makkal Sevai Maiyam* (044-28154200) |
+| **Kolkata** | `CCU` | West Bengal | `22.5726° N, 88.3639° E` | Howrah Bridge / KMC | *Kolkata Nagarik Mancha* (033-22278940) |
+| **Pune** | `PNQ` | Maharashtra | `18.5204° N, 73.8567° E` | Shaniwar Wada / PMC | *Pune Seva Sahayog Samiti* (020-25441919) |
+| **Ahmedabad** | `AMD` | Gujarat | `23.0225° N, 72.5714° E` | Sabarmati Ashram / AMC | Municipal Control Room (155303) |
+| **Jaipur** | `JAI` | Rajasthan | `26.9124° N, 75.7873° E` | Hawa Mahal / JMC | Municipal Control Room (0141-2742823) |
+| **Chandigarh** | `IXC` | Punjab & Haryana | `30.7333° N, 76.7794° E` | Rock Garden / MCC | Municipal Control Room (0172-2787200) |
 
 ---
 
