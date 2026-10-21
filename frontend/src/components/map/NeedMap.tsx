@@ -135,48 +135,51 @@ export const NeedMap: React.FC<NeedMapProps> = ({
     <div className="relative w-full h-full min-h-[480px] bg-slate-100 rounded-xl overflow-hidden border border-slate-200">
       <div ref={mapContainer} className="w-full h-full min-h-[480px]" />
 
-      {/* Selected Marker Detail Card Overlay */}
+      {/* Selected Marker Detail Card Overlay with 3D Depth */}
       {selectedItem && (
-        <div className="absolute bottom-4 left-4 right-4 sm:right-auto sm:w-96 bg-white/95 backdrop-blur-md rounded-xl p-4 shadow-2xl border border-slate-200 z-30 animate-in fade-in slide-in-from-bottom-3 duration-200">
+        <div className="absolute bottom-4 left-4 right-4 sm:right-auto sm:w-96 bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-slate-200/90 z-30 animate-in fade-in slide-in-from-bottom-3 duration-200 glass-panel-3d">
           <div className="flex items-start justify-between gap-2">
             <div>
-              <div className="flex items-center gap-2 mb-1">
+              <div className="flex items-center gap-2 mb-1 flex-wrap">
                 <span
                   className="w-2.5 h-2.5 rounded-full"
                   style={{ backgroundColor: CATEGORY_COLORS[selectedItem.category] }}
                 />
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-700">
                   {selectedItem.category}
                 </span>
                 <span className="text-[10px] font-bold px-1.5 py-0.5 rounded uppercase bg-slate-100 text-slate-700">
                   {selectedItem.status.replace(/_/g, ' ')}
                 </span>
+                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-teal-50 text-teal-800 font-bold">
+                  {selectedItem.city}
+                </span>
               </div>
-              <h4 className="text-sm font-bold text-slate-900 leading-snug line-clamp-2">
+              <h4 className="text-sm font-extrabold text-slate-900 leading-snug line-clamp-2">
                 {selectedItem.title}
               </h4>
             </div>
             <button
               onClick={() => onSelectItem && onSelectItem(null)}
-              className="text-slate-400 hover:text-slate-600 p-1 text-xs"
+              className="text-slate-400 hover:text-slate-600 p-1 text-xs rounded-lg hover:bg-slate-100 transition-colors"
               aria-label="Close card"
             >
               ✕
             </button>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 mt-3 text-xs text-slate-600 bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+          <div className="grid grid-cols-2 gap-2 mt-3 text-xs text-slate-600 bg-slate-50/80 p-2.5 rounded-xl border border-slate-100">
             <div className="flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-slate-400" />
-              <span className="font-medium text-slate-800 truncate">{selectedItem.locality}</span>
+              <MapPin className="w-3.5 h-3.5 text-teal-600" />
+              <span className="font-semibold text-slate-800 truncate">{selectedItem.locality}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <Users className="w-3.5 h-3.5 text-slate-400" />
               <span>{selectedItem.supporters_count} supporters</span>
             </div>
-            <div className="col-span-2 flex items-center justify-between text-[11px] pt-1 border-t border-slate-200">
-              <span className="text-slate-500">Unmet Demand Index:</span>
-              <span className="font-bold text-teal-700 font-mono">
+            <div className="col-span-2 flex items-center justify-between text-[11px] pt-1.5 border-t border-slate-200">
+              <span className="text-slate-500 font-medium">Unmet Demand Index:</span>
+              <span className="font-bold text-teal-700 font-mono text-xs">
                 {selectedItem.unmet_demand_score.toFixed(1)} / 100
               </span>
             </div>
@@ -185,16 +188,16 @@ export const NeedMap: React.FC<NeedMapProps> = ({
           {selectedItem.is_location_approximate && (
             <p className="text-[10px] text-amber-700 mt-2 flex items-center gap-1">
               <ShieldAlert className="w-3 h-3 flex-shrink-0" />
-              Approximate location displayed to protect privacy.
+              <span>Approximate location displayed to protect privacy.</span>
             </p>
           )}
 
           <div className="mt-3 flex items-center gap-2">
             <button
               onClick={() => navigate(`/needs/${selectedItem.id}`)}
-              className="w-full py-2 px-3 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+              className="w-full py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95"
             >
-              <span>View Full Details & Support</span>
+              <span>View Full Details & Contact Channels</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>

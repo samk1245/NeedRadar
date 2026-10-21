@@ -16,11 +16,21 @@ import {
   MessageSquare,
   ArrowLeft,
   ChevronRight,
-  Info
+  Info,
+  Phone,
+  PhoneCall,
+  Mail,
+  MessageCircle,
+  ExternalLink,
+  LifeBuoy
 } from 'lucide-react';
 import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { NeedRead, ProviderResponse, ResolutionProposal, NeedStatus } from '../types';
+import { CityBadge } from '../components/common/CityBadge';
+import { NgoLogo } from '../components/common/NgoLogo';
+import { TiltCard } from '../components/common/TiltCard';
+import { SupportEnquiryModal } from '../components/support/SupportEnquiryModal';
 
 export const NeedDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -46,6 +56,7 @@ export const NeedDetailPage: React.FC = () => {
   const [reportReason, setReportReason] = useState('unsafe_content');
   const [reportDetails, setReportDetails] = useState('');
   const [reportSubmitted, setReportSubmitted] = useState(false);
+  const [supportModalOpen, setSupportModalOpen] = useState(false);
 
   const fetchNeedData = async () => {
     if (!id) return;
@@ -443,6 +454,60 @@ export const NeedDetailPage: React.FC = () => {
 
         {/* Right Col: Actions, Support, Demand Index, Safety */}
         <div className="space-y-5">
+          {/* Direct Action & Verified Contact Hub */}
+          <TiltCard maxTilt={8} scale={1.01} className="bg-white rounded-2xl border border-teal-200 p-5 shadow-sm space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-[10px] font-bold text-teal-800 uppercase tracking-wider block">
+                  Action & Contact Hub
+                </span>
+                <h3 className="font-extrabold text-sm text-slate-900 mt-0.5">
+                  Verified Contact Channels
+                </h3>
+              </div>
+              <div className="w-8 h-8 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center font-bold text-xs">
+                <PhoneCall className="w-4 h-4" />
+              </div>
+            </div>
+
+            <div className="space-y-2 text-xs">
+              <a
+                href={`tel:${responses[0]?.contact_instructions?.match(/\+?[0-9\s-]{8,}/)?.[0] || '112'}`}
+                className="w-full py-2.5 px-3 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-900 font-bold flex items-center justify-between transition-colors border border-teal-200"
+              >
+                <div className="flex items-center gap-2">
+                  <Phone className="w-3.5 h-3.5 text-teal-700" />
+                  <span>Call Coordinator / Helpline</span>
+                </div>
+                <span className="text-[10px] text-teal-700 font-mono">Instant Dial</span>
+              </a>
+
+              <a
+                href={`https://wa.me/919876543210?text=Hello%20NeedRadar%20Team,%20I%20am%20inquiring%20about%20Need%20ID%20${need.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-bold flex items-center justify-between transition-colors border border-emerald-200"
+              >
+                <div className="flex items-center gap-2">
+                  <MessageCircle className="w-3.5 h-3.5 text-emerald-700" />
+                  <span>WhatsApp Direct Response</span>
+                </div>
+                <ExternalLink className="w-3 h-3 text-emerald-600" />
+              </a>
+
+              <button
+                onClick={() => setSupportModalOpen(true)}
+                className="w-full py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold flex items-center justify-between transition-colors shadow-xs"
+              >
+                <div className="flex items-center gap-2">
+                  <LifeBuoy className="w-3.5 h-3.5 text-teal-400" />
+                  <span>Submit Inquiry / Grievance</span>
+                </div>
+                <span className="text-[10px] font-mono text-teal-400">Desk Ticket</span>
+              </button>
+            </div>
+          </TiltCard>
+
           {/* Community Support Card */}
           <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
             <div>
@@ -576,6 +641,12 @@ export const NeedDetailPage: React.FC = () => {
           </div>
         </div>
       )}
+      {/* Support Enquiry Modal */}
+      <SupportEnquiryModal
+        isOpen={supportModalOpen}
+        onClose={() => setSupportModalOpen(false)}
+        defaultNeedId={need.id}
+      />
     </div>
   );
 };

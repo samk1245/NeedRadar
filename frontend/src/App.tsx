@@ -15,6 +15,7 @@ import { ResidentDashboard } from './pages/ResidentDashboard';
 import { ProviderPortal } from './pages/ProviderPortal';
 import { AdminConsole } from './pages/AdminConsole';
 import { AnalyticsPage } from './pages/AnalyticsPage';
+import { SupportPage } from './pages/SupportPage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 
@@ -37,6 +38,7 @@ export const App: React.FC = () => {
                   <Route path="/provider" element={<ProviderPortal />} />
                   <Route path="/admin" element={<AdminConsole />} />
                   <Route path="/analytics" element={<AnalyticsPage />} />
+                  <Route path="/support" element={<SupportPage />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/register" element={<RegisterPage />} />
                   <Route path="*" element={<Navigate to="/" replace />} />

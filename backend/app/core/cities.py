@@ -4,9 +4,15 @@ CITIES_REGISTRY: Dict[str, Dict[str, Any]] = {
     "Bengaluru": {
         "name": "Bengaluru",
         "state": "Karnataka",
+        "code": "BLR",
         "lat": 12.9716,
         "lon": 77.5946,
         "zoom": 12,
+        "landmark": "Vidhana Soudha & Cubbon Park",
+        "municipal_authority": "Bruhat Bengaluru Mahanagara Palike (BBMP)",
+        "helpline": "080-22660000 / 1533",
+        "ambulance": "108",
+        "police": "112",
         "localities": [
             {"name": "Koramangala", "lat": 12.9352, "lon": 77.6245},
             {"name": "HSR Layout", "lat": 12.9121, "lon": 77.6446},
@@ -23,9 +29,15 @@ CITIES_REGISTRY: Dict[str, Dict[str, Any]] = {
     "Lucknow": {
         "name": "Lucknow",
         "state": "Uttar Pradesh",
+        "code": "LKO",
         "lat": 26.8467,
         "lon": 80.9462,
         "zoom": 12,
+        "landmark": "Rumi Darwaza & Hazratganj",
+        "municipal_authority": "Lucknow Municipal Corporation (LMC)",
+        "helpline": "0522-2622080 / 1533",
+        "ambulance": "108",
+        "police": "112",
         "localities": [
             {"name": "Hazratganj", "lat": 26.8532, "lon": 80.9472},
             {"name": "Gomti Nagar", "lat": 26.8504, "lon": 81.0006},
@@ -41,9 +53,15 @@ CITIES_REGISTRY: Dict[str, Dict[str, Any]] = {
     "Prayagraj": {
         "name": "Prayagraj",
         "state": "Uttar Pradesh",
+        "code": "PRG",
         "lat": 25.4358,
         "lon": 81.8463,
         "zoom": 12,
+        "landmark": "Triveni Sangam & Anand Bhavan",
+        "municipal_authority": "Prayagraj Nagar Nigam (PNN)",
+        "helpline": "0532-2407555 / 1920",
+        "ambulance": "108",
+        "police": "112",
         "localities": [
             {"name": "Civil Lines", "lat": 25.4526, "lon": 81.8344},
             {"name": "Katra", "lat": 25.4601, "lon": 81.8569},
@@ -59,9 +77,15 @@ CITIES_REGISTRY: Dict[str, Dict[str, Any]] = {
     "Kanpur": {
         "name": "Kanpur",
         "state": "Uttar Pradesh",
+        "code": "KNP",
         "lat": 26.4499,
         "lon": 80.3319,
         "zoom": 12,
+        "landmark": "JK Temple & Ganga Barrage",
+        "municipal_authority": "Kanpur Nagar Nigam (KNN)",
+        "helpline": "0512-2556488 / 1533",
+        "ambulance": "108",
+        "police": "112",
         "localities": [
             {"name": "Civil Lines", "lat": 26.4735, "lon": 80.3496},
             {"name": "Swaroop Nagar", "lat": 26.4805, "lon": 80.3156},
@@ -77,9 +101,15 @@ CITIES_REGISTRY: Dict[str, Dict[str, Any]] = {
     "Delhi": {
         "name": "Delhi",
         "state": "National Capital Territory",
+        "code": "DEL",
         "lat": 28.6139,
         "lon": 77.2090,
         "zoom": 11,
+        "landmark": "India Gate & Connaught Place",
+        "municipal_authority": "Municipal Corporation of Delhi (MCD)",
+        "helpline": "155305 / 011-23220010",
+        "ambulance": "102 / 108",
+        "police": "112",
         "localities": [
             {"name": "Connaught Place", "lat": 28.6315, "lon": 77.2167},
             {"name": "Lajpat Nagar", "lat": 28.5677, "lon": 77.2433},
@@ -96,9 +126,15 @@ CITIES_REGISTRY: Dict[str, Dict[str, Any]] = {
     "Mumbai": {
         "name": "Mumbai",
         "state": "Maharashtra",
+        "code": "BOM",
         "lat": 19.0760,
         "lon": 72.8777,
         "zoom": 11,
+        "landmark": "Gateway of India & Marine Drive",
+        "municipal_authority": "Brihanmumbai Municipal Corporation (BMC)",
+        "helpline": "1916 / 022-22694725",
+        "ambulance": "108",
+        "police": "112",
         "localities": [
             {"name": "Bandra West", "lat": 19.0596, "lon": 72.8295},
             {"name": "Andheri East", "lat": 19.1136, "lon": 72.8697},
@@ -113,9 +149,15 @@ CITIES_REGISTRY: Dict[str, Dict[str, Any]] = {
     "Hyderabad": {
         "name": "Hyderabad",
         "state": "Telangana",
+        "code": "HYD",
         "lat": 17.3850,
         "lon": 78.4867,
         "zoom": 12,
+        "landmark": "Charminar & Golconda Fort",
+        "municipal_authority": "Greater Hyderabad Municipal Corporation (GHMC)",
+        "helpline": "040-21111111 / 1533",
+        "ambulance": "108",
+        "police": "112",
         "localities": [
             {"name": "Banjara Hills", "lat": 17.4156, "lon": 78.4350},
             {"name": "Hitec City", "lat": 17.4435, "lon": 78.3772},
@@ -124,6 +166,150 @@ CITIES_REGISTRY: Dict[str, Dict[str, Any]] = {
             {"name": "Madhapur", "lat": 17.4483, "lon": 78.3915},
             {"name": "Secunderabad", "lat": 17.4399, "lon": 78.4983},
             {"name": "Kukatpally", "lat": 17.4947, "lon": 78.3996}
+        ]
+    },
+    "Varanasi": {
+        "name": "Varanasi",
+        "state": "Uttar Pradesh",
+        "code": "VNS",
+        "lat": 25.3176,
+        "lon": 82.9739,
+        "zoom": 12,
+        "landmark": "Kashi Vishwanath & Dashashwamedh Ghat",
+        "municipal_authority": "Varanasi Nagar Nigam (VNN)",
+        "helpline": "0542-2280010 / 1533",
+        "ambulance": "108",
+        "police": "112",
+        "localities": [
+            {"name": "Godowlia", "lat": 25.3092, "lon": 83.0068},
+            {"name": "Lanka / BHU", "lat": 25.2798, "lon": 82.9994},
+            {"name": "Sigra", "lat": 25.3189, "lon": 82.9868},
+            {"name": "Bhelupur", "lat": 25.2974, "lon": 82.9922},
+            {"name": "Cantonment", "lat": 25.3340, "lon": 82.9790},
+            {"name": "Sarnath", "lat": 25.3715, "lon": 83.0252}
+        ]
+    },
+    "Chennai": {
+        "name": "Chennai",
+        "state": "Tamil Nadu",
+        "code": "MAA",
+        "lat": 13.0827,
+        "lon": 80.2707,
+        "zoom": 12,
+        "landmark": "Marina Beach & Ripon Building",
+        "municipal_authority": "Greater Chennai Corporation (GCC)",
+        "helpline": "1913 / 044-25619206",
+        "ambulance": "108",
+        "police": "112",
+        "localities": [
+            {"name": "T. Nagar", "lat": 13.0418, "lon": 80.2341},
+            {"name": "Adyar", "lat": 13.0012, "lon": 80.2565},
+            {"name": "Mylapore", "lat": 13.0368, "lon": 80.2676},
+            {"name": "Velachery", "lat": 12.9815, "lon": 80.2180},
+            {"name": "Anna Nagar", "lat": 13.0850, "lon": 80.2101},
+            {"name": "Besant Nagar", "lat": 13.0003, "lon": 80.2667}
+        ]
+    },
+    "Kolkata": {
+        "name": "Kolkata",
+        "state": "West Bengal",
+        "code": "CCU",
+        "lat": 22.5726,
+        "lon": 88.3639,
+        "zoom": 12,
+        "landmark": "Howrah Bridge & Victoria Memorial",
+        "municipal_authority": "Kolkata Municipal Corporation (KMC)",
+        "helpline": "033-22861212 / 1600",
+        "ambulance": "108",
+        "police": "112",
+        "localities": [
+            {"name": "Park Street", "lat": 22.5510, "lon": 88.3524},
+            {"name": "Salt Lake Sector V", "lat": 22.5802, "lon": 88.4350},
+            {"name": "Ballygunge", "lat": 22.5280, "lon": 88.3655},
+            {"name": "New Town", "lat": 22.5958, "lon": 88.4798},
+            {"name": "Shyambazar", "lat": 22.6045, "lon": 88.3746},
+            {"name": "Gariahat", "lat": 22.5165, "lon": 88.3643}
+        ]
+    },
+    "Pune": {
+        "name": "Pune",
+        "state": "Maharashtra",
+        "code": "PNQ",
+        "lat": 18.5204,
+        "lon": 73.8567,
+        "zoom": 12,
+        "landmark": "Shaniwar Wada & Aga Khan Palace",
+        "municipal_authority": "Pune Municipal Corporation (PMC)",
+        "helpline": "1800 1030 222 / 020-25501000",
+        "ambulance": "108",
+        "police": "112",
+        "localities": [
+            {"name": "Kothrud", "lat": 18.5074, "lon": 73.8077},
+            {"name": "Viman Nagar", "lat": 18.5679, "lon": 73.9143},
+            {"name": "Hinjawadi", "lat": 18.5913, "lon": 73.7389},
+            {"name": "Shivajinagar", "lat": 18.5314, "lon": 73.8446},
+            {"name": "Baner", "lat": 18.5590, "lon": 73.7868},
+            {"name": "Kalyani Nagar", "lat": 18.5463, "lon": 73.9033}
+        ]
+    },
+    "Ahmedabad": {
+        "name": "Ahmedabad",
+        "state": "Gujarat",
+        "code": "AMD",
+        "lat": 23.0225,
+        "lon": 72.5714,
+        "zoom": 12,
+        "landmark": "Sabarmati Ashram & Atal Bridge",
+        "municipal_authority": "Ahmedabad Municipal Corporation (AMC)",
+        "helpline": "155303 / 079-25391811",
+        "ambulance": "108",
+        "police": "112",
+        "localities": [
+            {"name": "Navrangpura", "lat": 23.0365, "lon": 72.5611},
+            {"name": "Bodakdev / SG Highway", "lat": 23.0401, "lon": 72.5115},
+            {"name": "Maninagar", "lat": 22.9978, "lon": 72.6026},
+            {"name": "Satellite", "lat": 23.0286, "lon": 72.5284},
+            {"name": "Paldi", "lat": 23.0130, "lon": 72.5625}
+        ]
+    },
+    "Jaipur": {
+        "name": "Jaipur",
+        "state": "Rajasthan",
+        "code": "JAI",
+        "lat": 26.9124,
+        "lon": 75.7873,
+        "zoom": 12,
+        "landmark": "Hawa Mahal & Amer Fort",
+        "municipal_authority": "Jaipur Greater Municipal Corporation",
+        "helpline": "0141-2742823 / 181",
+        "ambulance": "108",
+        "police": "112",
+        "localities": [
+            {"name": "C-Scheme", "lat": 26.9114, "lon": 75.8013},
+            {"name": "Malviya Nagar", "lat": 26.8549, "lon": 75.8243},
+            {"name": "Vaishali Nagar", "lat": 26.9069, "lon": 75.7423},
+            {"name": "Mansarovar", "lat": 26.8522, "lon": 75.7671},
+            {"name": "Raja Park", "lat": 26.8975, "lon": 75.8274}
+        ]
+    },
+    "Chandigarh": {
+        "name": "Chandigarh",
+        "state": "Punjab & Haryana",
+        "code": "IXC",
+        "lat": 30.7333,
+        "lon": 76.7794,
+        "zoom": 12,
+        "landmark": "Rock Garden & Sukhna Lake",
+        "municipal_authority": "Municipal Corporation Chandigarh (MCC)",
+        "helpline": "0172-2787200 / 155304",
+        "ambulance": "108",
+        "police": "112",
+        "localities": [
+            {"name": "Sector 17 (Plaza)", "lat": 30.7398, "lon": 76.7827},
+            {"name": "Sector 35 (Commercial)", "lat": 30.7224, "lon": 76.7686},
+            {"name": "Sector 22 (Market)", "lat": 30.7342, "lon": 76.7728},
+            {"name": "Sector 43 (ISBT)", "lat": 30.7161, "lon": 76.7454},
+            {"name": "Manimajra", "lat": 30.7226, "lon": 76.8436}
         ]
     }
 }

@@ -17,6 +17,8 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
 import { Organisation, NeedRead, NeedCategory } from '../types';
+import { NgoLogo } from '../components/common/NgoLogo';
+import { TiltCard } from '../components/common/TiltCard';
 
 export const ProviderPortal: React.FC = () => {
   const { user } = useAuth();
@@ -308,27 +310,20 @@ export const ProviderPortal: React.FC = () => {
       {/* Organisation Status Card if already registered */}
       {org && (
         <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <h2 className="text-lg font-bold text-slate-900">{org.name}</h2>
-                <span
-                  className={`px-2 py-0.5 rounded font-mono font-bold text-[10px] uppercase ${
-                    org.verification_status === 'verified'
-                      ? 'bg-teal-50 text-teal-700 border border-teal-200'
-                      : org.verification_status === 'rejected'
-                      ? 'bg-red-50 text-red-700 border border-red-200'
-                      : 'bg-amber-50 text-amber-800 border border-amber-200'
-                  }`}
-                >
-                  Status: {org.verification_status}
-                </span>
-              </div>
-              <p className="text-xs text-slate-600">{org.description}</p>
-            </div>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <NgoLogo
+              name={org.name}
+              size="lg"
+              registrationNumber={org.registration_number}
+              isVerified={org.verification_status === 'verified'}
+            />
 
             <div className="text-right text-xs text-slate-500 font-mono">
+              <span className="block font-bold text-slate-800">{org.operating_hours}</span>
               <span>Coverage: {org.service_area}</span>
+              {org.contact_phone && (
+                <span className="block text-teal-700 font-bold mt-0.5">{org.contact_phone}</span>
+              )}
             </div>
           </div>
 

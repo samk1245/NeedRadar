@@ -12,12 +12,16 @@ import {
   ArrowRight,
   Shield,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  LifeBuoy
 } from 'lucide-react';
 import { api } from '../services/api';
 import { useCity } from '../context/CityContext';
 import { NeedMapItem, NeedRead, NeedCategory, NeedStatus } from '../types';
 import { NeedMap } from '../components/map/NeedMap';
+import { TiltCard } from '../components/common/TiltCard';
+import { CityBadge } from '../components/common/CityBadge';
+import { SupportEnquiryModal } from '../components/support/SupportEnquiryModal';
 
 const CATEGORIES: { id: NeedCategory | 'all'; label: string }[] = [
   { id: 'all', label: 'All Categories' },
@@ -44,6 +48,7 @@ export const DiscoveryPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [localityFilter, setLocalityFilter] = useState<string>('');
+  const [supportModalOpen, setSupportModalOpen] = useState(false);
 
   const fetchMarkers = async () => {
     setLoading(true);
@@ -90,21 +95,21 @@ export const DiscoveryPage: React.FC = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-5">
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-            <span>Community Need Discovery</span>
-            <span className="text-xs px-2 py-0.5 rounded font-mono font-bold bg-teal-50 text-teal-700 border border-teal-200">
-              {filteredItems.length} Needs in {currentCity}
-            </span>
-          </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Real-time geospatial community requests across {currentCity} wards.
-          </p>
+        <div className="flex items-center gap-4">
+          <CityBadge cityName={currentCity} size="lg" showLandmark={true} />
         </div>
 
-        {/* View Toggle */}
+        {/* View Toggle & Support Button */}
         <div className="flex items-center gap-2 self-start md:self-auto">
-          <div className="bg-slate-100 p-1 rounded-lg flex items-center border border-slate-200 text-xs">
+          <button
+            onClick={() => setSupportModalOpen(true)}
+            className="px-3 py-1.5 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-800 text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs"
+          >
+            <LifeBuoy className="w-3.5 h-3.5 text-rose-600" />
+            <span>Civic Support</span>
+          </button>
+
+          <div className="bg-slate-100 p-1 rounded-xl flex items-center border border-slate-200 text-xs">
             <button
               onClick={() => setViewMode('map')}
               className={`px-3 py-1.5 rounded-md font-medium flex items-center gap-1.5 transition-all ${
@@ -242,53 +247,61 @@ export const DiscoveryPage: React.FC = () => {
           />
         </div>
       ) : (
-        /* Accessible List View */
+        /* Accessible List View with 3D Tilt Cards */
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredItems.map((item) => (
-            <div
+            <TiltCard
               key={item.id}
-              className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
+              maxTilt={8}
+              scale={1.02}
+              className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between text-xs mb-2">
-                  <span className="capitalize font-semibold text-teal-700 bg-teal-50 px-2 py-0.5 rounded">
+                  <span className="capitalize font-bold text-teal-700 bg-teal-50 px-2.5 py-0.5 rounded-lg border border-teal-200">
                     {item.category}
                   </span>
-                  <span className="font-mono text-[11px] font-bold text-slate-500 uppercase">
+                  <span className="font-mono text-[10px] font-bold text-slate-500 uppercase px-2 py-0.5 rounded bg-slate-100">
                     {item.status.replace(/_/g, ' ')}
                   </span>
                 </div>
-                <h3 className="text-sm font-bold text-slate-900 leading-snug line-clamp-2 mb-2">
+                <h3 className="text-sm font-extrabold text-slate-900 leading-snug line-clamp-2 mb-2">
                   {item.title}
                 </h3>
                 <div className="flex items-center gap-1.5 text-xs text-slate-600 mb-3">
-                  <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                  <MapPin className="w-3.5 h-3.5 text-teal-600" />
                   <span>{item.locality}, {item.city}</span>
                 </div>
               </div>
 
               <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                 <div className="flex items-center gap-3">
-                  <span className="flex items-center gap-1 text-slate-600">
+                  <span className="flex items-center gap-1 text-slate-600 font-medium">
                     <Users className="w-3.5 h-3.5 text-slate-400" />
                     <span>{item.supporters_count}</span>
                   </span>
                   <span className="font-mono text-teal-700 font-bold">
-                    Score: {item.unmet_demand_score.toFixed(0)}
+                    Demand: {item.unmet_demand_score.toFixed(0)}
                   </span>
                 </div>
                 <Link
                   to={`/needs/${item.id}`}
-                  className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-md text-xs font-semibold transition-colors flex items-center gap-1"
+                  className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1 active:scale-95"
                 >
                   <span>Details</span>
                   <ArrowRight className="w-3 h-3" />
                 </Link>
               </div>
-            </div>
+            </TiltCard>
           ))}
         </div>
       )}
+
+      {/* Support Enquiry Modal */}
+      <SupportEnquiryModal
+        isOpen={supportModalOpen}
+        onClose={() => setSupportModalOpen(false)}
+      />
     </div>
   );
 };

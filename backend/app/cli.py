@@ -5,7 +5,7 @@ from app.core.database import SessionLocal
 from app.models.need import Need, NeedStatus
 from app.models.organisation import Organisation, VerificationStatus
 from app.models.user import User
-from app.services.demand_intelligence import calculate_need_unmet_score, detect_emerging_trends, generate_service_gap_insights
+from app.core.cities import CITIES_REGISTRY
 
 def print_header(title: str):
     print("\n" + "=" * 65)
@@ -50,7 +50,7 @@ def cmd_summary(args):
     db = SessionLocal()
     try:
         print_header("NATIONAL MULTI-CITY SUMMARY")
-        cities = ["Bengaluru", "Lucknow", "Prayagraj", "Kanpur", "Delhi"]
+        cities = list(CITIES_REGISTRY.keys())
         
         print(f"{'CITY':<15} | {'REPORTS':<9} | {'UNRESOLVED':<11} | {'RESOLVED':<9} | {'VERIFIED NGOS':<14}")
         print("-" * 65)

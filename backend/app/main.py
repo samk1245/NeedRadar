@@ -9,7 +9,7 @@ from app.core.database import engine, Base
 import app.models # Register all models
 
 from app.api.v1 import (
-    auth, needs, discovery, providers, moderation, analytics, notifications, uploads
+    auth, needs, discovery, providers, moderation, analytics, notifications, uploads, enquiries
 )
 from app.seed import seed_database
 
@@ -64,3 +64,4 @@ app.include_router(moderation.router, prefix=f"{settings.API_V1_STR}/moderation"
 app.include_router(analytics.router, prefix=f"{settings.API_V1_STR}/analytics", tags=["Analytics & Intelligence"])
 app.include_router(notifications.router, prefix=f"{settings.API_V1_STR}/notifications", tags=["Notifications"])
 app.include_router(uploads.router, prefix=f"{settings.API_V1_STR}/uploads", tags=["File Uploads"])
+app.include_router(enquiries.router, prefix=f"{settings.API_V1_STR}/enquiries", tags=["Enquiries & Support"])
