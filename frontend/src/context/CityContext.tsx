@@ -470,6 +470,348 @@ export const DEFAULT_CITIES: CityData[] = [
       { name: 'Kamakhya Foothills', lat: 26.1648, lon: 91.7058 },
       { name: 'GS Road', lat: 26.1524, lon: 91.7765 }
     ]
+  },
+  {
+    name: 'Amritsar',
+    state: 'Punjab',
+    code: 'ATQ',
+    lat: 31.6340,
+    lon: 74.8723,
+    zoom: 12,
+    landmark: 'Golden Temple & Jallianwala Bagh',
+    municipal_authority: 'Municipal Corporation Amritsar (MCA)',
+    helpline: '0183-2545155 / 1533',
+    ambulance: '108',
+    police: '112',
+    localities: [
+      { name: 'Ranjit Avenue', lat: 31.6560, lon: 74.8568 },
+      { name: 'Mall Road', lat: 31.6420, lon: 74.8710 },
+      { name: 'Hall Gate', lat: 31.6310, lon: 74.8765 },
+      { name: 'Chheharta', lat: 31.6280, lon: 74.8010 }
+    ]
+  },
+  {
+    name: 'Surat',
+    state: 'Gujarat',
+    code: 'STV',
+    lat: 21.1702,
+    lon: 72.8311,
+    zoom: 12,
+    landmark: 'Dumas Beach & Tapi Riverfront',
+    municipal_authority: 'Surat Municipal Corporation (SMC)',
+    helpline: '0261-2423751 / 1533',
+    ambulance: '108',
+    police: '112',
+    localities: [
+      { name: 'Athwa', lat: 21.1645, lon: 72.7985 },
+      { name: 'Adajan', lat: 21.1960, lon: 72.7930 },
+      { name: 'Vesu', lat: 21.1410, lon: 72.7750 },
+      { name: 'Varachha', lat: 21.2180, lon: 72.8580 }
+    ]
+  },
+  {
+    name: 'Nagpur',
+    state: 'Maharashtra',
+    code: 'NAG',
+    lat: 21.1458,
+    lon: 79.0882,
+    zoom: 12,
+    landmark: 'Zero Mile Stone & Deekshabhoomi',
+    municipal_authority: 'Nagpur Municipal Corporation (NMC)',
+    helpline: '0712-2567035 / 1533',
+    ambulance: '108',
+    police: '112',
+    localities: [
+      { name: 'Dharampeth', lat: 21.1415, lon: 79.0585 },
+      { name: 'Sadar', lat: 21.1610, lon: 79.0790 },
+      { name: 'Sitabuldi', lat: 21.1460, lon: 79.0830 },
+      { name: 'Wardha Road', lat: 21.0920, lon: 79.0710 }
+    ]
+  },
+  {
+    name: 'Ludhiana',
+    state: 'Punjab',
+    code: 'LUH',
+    lat: 30.9010,
+    lon: 75.8573,
+    zoom: 12,
+    landmark: 'Clock Tower & PAU Grounds',
+    municipal_authority: 'Municipal Corporation Ludhiana (MCL)',
+    helpline: '0161-2746400 / 1533',
+    ambulance: '108',
+    police: '112',
+    localities: [
+      { name: 'Model Town', lat: 30.8910, lon: 75.8360 },
+      { name: 'Sarabha Nagar', lat: 30.8870, lon: 75.8080 },
+      { name: 'Ferozepur Road', lat: 30.9050, lon: 75.7950 },
+      { name: 'Civil Lines', lat: 30.9120, lon: 75.8450 }
+    ]
+  },
+  {
+    name: 'Agra',
+    state: 'Uttar Pradesh',
+    code: 'AGR',
+    lat: 27.1767,
+    lon: 78.0081,
+    zoom: 12,
+    landmark: 'Taj Mahal & Agra Fort',
+    municipal_authority: 'Agra Nagar Nigam (ANN)',
+    helpline: '0562-2520615 / 1533',
+    ambulance: '108',
+    police: '112',
+    localities: [
+      { name: 'Tajganj', lat: 27.1650, lon: 78.0410 },
+      { name: 'Sanjay Place', lat: 27.2020, lon: 78.0060 },
+      { name: 'Dayalbagh', lat: 27.2280, lon: 78.0120 },
+      { name: 'Kamla Nagar', lat: 27.2150, lon: 78.0250 }
+    ]
+  },
+  {
+    name: 'Nashik',
+    state: 'Maharashtra',
+    code: 'ISK',
+    lat: 19.9975,
+    lon: 73.7898,
+    zoom: 12,
+    landmark: 'Panchavati & Godavari Ramkund',
+    municipal_authority: 'Nashik Municipal Corporation (NMC)',
+    helpline: '0253-2575631 / 1533',
+    ambulance: '108',
+    police: '112',
+    localities: [
+      { name: 'Panchavati', lat: 20.0090, lon: 73.7990 },
+      { name: 'College Road', lat: 20.0010, lon: 73.7620 },
+      { name: 'Indira Nagar', lat: 19.9670, lon: 73.7780 },
+      { name: 'Gangapur Road', lat: 20.0180, lon: 73.7460 }
+    ]
+  },
+  {
+    name: 'Madurai',
+    state: 'Tamil Nadu',
+    code: 'IXM',
+    lat: 9.9252,
+    lon: 78.1198,
+    zoom: 12,
+    landmark: 'Meenakshi Amman Temple & Thirumalai Nayakkar Mahal',
+    municipal_authority: 'Madurai Corporation (MC)',
+    helpline: '0452-2531551 / 1533',
+    ambulance: '108',
+    police: '112',
+    localities: [
+      { name: 'KK Nagar', lat: 9.9320, lon: 78.1470 },
+      { name: 'Anna Nagar', lat: 9.9205, lon: 78.1520 },
+      { name: 'Simmakkal', lat: 9.9310, lon: 78.1220 },
+      { name: 'Goripalayam', lat: 9.9350, lon: 78.1290 }
+    ]
+  },
+  {
+    name: 'Coimbatore',
+    state: 'Tamil Nadu',
+    code: 'CJB',
+    lat: 11.0168,
+    lon: 76.9558,
+    zoom: 12,
+    landmark: 'Marudhamalai & VOC Park',
+    municipal_authority: 'Coimbatore City Municipal Corporation (CCMC)',
+    helpline: '0422-2302323 / 1533',
+    ambulance: '108',
+    police: '112',
+    localities: [
+      { name: 'RS Puram', lat: 11.0110, lon: 76.9460 },
+      { name: 'Gandhipuram', lat: 11.0190, lon: 76.9680 },
+      { name: 'Peelamedu', lat: 11.0280, lon: 77.0120 },
+      { name: 'Saibaba Colony', lat: 11.0310, lon: 76.9450 }
+    ]
+  },
+  {
+    name: 'Thiruvananthapuram',
+    state: 'Kerala',
+    code: 'TRV',
+    lat: 8.5241,
+    lon: 76.9366,
+    zoom: 12,
+    landmark: 'Sree Padmanabhaswamy Temple & Napier Museum',
+    municipal_authority: 'Thiruvananthapuram Municipal Corporation (TMC)',
+    helpline: '0471-2320821 / 1533',
+    ambulance: '108',
+    police: '112',
+    localities: [
+      { name: 'Kowdiar', lat: 8.5300, lon: 76.9620 },
+      { name: 'Palayam', lat: 8.5060, lon: 76.9510 },
+      { name: 'Pattom', lat: 8.5310, lon: 76.9420 },
+      { name: 'Kazhakkoottam', lat: 8.5680, lon: 76.8730 }
+    ]
+  },
+  {
+    name: 'Vadodara',
+    state: 'Gujarat',
+    code: 'BDQ',
+    lat: 22.3072,
+    lon: 73.1812,
+    zoom: 12,
+    landmark: 'Laxmi Vilas Palace & Sayaji Baug',
+    municipal_authority: 'Vadodara Municipal Corporation (VMC)',
+    helpline: '0265-2433116 / 1533',
+    ambulance: '108',
+    police: '112',
+    localities: [
+      { name: 'Alkapuri', lat: 22.3120, lon: 73.1710 },
+      { name: 'Fatehgunj', lat: 22.3270, lon: 73.1890 },
+      { name: 'Akota', lat: 22.2980, lon: 73.1680 },
+      { name: 'Manjalpur', lat: 22.2640, lon: 73.1930 }
+    ]
+  },
+  {
+    name: 'Srinagar',
+    state: 'Jammu & Kashmir',
+    code: 'SXR',
+    lat: 34.0837,
+    lon: 74.7973,
+    zoom: 12,
+    landmark: 'Dal Lake & Shankaracharya Temple',
+    municipal_authority: 'Srinagar Municipal Corporation (SMC)',
+    helpline: '0194-2474499 / 1533',
+    ambulance: '108',
+    police: '112',
+    localities: [
+      { name: 'Lal Chowk', lat: 34.0720, lon: 74.8110 },
+      { name: 'Rajbagh', lat: 34.0620, lon: 74.8210 },
+      { name: 'Dalgate', lat: 34.0810, lon: 74.8320 },
+      { name: 'Hazratbal', lat: 34.1280, lon: 74.8420 }
+    ]
+  },
+  {
+    name: 'Ranchi',
+    state: 'Jharkhand',
+    code: 'IXR',
+    lat: 23.3441,
+    lon: 85.3096,
+    zoom: 12,
+    landmark: 'Tagore Hill & Ranchi Lake',
+    municipal_authority: 'Ranchi Municipal Corporation (RMC)',
+    helpline: '0651-2211215 / 1533',
+    ambulance: '108',
+    police: '112',
+    localities: [
+      { name: 'Main Road', lat: 23.3550, lon: 85.3260 },
+      { name: 'Lalpur', lat: 23.3710, lon: 85.3370 },
+      { name: 'Doranda', lat: 23.3320, lon: 85.3210 },
+      { name: 'Morabadi', lat: 23.3890, lon: 85.3270 }
+    ]
+  },
+  {
+    name: 'Jamshedpur',
+    state: 'Jharkhand',
+    code: 'IXW',
+    lat: 22.8046,
+    lon: 86.2029,
+    zoom: 12,
+    landmark: 'Jubilee Park & Tata Steel Plant',
+    municipal_authority: 'Jamshedpur Notified Area Committee (JNAC)',
+    helpline: '0657-2431221 / 1533',
+    ambulance: '108',
+    police: '112',
+    localities: [
+      { name: 'Bistupur', lat: 22.7950, lon: 86.1840 },
+      { name: 'Sakchi', lat: 22.8120, lon: 86.2050 },
+      { name: 'Telco Colony', lat: 22.7780, lon: 86.2510 },
+      { name: 'Sonari', lat: 22.8190, lon: 86.1620 }
+    ]
+  },
+  {
+    name: 'Udaipur',
+    state: 'Rajasthan',
+    code: 'UDR',
+    lat: 24.5854,
+    lon: 73.7125,
+    zoom: 12,
+    landmark: 'City Palace & Lake Pichola',
+    municipal_authority: 'Udaipur Municipal Corporation (UMC)',
+    helpline: '0294-2421255 / 1533',
+    ambulance: '108',
+    police: '112',
+    localities: [
+      { name: 'Hiran Magri', lat: 24.5680, lon: 73.7250 },
+      { name: 'Fatehsagar', lat: 24.6030, lon: 73.6760 },
+      { name: 'Sukhadia Circle', lat: 24.6040, lon: 73.6960 },
+      { name: 'Old City', lat: 24.5800, lon: 73.6840 }
+    ]
+  },
+  {
+    name: 'Gwalior',
+    state: 'Madhya Pradesh',
+    code: 'GWL',
+    lat: 26.2183,
+    lon: 78.1828,
+    zoom: 12,
+    landmark: 'Gwalior Fort & Jai Vilas Mahal',
+    municipal_authority: 'Gwalior Municipal Corporation (GMC)',
+    helpline: '0751-2438300 / 1533',
+    ambulance: '108',
+    police: '112',
+    localities: [
+      { name: 'Lashkar', lat: 26.2010, lon: 78.1560 },
+      { name: 'City Centre', lat: 26.2120, lon: 78.1920 },
+      { name: 'Morar', lat: 26.2280, lon: 78.2250 },
+      { name: 'Thatipur', lat: 26.2190, lon: 78.2050 }
+    ]
+  },
+  {
+    name: 'Vijayawada',
+    state: 'Andhra Pradesh',
+    code: 'VGA',
+    lat: 16.5062,
+    lon: 80.6480,
+    zoom: 12,
+    landmark: 'Kanaka Durga Temple & Prakasam Barrage',
+    municipal_authority: 'Vijayawada Municipal Corporation (VMC)',
+    helpline: '0866-2421058 / 1533',
+    ambulance: '108',
+    police: '112',
+    localities: [
+      { name: 'MG Road', lat: 16.5080, lon: 80.6410 },
+      { name: 'Benz Circle', lat: 16.4990, lon: 80.6540 },
+      { name: 'Governorpet', lat: 16.5120, lon: 80.6270 },
+      { name: 'Bhavanipuram', lat: 16.5260, lon: 80.6050 }
+    ]
+  },
+  {
+    name: 'Jodhpur',
+    state: 'Rajasthan',
+    code: 'JDH',
+    lat: 26.2389,
+    lon: 73.0243,
+    zoom: 12,
+    landmark: 'Mehrangarh Fort & Umaid Bhawan Palace',
+    municipal_authority: 'Jodhpur Nagar Nigam (JNN)',
+    helpline: '0291-2651400 / 1533',
+    ambulance: '108',
+    police: '112',
+    localities: [
+      { name: 'Sardarpura', lat: 26.2750, lon: 73.0110 },
+      { name: 'Ratanada', lat: 26.2620, lon: 73.0360 },
+      { name: 'Shastri Nagar', lat: 26.2840, lon: 72.9980 },
+      { name: 'Clock Tower Bazaar', lat: 26.2960, lon: 73.0240 }
+    ]
+  },
+  {
+    name: 'Cuttack',
+    state: 'Odisha',
+    code: 'CTC',
+    lat: 20.4625,
+    lon: 85.8828,
+    zoom: 12,
+    landmark: 'Barabati Fort & Mahanadi Riverfront',
+    municipal_authority: 'Cuttack Municipal Corporation (CMC)',
+    helpline: '0671-2508000 / 1533',
+    ambulance: '108',
+    police: '112',
+    localities: [
+      { name: 'Badambadi', lat: 20.4550, lon: 85.8710 },
+      { name: 'CDA Sector', lat: 20.4850, lon: 85.8420 },
+      { name: 'Buxi Bazaar', lat: 20.4660, lon: 85.8860 },
+      { name: 'Choudhury Bazar', lat: 20.4630, lon: 85.8790 }
+    ]
   }
 ];
 

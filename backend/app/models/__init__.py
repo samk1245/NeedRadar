@@ -9,6 +9,7 @@ from app.models.response import ProviderResponse, ResponseType, ResponseStatus, 
 from app.models.moderation import ModerationReport, ModerationAction, ReportReason, AuditLog
 from app.models.notification import Notification, NotificationType
 from app.models.enquiry import Enquiry, EnquiryCategory, EnquiryStatus
+from app.models.volunteer import VolunteerPledge, PledgeType, PledgeStatus
 
 __all__ = [
     "Base",
@@ -42,4 +43,7 @@ __all__ = [
     "Enquiry",
     "EnquiryCategory",
     "EnquiryStatus",
+    "VolunteerPledge",
+    "PledgeType",
+    "PledgeStatus",
 ]

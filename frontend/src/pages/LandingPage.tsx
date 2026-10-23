@@ -32,6 +32,7 @@ import { NeedMap } from '../components/map/NeedMap';
 import { TiltCard } from '../components/common/TiltCard';
 import { CityBadge, CITY_CONFIGS } from '../components/common/CityBadge';
 import { SupportEnquiryModal } from '../components/support/SupportEnquiryModal';
+import { CommunityActionTicker } from '../components/volunteer/CommunityActionTicker';
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -173,6 +174,11 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
+      {/* Live Citizen Action & Volunteer Resource Network */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <CommunityActionTicker variant="hero" />
+      </section>
+
       {/* Multi-City 3D Explorer Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 gap-4">
@@ -182,10 +188,10 @@ export const LandingPage: React.FC = () => {
               <span>National Coverage Matrix</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
-              Active Wards Across 14 Major Indian Cities
+              Active Wards Across 42 Major Indian Cities
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Click any metropolitan city to switch real-time civic radar, localities, and verified NGO partners.
+              Click any city across 28 states & union territories to switch real-time civic radar, localities, and verified NGO partners.
             </p>
           </div>
 

@@ -24,7 +24,7 @@ import { useNotifications } from '../../context/NotificationContext';
 import { useCity } from '../../context/CityContext';
 import { SupportEnquiryModal } from '../support/SupportEnquiryModal';
 import { CITY_CONFIGS } from '../common/CityBadge';
-import { WeatherRadarWidget } from '../weather/WeatherRadarWidget';
+import { CommunityActionTicker } from '../volunteer/CommunityActionTicker';
 
 export const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
@@ -127,9 +127,9 @@ export const Navbar: React.FC = () => {
               )}
             </div>
 
-            {/* Live Civic Climate & AQI Radar Widget */}
+            {/* Live Civic Action & Volunteer Ticker */}
             <div className="hidden sm:block">
-              <WeatherRadarWidget />
+              <CommunityActionTicker variant="compact" />
             </div>
           </div>
 

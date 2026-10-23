@@ -22,7 +22,8 @@ import {
   Mail,
   MessageCircle,
   ExternalLink,
-  LifeBuoy
+  LifeBuoy,
+  HeartHandshake
 } from 'lucide-react';
 import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -31,6 +32,7 @@ import { CityBadge } from '../components/common/CityBadge';
 import { NgoLogo } from '../components/common/NgoLogo';
 import { TiltCard } from '../components/common/TiltCard';
 import { SupportEnquiryModal } from '../components/support/SupportEnquiryModal';
+import { VolunteerPledgeModal } from '../components/volunteer/VolunteerPledgeModal';
 
 export const NeedDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -57,6 +59,7 @@ export const NeedDetailPage: React.FC = () => {
   const [reportDetails, setReportDetails] = useState('');
   const [reportSubmitted, setReportSubmitted] = useState(false);
   const [supportModalOpen, setSupportModalOpen] = useState(false);
+  const [pledgeModalOpen, setPledgeModalOpen] = useState(false);
 
   const fetchNeedData = async () => {
     if (!id) return;
@@ -471,6 +474,17 @@ export const NeedDetailPage: React.FC = () => {
             </div>
 
             <div className="space-y-2 text-xs">
+              <button
+                onClick={() => setPledgeModalOpen(true)}
+                className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-bold flex items-center justify-between transition-all shadow-sm shadow-teal-600/20"
+              >
+                <div className="flex items-center gap-2">
+                  <HeartHandshake className="w-3.5 h-3.5" />
+                  <span>Pledge Volunteer Help / Supplies</span>
+                </div>
+                <span className="text-[10px] font-mono bg-white/20 px-1.5 py-0.5 rounded text-white">Citizen Action</span>
+              </button>
+
               <a
                 href={`tel:${responses[0]?.contact_instructions?.match(/\+?[0-9\s-]{8,}/)?.[0] || '112'}`}
                 className="w-full py-2.5 px-3 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-900 font-bold flex items-center justify-between transition-colors border border-teal-200"
@@ -646,6 +660,19 @@ export const NeedDetailPage: React.FC = () => {
         isOpen={supportModalOpen}
         onClose={() => setSupportModalOpen(false)}
         defaultNeedId={need.id}
+      />
+
+      {/* Volunteer Pledge Modal */}
+      <VolunteerPledgeModal
+        isOpen={pledgeModalOpen}
+        onClose={() => setPledgeModalOpen(false)}
+        needId={need.id}
+        needTitle={need.title}
+        defaultCity={need.city}
+        onSuccess={() => {
+          setToastMsg('Your volunteer pledge has been recorded! Thank you for supporting your community.');
+          setTimeout(() => setToastMsg(null), 5000);
+        }}
       />
     </div>
   );
