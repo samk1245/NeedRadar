@@ -13,7 +13,8 @@ import {
   Shield,
   CheckCircle2,
   AlertCircle,
-  LifeBuoy
+  LifeBuoy,
+  CloudRain
 } from 'lucide-react';
 import { api } from '../services/api';
 import { useCity } from '../context/CityContext';
@@ -22,6 +23,7 @@ import { NeedMap } from '../components/map/NeedMap';
 import { TiltCard } from '../components/common/TiltCard';
 import { CityBadge } from '../components/common/CityBadge';
 import { SupportEnquiryModal } from '../components/support/SupportEnquiryModal';
+import { WeatherRadarWidget } from '../components/weather/WeatherRadarWidget';
 
 const CATEGORIES: { id: NeedCategory | 'all'; label: string }[] = [
   { id: 'all', label: 'All Categories' },
@@ -49,6 +51,7 @@ export const DiscoveryPage: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [localityFilter, setLocalityFilter] = useState<string>('');
   const [supportModalOpen, setSupportModalOpen] = useState(false);
+  const [weatherFilterActive, setWeatherFilterActive] = useState(false);
 
   const fetchMarkers = async () => {
     setLoading(true);
@@ -82,8 +85,21 @@ export const DiscoveryPage: React.FC = () => {
     fetchMarkers();
   }, [currentCity, category, statusFilter, localityFilter]);
 
-  // Client-side search filtering
+  // Client-side search & weather filtering
   const filteredItems = items.filter((item) => {
+    if (weatherFilterActive) {
+      const isWeatherRelevant =
+        item.category === 'infrastructure' ||
+        item.category === 'healthcare' ||
+        item.category === 'shelter' ||
+        item.title.toLowerCase().includes('weather') ||
+        item.title.toLowerCase().includes('monsoon') ||
+        item.title.toLowerCase().includes('smog') ||
+        item.title.toLowerCase().includes('drain') ||
+        item.title.toLowerCase().includes('flood') ||
+        item.title.toLowerCase().includes('water');
+      if (!isWeatherRelevant) return false;
+    }
     if (!searchQuery) return true;
     return (
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -99,8 +115,10 @@ export const DiscoveryPage: React.FC = () => {
           <CityBadge cityName={currentCity} size="lg" showLandmark={true} />
         </div>
 
-        {/* View Toggle & Support Button */}
-        <div className="flex items-center gap-2 self-start md:self-auto">
+        {/* View Toggle & Support Button & Weather Widget */}
+        <div className="flex flex-wrap items-center gap-2 self-start md:self-auto">
+          <WeatherRadarWidget onFilterWeatherNeeds={() => setWeatherFilterActive(!weatherFilterActive)} />
+
           <button
             onClick={() => setSupportModalOpen(true)}
             className="px-3 py-1.5 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-800 text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs"
@@ -190,8 +208,22 @@ export const DiscoveryPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Category Pills */}
+        {/* Category Pills & Weather Sensitivity Filter */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
+          <button
+            onClick={() => setWeatherFilterActive(!weatherFilterActive)}
+            className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 border ${
+              weatherFilterActive
+                ? 'bg-blue-600 text-white border-blue-700 shadow-sm'
+                : 'bg-blue-50 text-blue-800 border-blue-200 hover:bg-blue-100'
+            }`}
+          >
+            <CloudRain className="w-3.5 h-3.5" />
+            <span>{weatherFilterActive ? '✓ Weather Impacted Active' : 'Filter Weather Impacted'}</span>
+          </button>
+
+          <span className="text-slate-300">|</span>
+
           {CATEGORIES.map((cat) => (
             <button
               key={cat.id}

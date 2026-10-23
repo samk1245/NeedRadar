@@ -5,11 +5,11 @@ from app.models.response import ProviderResponse, ResponseType, ResponseStatus
 
 def seed_additional_cities_data(db, admin_user, resident_user, now):
     try:
-        # Check if already fully expanded
-        if db.query(Need).filter(Need.city == "Varanasi").count() > 0:
+        # Check if already fully expanded with 24 cities
+        if db.query(Need).filter(Need.city == "Kochi").count() > 0:
             return
 
-        print("Seeding full 14-city national data (Mumbai, Hyderabad, Varanasi, Chennai, Kolkata, Pune, Ahmedabad, Jaipur, Chandigarh, etc.)...")
+        print("Seeding nationwide multi-state data (Kochi, Visakhapatnam, Dehradun, Shimla, Panaji, Bhopal, Indore, Bhubaneswar, Patna, Guwahati)...")
 
         # 1. Additional Organisations with Verified Contact Information
         additional_ngos = [
@@ -162,6 +162,66 @@ def seed_additional_cities_data(db, admin_user, resident_user, now):
                 verification_status=VerificationStatus.VERIFIED,
                 verified_at=now - timedelta(days=95),
                 verification_notes="Verified 80G and Darpan compliance."
+            ),
+            Organisation(
+                name="Kochi Coastal Care Mission",
+                description="Canal flood prevention, monsoon tidal relief, and senior citizen health outreach across Ernakulam and Fort Kochi.",
+                org_type=OrgType.NGO,
+                registration_number="NGO-KL-2020-01128",
+                website_url="https://kochicoastalcare.org.example",
+                contact_email="help@kochicoastalcare.org.example",
+                contact_phone="+91 484 236 8810",
+                city="Kochi",
+                service_area="Fort Kochi, Marine Drive, Kaloor, Edappally, Kadavanthra",
+                operating_hours="24/7 Monsoon & Civic Relief",
+                verification_status=VerificationStatus.VERIFIED,
+                verified_at=now - timedelta(days=50),
+                verification_notes="Verified Kerala State Social Justice Registrar."
+            ),
+            Organisation(
+                name="Bhopal Lake & Community Action",
+                description="Urban water security, evening coaching, and mobile health dispensary across Bhopal municipal wards.",
+                org_type=OrgType.NGO,
+                registration_number="NGO-MP-2017-09411",
+                website_url="https://bhopallakeaction.org.example",
+                contact_email="action@bhopallakeaction.org.example",
+                contact_phone="+91 755 270 4120",
+                city="Bhopal",
+                service_area="MP Nagar, Arera Colony, VIP Road, Kolar Road",
+                operating_hours="Mon-Sat: 9am - 6pm",
+                verification_status=VerificationStatus.VERIFIED,
+                verified_at=now - timedelta(days=65),
+                verification_notes="Verified via MP Societies Registrar."
+            ),
+            Organisation(
+                name="Guwahati Brahmaputra Seva Trust",
+                description="Hill slope stability monitoring, flood preparedness, and remedial textbook banks in Kamrup Metropolitan district.",
+                org_type=OrgType.NGO,
+                registration_number="NGO-AS-2019-03310",
+                website_url="https://guwahatiseva.org.example",
+                contact_email="connect@guwahatiseva.org.example",
+                contact_phone="+91 361 254 9912",
+                city="Guwahati",
+                service_area="GS Road, Panbazar, Dispur, Kamakhya Foothills",
+                operating_hours="Mon-Sun: 8am - 8pm",
+                verification_status=VerificationStatus.VERIFIED,
+                verified_at=now - timedelta(days=40),
+                verification_notes="Verified Assam State Disaster Management partner."
+            ),
+            Organisation(
+                name="Patna Nagarik Vikas Manch",
+                description="Ganga ghat civic safety, winter blanket drives, and youth digital coaching in Patna urban corridor.",
+                org_type=OrgType.NGO,
+                registration_number="NGO-BR-2018-06612",
+                website_url="https://patnavikas.org.example",
+                contact_email="patna@patnavikas.org.example",
+                contact_phone="+91 612 222 5590",
+                city="Patna",
+                service_area="Boring Road, Kankarbagh, Bailey Road, Patna Sahib",
+                operating_hours="Mon-Sat: 10am - 7pm",
+                verification_status=VerificationStatus.VERIFIED,
+                verified_at=now - timedelta(days=85),
+                verification_notes="Verified Bihar NGO Cell."
             )
         ]
 
@@ -419,6 +479,184 @@ def seed_additional_cities_data(db, admin_user, resident_user, now):
                 "supporters": 18,
                 "status": NeedStatus.PUBLISHED,
                 "hours_ago": 28
+            },
+
+            # KOCHI (KERALA)
+            {
+                "city": "Kochi",
+                "locality": "Marine Drive",
+                "title": "Monsoon Canal Desilting & Tidal Sluice Gate Repair near Market",
+                "desc": "[Weather Vulnerability: Monsoon Drainage] Heavy coastal downpours and high tide backwaters inundate walkway and ground-floor shops. Rapid municipal pump deployment needed.",
+                "cat": NeedCategory.INFRASTRUCTURE,
+                "urgency": NeedUrgency.HIGH,
+                "scope": NeedScope.COMMUNITY,
+                "affected": 420,
+                "lat": 9.9806,
+                "lon": 76.2758,
+                "score": 92.0,
+                "supporters": 48,
+                "status": NeedStatus.MATCHED,
+                "hours_ago": 10
+            },
+            {
+                "city": "Kochi",
+                "locality": "Fort Kochi",
+                "title": "Solar Powered Drinking Water Dispensary for Heritage Fisherfolk Community",
+                "desc": "Saline intrusion in ground borewells requires functional community reverse-osmosis unit and regular filter cartridge replacements.",
+                "cat": NeedCategory.SUPPLIES,
+                "urgency": NeedUrgency.MEDIUM,
+                "scope": NeedScope.COMMUNITY,
+                "affected": 160,
+                "lat": 9.9658,
+                "lon": 76.2425,
+                "score": 83.5,
+                "supporters": 32,
+                "status": NeedStatus.PUBLISHED,
+                "hours_ago": 22
+            },
+
+            # BHOPAL (MADHYA PRADESH)
+            {
+                "city": "Bhopal",
+                "locality": "VIP Road / Upper Lake",
+                "title": "Lake Catchment Solid Waste Barrier & Storm Drain Clean-up",
+                "desc": "Plastic inflow following rainfall choking natural wetland spillway near VIP Road. Citizen cleanup mission organized with BMC waste team.",
+                "cat": NeedCategory.INFRASTRUCTURE,
+                "urgency": NeedUrgency.MEDIUM,
+                "scope": NeedScope.COMMUNITY,
+                "affected": 250,
+                "lat": 23.2662,
+                "lon": 77.3785,
+                "score": 78.0,
+                "supporters": 26,
+                "status": NeedStatus.PUBLISHED,
+                "hours_ago": 32
+            },
+
+            # PATNA (BIHAR)
+            {
+                "city": "Patna",
+                "locality": "Bailey Road",
+                "title": "N95 Respiratory Mask Drive & Free Nebulizer Camps for Slum Children",
+                "desc": "[Weather Vulnerability: Severe Smog & AQI] Elevated particulate smog (AQI > 250) causing childhood respiratory distress along congested transit corridor.",
+                "cat": NeedCategory.HEALTHCARE,
+                "urgency": NeedUrgency.HIGH,
+                "scope": NeedScope.COMMUNITY,
+                "affected": 110,
+                "lat": 25.6122,
+                "lon": 85.0978,
+                "score": 89.0,
+                "supporters": 37,
+                "status": NeedStatus.RESOLUTION_PROPOSED,
+                "hours_ago": 14
+            },
+
+            # GUWAHATI (ASSAM)
+            {
+                "city": "Guwahati",
+                "locality": "Kamakhya Foothills",
+                "title": "Hill Slope Drainage Wall Reinforcement to Prevent Landslide Debris",
+                "desc": "[Weather Vulnerability: Heavy Monsoon Rain] Heavy rainfall destabilizing loose soil along foothill pedestrian staircases used by local school students.",
+                "cat": NeedCategory.REPAIRS,
+                "urgency": NeedUrgency.HIGH,
+                "scope": NeedScope.COMMUNITY,
+                "affected": 190,
+                "lat": 26.1648,
+                "lon": 91.7058,
+                "score": 91.5,
+                "supporters": 44,
+                "status": NeedStatus.MATCHED,
+                "hours_ago": 8
+            },
+
+            # SHIMLA (HIMACHAL PRADESH)
+            {
+                "city": "Shimla",
+                "locality": "The Mall / Ridge",
+                "title": "Winter Thermal Insulation & Heating Stoves for Municipal Night Shelter",
+                "desc": "[Weather Vulnerability: Chilly Mountain Weather] Temperatures dropping below 10°C; elderly unhoused porters require thermal blankets and insulated mattresses.",
+                "cat": NeedCategory.SHELTER,
+                "urgency": NeedUrgency.HIGH,
+                "scope": NeedScope.COMMUNITY,
+                "affected": 45,
+                "lat": 31.1044,
+                "lon": 77.1746,
+                "score": 88.0,
+                "supporters": 30,
+                "status": NeedStatus.PUBLISHED,
+                "hours_ago": 16
+            },
+
+            # BHUBANESWAR (ODISHA)
+            {
+                "city": "Bhubaneswar",
+                "locality": "Patia / Infocity",
+                "title": "Free Evening Coding and Spoken English Academy for Tribal Migrant Youth",
+                "desc": "Community classroom space equipped with 8 donated computers; seeking student volunteers for weekend classes.",
+                "cat": NeedCategory.EDUCATION,
+                "urgency": NeedUrgency.MEDIUM,
+                "scope": NeedScope.COMMUNITY,
+                "affected": 35,
+                "lat": 20.3533,
+                "lon": 85.8174,
+                "score": 82.0,
+                "supporters": 25,
+                "status": NeedStatus.PUBLISHED,
+                "hours_ago": 26
+            },
+
+            # PANAJI (GOA)
+            {
+                "city": "Panaji",
+                "locality": "Miramar Beach",
+                "title": "Beachfront Wheelchair Mat & Accessible Ramp to High-Tide Line",
+                "desc": "Elderly and paraplegic residents cannot access waterfront promenade due to soft deep sand and broken curb drops.",
+                "cat": NeedCategory.REPAIRS,
+                "urgency": NeedUrgency.MEDIUM,
+                "scope": NeedScope.COMMUNITY,
+                "affected": 80,
+                "lat": 15.4828,
+                "lon": 73.8122,
+                "score": 79.5,
+                "supporters": 22,
+                "status": NeedStatus.PUBLISHED,
+                "hours_ago": 36
+            },
+
+            # INDORE (MADHYA PRADESH)
+            {
+                "city": "Indore",
+                "locality": "Rajwada",
+                "title": "Sanitary Hygiene Kit Distribution & Health Checkup for 60 Female Sweepers",
+                "desc": "Sanitation workforce in historic market area requires ergonomic gloves, boots, and preventive health screenings.",
+                "cat": NeedCategory.SUPPLIES,
+                "urgency": NeedUrgency.HIGH,
+                "scope": NeedScope.COMMUNITY,
+                "affected": 60,
+                "lat": 22.7187,
+                "lon": 75.8554,
+                "score": 85.0,
+                "supporters": 33,
+                "status": NeedStatus.MATCHED,
+                "hours_ago": 18
+            },
+
+            # VISAKHAPATNAM (ANDHRA PRADESH)
+            {
+                "city": "Visakhapatnam",
+                "locality": "RK Beach Road",
+                "title": "Fisherfolk Community Life Jacket and Emergency Beacon Distribution",
+                "desc": "Traditional catamaran fishermen navigating rocky surf require 50 certified lifejackets ahead of rough monsoon sea season.",
+                "cat": NeedCategory.SUPPLIES,
+                "urgency": NeedUrgency.HIGH,
+                "scope": NeedScope.COMMUNITY,
+                "affected": 50,
+                "lat": 17.7126,
+                "lon": 83.3182,
+                "score": 90.0,
+                "supporters": 39,
+                "status": NeedStatus.PUBLISHED,
+                "hours_ago": 12
             }
         ]
 

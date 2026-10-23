@@ -1,4 +1,5 @@
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+const API_BASE = import.meta.env.VITE_API_URL || '/api/v1';
+const FALLBACK_BASE = 'http://localhost:8000/api/v1';
 
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const token = localStorage.getItem('needradar_token');
@@ -11,10 +12,27 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_BASE}${endpoint}`, {
-    ...options,
-    headers,
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE}${endpoint}`, {
+      ...options,
+      headers,
+    });
+  } catch (initialErr) {
+    // Graceful fallback to direct port 8000 if proxy is inactive
+    if (API_BASE !== FALLBACK_BASE) {
+      try {
+        response = await fetch(`${FALLBACK_BASE}${endpoint}`, {
+          ...options,
+          headers,
+        });
+      } catch {
+        throw initialErr;
+      }
+    } else {
+      throw initialErr;
+    }
+  }
 
   if (!response.ok) {
     let errorMsg = `Error ${response.status}: ${response.statusText}`;

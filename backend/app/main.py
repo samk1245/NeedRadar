@@ -9,7 +9,7 @@ from app.core.database import engine, Base
 import app.models # Register all models
 
 from app.api.v1 import (
-    auth, needs, discovery, providers, moderation, analytics, notifications, uploads, enquiries
+    auth, needs, discovery, providers, moderation, analytics, notifications, uploads, enquiries, weather
 )
 from app.seed import seed_database
 
@@ -33,10 +33,18 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# CORS Middleware
+# CORS Middleware - Robust multi-origin with regex for local development & previews
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In production, restrict to settings.BACKEND_CORS_ORIGINS
+    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -65,3 +73,4 @@ app.include_router(analytics.router, prefix=f"{settings.API_V1_STR}/analytics", 
 app.include_router(notifications.router, prefix=f"{settings.API_V1_STR}/notifications", tags=["Notifications"])
 app.include_router(uploads.router, prefix=f"{settings.API_V1_STR}/uploads", tags=["File Uploads"])
 app.include_router(enquiries.router, prefix=f"{settings.API_V1_STR}/enquiries", tags=["Enquiries & Support"])
+app.include_router(weather.router, prefix=f"{settings.API_V1_STR}/weather", tags=["Civic Weather & Environment"])

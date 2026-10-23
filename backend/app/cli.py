@@ -6,6 +6,7 @@ from app.models.need import Need, NeedStatus
 from app.models.organisation import Organisation, VerificationStatus
 from app.models.user import User
 from app.core.cities import CITIES_REGISTRY
+from app.services.weather_service import get_city_weather
 
 def print_header(title: str):
     print("\n" + "=" * 65)
@@ -64,6 +65,20 @@ def cmd_summary(args):
     finally:
         db.close()
 
+def cmd_weather(args):
+    city = args.city
+    city_data = CITIES_REGISTRY.get(city) or CITIES_REGISTRY.get("Bengaluru")
+    w = get_city_weather(city, lat=city_data.get("lat"), lon=city_data.get("lon"))
+    
+    print_header(f"CIVIC CLIMATE & AQI INTELLIGENCE [{city}]")
+    print(f"  - Temperature   : {w['temperature_c']} deg C")
+    print(f"  - Condition     : {w['condition']}")
+    print(f"  - Air Quality   : AQI {w['aqi']} ({w['aqi_category']})")
+    print(f"  - Humidity/Wind : {w['humidity']}% | {w['wind_speed_kmh']} km/h")
+    print(f"  - Advisory Level: {w['advisory_level'].upper()}")
+    print(f"  - Civic Alert   : {w['civic_impact_alert']}")
+    print("=" * 65 + "\n")
+
 def main():
     parser = argparse.ArgumentParser(description="NeedRadar Civic Intelligence Command Line Tool")
     subparsers = parser.add_subparsers(dest="command")
@@ -71,11 +86,16 @@ def main():
     p_stats = subparsers.add_parser("stats", help="Display civic scorecard for a city")
     p_stats.add_argument("--city", default="Bengaluru", help="Target city (default: Bengaluru)")
 
+    p_weather = subparsers.add_parser("weather", help="Display civic weather & AQI intelligence for a city")
+    p_weather.add_argument("--city", default="Delhi", help="Target city (default: Delhi)")
+
     p_summary = subparsers.add_parser("summary", help="Display multi-city national summary")
 
     args = parser.parse_args()
     if args.command == "stats":
         cmd_stats(args)
+    elif args.command == "weather":
+        cmd_weather(args)
     elif args.command == "summary":
         cmd_summary(args)
     else:

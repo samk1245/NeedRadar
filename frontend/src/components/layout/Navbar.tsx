@@ -24,6 +24,7 @@ import { useNotifications } from '../../context/NotificationContext';
 import { useCity } from '../../context/CityContext';
 import { SupportEnquiryModal } from '../support/SupportEnquiryModal';
 import { CITY_CONFIGS } from '../common/CityBadge';
+import { WeatherRadarWidget } from '../weather/WeatherRadarWidget';
 
 export const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
@@ -82,7 +83,7 @@ export const Navbar: React.FC = () => {
                 <div className="absolute left-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150 max-h-96 overflow-y-auto">
                   <div className="px-3.5 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 flex items-center justify-between">
                     <span>Select Active City ({availableCities.length})</span>
-                    <span className="text-teal-600 font-mono">14 Cities</span>
+                    <span className="text-teal-600 font-mono">{availableCities.length} Cities</span>
                   </div>
                   {availableCities.map((c) => {
                     const cfg = CITY_CONFIGS[c.name] || {
@@ -124,6 +125,11 @@ export const Navbar: React.FC = () => {
                   })}
                 </div>
               )}
+            </div>
+
+            {/* Live Civic Climate & AQI Radar Widget */}
+            <div className="hidden sm:block">
+              <WeatherRadarWidget />
             </div>
           </div>
 

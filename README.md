@@ -47,19 +47,29 @@ NeedRadar features a dynamic multi-city architecture supporting live data and co
 | City | Code | State | Coordinates | Landmark / Municipal Authority | Verified Partner NGO / Helpline |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Bengaluru** | `BLR` | Karnataka | `12.9716° N, 77.5946° E` | Vidhana Soudha / BBMP | *Vidya Samarth Trust*, *Arogya Mitra* (080-22660000) |
+| **Chennai** | `MAA` | Tamil Nadu | `13.0827° N, 80.2707° E` | Marina Beach / GCC | *Chennai Makkal Sevai Maiyam* (044-28154200) |
+| **Hyderabad** | `HYD` | Telangana | `17.3850° N, 78.4867° E` | Charminar / GHMC | *Hyderabad Janahitha Foundation* (040-23396780) |
+| **Kochi** | `COK` | Kerala | `9.9312° N, 76.2673° E` | Fort Kochi / KMC | *Kochi Coastal Care Mission* (0484-2368810) |
+| **Visakhapatnam** | `VTZ` | Andhra Pradesh | `17.6868° N, 83.2185° E` | RK Beach / GVMC | Municipal Emergency Helpline (1800 425 0001) |
 | **Delhi (NCR)** | `DEL` | NCT of Delhi | `28.6139° N, 77.2090° E` | India Gate / MCD | *Delhi Nagrik Sahayata Samiti* (011-23415500) |
-| **Mumbai** | `BOM` | Maharashtra | `19.0760° N, 72.8777° E` | Gateway of India / BMC | *Mumbai Civic Care Alliance* (022-24308911) |
 | **Lucknow** | `LKO` | Uttar Pradesh | `26.8467° N, 80.9462° E` | Rumi Darwaza / LMC | *Awadh Seva Sansthan* (0522-2239081) |
 | **Prayagraj** | `PRG` | Uttar Pradesh | `25.4358° N, 81.8463° E` | Triveni Sangam / PNN | *Sangam Relief & Educational Trust* (0532-2401199) |
 | **Kanpur** | `KNP` | Uttar Pradesh | `26.4499° N, 80.3319° E` | JK Temple / KNN | *Ganga Seva & Community Action Mission* (0512-2543320) |
 | **Varanasi** | `VNS` | Uttar Pradesh | `25.3176° N, 82.9739° E` | Kashi Vishwanath / VNN | *Kashi Ganga Seva Samiti* (0542-2275400) |
-| **Hyderabad** | `HYD` | Telangana | `17.3850° N, 78.4867° E` | Charminar / GHMC | *Hyderabad Janahitha Foundation* (040-23396780) |
-| **Chennai** | `MAA` | Tamil Nadu | `13.0827° N, 80.2707° E` | Marina Beach / GCC | *Chennai Makkal Sevai Maiyam* (044-28154200) |
-| **Kolkata** | `CCU` | West Bengal | `22.5726° N, 88.3639° E` | Howrah Bridge / KMC | *Kolkata Nagarik Mancha* (033-22278940) |
+| **Chandigarh** | `IXC` | Punjab & Haryana | `30.7333° N, 76.7794° E` | Rock Garden / MCC | Municipal Control Room (0172-2787200) |
+| **Dehradun** | `DED` | Uttarakhand | `30.3165° N, 78.0322° E` | Clock Tower / DMC | Municipal Emergency Desk (0135-2651477) |
+| **Shimla** | `SLV` | Himachal Pradesh | `31.1048° N, 77.1734° E` | The Ridge / SMC | Municipal Control Room (0177-2802771) |
+| **Mumbai** | `BOM` | Maharashtra | `19.0760° N, 72.8777° E` | Gateway of India / BMC | *Mumbai Civic Care Alliance* (022-24308911) |
 | **Pune** | `PNQ` | Maharashtra | `18.5204° N, 73.8567° E` | Shaniwar Wada / PMC | *Pune Seva Sahayog Samiti* (020-25441919) |
 | **Ahmedabad** | `AMD` | Gujarat | `23.0225° N, 72.5714° E` | Sabarmati Ashram / AMC | Municipal Control Room (155303) |
 | **Jaipur** | `JAI` | Rajasthan | `26.9124° N, 75.7873° E` | Hawa Mahal / JMC | Municipal Control Room (0141-2742823) |
-| **Chandigarh** | `IXC` | Punjab & Haryana | `30.7333° N, 76.7794° E` | Rock Garden / MCC | Municipal Control Room (0172-2787200) |
+| **Panaji** | `GOI` | Goa | `15.4909° N, 73.8278° E` | Mandovi Riverfront / CCP | Municipal Lifeline (0832-2223339) |
+| **Bhopal** | `BHO` | Madhya Pradesh | `23.2599° N, 77.4126° E` | Upper Lake / BMC | *Bhopal Lake Action* (0755-2704120) |
+| **Indore** | `IDR` | Madhya Pradesh | `22.7196° N, 75.8577° E` | Rajwada Palace / IMC | Municipal Control Room (0731-2535555) |
+| **Kolkata** | `CCU` | West Bengal | `22.5726° N, 88.3639° E` | Howrah Bridge / KMC | *Kolkata Nagarik Mancha* (033-22278940) |
+| **Bhubaneswar** | `BBI` | Odisha | `20.2961° N, 85.8245° E` | Lingaraj Temple / BMC | Municipal Smart City Desk (1800 345 0061) |
+| **Patna** | `PAT` | Bihar | `25.5941° N, 85.1376° E` | Golghar / PMC | *Patna Nagarik Vikas Manch* (0612-2225590) |
+| **Guwahati** | `GAU` | Assam | `26.1445° N, 91.7362° E` | Kamakhya Temple / GMC | *Brahmaputra Seva Trust* (0361-2549912) |
 
 ---
 
