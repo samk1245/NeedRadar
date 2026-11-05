@@ -17,12 +17,14 @@ import {
   Sparkles,
   LifeBuoy,
   PhoneCall,
-  Send
+  Send,
+  Brain
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useNotifications } from '../../context/NotificationContext';
 import { useCity } from '../../context/CityContext';
 import { SupportEnquiryModal } from '../support/SupportEnquiryModal';
+import { AICopilotModal } from '../ai/AICopilotModal';
 import { CITY_CONFIGS } from '../common/CityBadge';
 import { CommunityActionTicker } from '../volunteer/CommunityActionTicker';
 
@@ -35,6 +37,7 @@ export const Navbar: React.FC = () => {
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [supportModalOpen, setSupportModalOpen] = useState(false);
+  const [aiCopilotOpen, setAiCopilotOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -200,6 +203,16 @@ export const Navbar: React.FC = () => {
 
           {/* Action Controls & Auth */}
           <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              onClick={() => setAiCopilotOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-cyan-50 hover:bg-cyan-100/80 text-cyan-900 border border-cyan-300 transition-all shadow-xs active:scale-95 group"
+              title="Open 50-100 User AI Intelligence Dispatcher"
+            >
+              <Brain className="w-3.5 h-3.5 text-cyan-600 group-hover:scale-110 transition-transform" />
+              <span className="hidden sm:inline">AI Copilot</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-ping"></span>
+            </button>
+
             <button
               onClick={() => setSupportModalOpen(true)}
               className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 transition-all shadow-xs active:scale-95"
@@ -443,6 +456,12 @@ export const Navbar: React.FC = () => {
       <SupportEnquiryModal
         isOpen={supportModalOpen}
         onClose={() => setSupportModalOpen(false)}
+      />
+
+      <AICopilotModal
+        isOpen={aiCopilotOpen}
+        onClose={() => setAiCopilotOpen(false)}
+        onSelectNeed={(id) => navigate(`/needs/${id}`)}
       />
     </>
   );

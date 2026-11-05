@@ -8,7 +8,7 @@ from app.core.security import create_access_token
 
 TEST_DB_URL = "sqlite:///./test_needradar.db"
 
-engine = create_engine(TEST_DB_URL, connect_args={"check_same_thread": False})
+engine = create_engine(TEST_DB_URL, connect_args={"check_same_thread": False, "timeout": 15})
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 @pytest.fixture(scope="session", autouse=True)

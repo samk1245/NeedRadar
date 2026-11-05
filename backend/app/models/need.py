@@ -1,7 +1,7 @@
 import enum
 import uuid
 from datetime import datetime, timezone
-from sqlalchemy import Column, String, Boolean, DateTime, Enum, ForeignKey, Text, Float, Integer, UniqueConstraint
+from sqlalchemy import Column, String, Boolean, DateTime, Enum, ForeignKey, Text, Float, Integer, UniqueConstraint, JSON
 from sqlalchemy.orm import relationship
 from app.core.database import Base
 
@@ -71,6 +71,9 @@ class Need(Base):
     supporters_count = Column(Integer, default=0, nullable=False)
     unmet_demand_score = Column(Float, default=10.0, nullable=False)
     is_demo = Column(Boolean, default=False, nullable=False)
+    
+    # Working requirements & resource ledger
+    requirements = Column(JSON, nullable=True, default=list)
     
     # Creator
     creator_id = Column(String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)

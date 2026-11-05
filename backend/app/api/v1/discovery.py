@@ -46,6 +46,11 @@ def get_map_markers(
         lat = n.approx_latitude if (n.is_location_approximate and n.approx_latitude) else n.latitude
         lon = n.approx_longitude if (n.is_location_approximate and n.approx_longitude) else n.longitude
         
+        reqs = n.requirements or []
+        req_count = len(reqs)
+        fulfilled_count = sum(1 for r in reqs if isinstance(r, dict) and (r.get("is_fulfilled") or r.get("pledged_quantity", 0) >= r.get("required_quantity", 1)))
+        fulfilled_pct = round((fulfilled_count / req_count) * 100) if req_count > 0 else 0
+
         items.append(NeedMapItem(
             id=n.id,
             title=n.title,
@@ -59,6 +64,8 @@ def get_map_markers(
             status=n.status,
             supporters_count=n.supporters_count,
             unmet_demand_score=n.unmet_demand_score,
+            requirements_count=req_count,
+            fulfilled_percent=fulfilled_pct,
             created_at=n.created_at
         ))
     return items
@@ -80,6 +87,10 @@ def get_nearby_needs(
     for n in candidates:
         d = haversine_distance_km(lat, lon, n.latitude, n.longitude)
         if d is not None and d <= radius_km:
+            reqs = n.requirements or []
+            req_count = len(reqs)
+            fulfilled_count = sum(1 for r in reqs if isinstance(r, dict) and (r.get("is_fulfilled") or r.get("pledged_quantity", 0) >= r.get("required_quantity", 1)))
+            fulfilled_pct = round((fulfilled_count / req_count) * 100) if req_count > 0 else 0
             results.append(NeedMapItem(
                 id=n.id,
                 title=n.title,
@@ -93,6 +104,8 @@ def get_nearby_needs(
                 status=n.status,
                 supporters_count=n.supporters_count,
                 unmet_demand_score=n.unmet_demand_score,
+                requirements_count=req_count,
+                fulfilled_percent=fulfilled_pct,
                 created_at=n.created_at
             ))
     return results

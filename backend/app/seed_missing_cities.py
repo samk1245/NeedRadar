@@ -18,12 +18,28 @@ CITY_NEED_TEMPLATES = [
         "timeframe": "Within 1 week"
     },
     {
+        "category": NeedCategory.HEALTHCARE,
+        "title_fmt": "Emergency Medical Aid & Maternal Support Hub in {locality}",
+        "desc_fmt": "Expectant mothers and infants in {locality}, {city} require prenatal vitamins, diagnostic test sponsorships, and on-call volunteer ambulance liaison.",
+        "urgency": NeedUrgency.CRITICAL,
+        "scope": NeedScope.COMMUNITY,
+        "timeframe": "Urgent assistance required"
+    },
+    {
         "category": NeedCategory.EDUCATION,
         "title_fmt": "Evening Remedial Tutoring & STEM Kits for Students in {locality}",
         "desc_fmt": "Over 45 children from daily wage families in {locality}, {city} require weekend mathematics and science mentors along with basic stationery kits.",
         "urgency": NeedUrgency.MEDIUM,
         "scope": NeedScope.COMMUNITY,
         "timeframe": "Within 2 weeks"
+    },
+    {
+        "category": NeedCategory.EDUCATION,
+        "title_fmt": "Digital Literacy & Public Library Drive at {locality}",
+        "desc_fmt": "Under-resourced community center in {locality}, {city} seeks refurbished laptops and regional language children's storybooks for after-school reading circles.",
+        "urgency": NeedUrgency.LOW,
+        "scope": NeedScope.COMMUNITY,
+        "timeframe": "Within 1 month"
     },
     {
         "category": NeedCategory.INFRASTRUCTURE,
@@ -34,12 +50,44 @@ CITY_NEED_TEMPLATES = [
         "timeframe": "Urgent attention required"
     },
     {
+        "category": NeedCategory.INFRASTRUCTURE,
+        "title_fmt": "Stormwater Drain Desilting & Flood Prevention in {locality}",
+        "desc_fmt": "Clogged storm drains along the primary market road in {locality}, {city} overflow during seasonal downpours. Urgent municipal machinery and civic clean-up teams needed.",
+        "urgency": NeedUrgency.HIGH,
+        "scope": NeedScope.COMMUNITY,
+        "timeframe": "Immediate"
+    },
+    {
         "category": NeedCategory.SUPPLIES,
-        "title_fmt": "Clean Water Filtration & Relief Hydration Booth in {locality}",
+        "title_fmt": "Clean Drinking Water Filtration & Hydration Station in {locality}",
         "desc_fmt": "Neighborhood public transit terminus at {locality}, {city} needs community-managed drinking water dispensing points and reusable containers for transit workers.",
         "urgency": NeedUrgency.MEDIUM,
         "scope": NeedScope.COMMUNITY,
         "timeframe": "Immediate"
+    },
+    {
+        "category": NeedCategory.SUPPLIES,
+        "title_fmt": "Emergency Dry Ration & Nutrition Kits Distribution at {locality}",
+        "desc_fmt": "Families affected by seasonal employment pauses in {locality}, {city} require staple food grains, pulses, cooking oil, and infant nutrition packets.",
+        "urgency": NeedUrgency.HIGH,
+        "scope": NeedScope.COMMUNITY,
+        "timeframe": "Within 3 days"
+    },
+    {
+        "category": NeedCategory.SHELTER,
+        "title_fmt": "Senior Citizen Day Care & Night Shelter Bedding in {locality}",
+        "desc_fmt": "Vulnerable elderly citizens living independently around {locality}, {city} need clean resting cots, warm blankets, and weekly health check visits.",
+        "urgency": NeedUrgency.MEDIUM,
+        "scope": NeedScope.COMMUNITY,
+        "timeframe": "Within 1 week"
+    },
+    {
+        "category": NeedCategory.REPAIRS,
+        "title_fmt": "Community Handpump & Water Pipeline Restoration in {locality}",
+        "desc_fmt": "Two primary municipal handpumps servicing over 80 households in {locality}, {city} are broken, forcing women to walk over 2 kilometers for domestic water.",
+        "urgency": NeedUrgency.CRITICAL,
+        "scope": NeedScope.COMMUNITY,
+        "timeframe": "Urgent attention required"
     }
 ]
 
@@ -99,6 +147,10 @@ def seed_missing_cities():
                     NeedStatus.RESOLVED
                 ])
 
+                from app.api.v1.needs import generate_default_requirements
+                cat_val = tmpl["category"].value if hasattr(tmpl["category"], "value") else str(tmpl["category"])
+                reqs = generate_default_requirements(cat_val, title)
+
                 need = Need(
                     title=title,
                     description=desc,
@@ -115,6 +167,7 @@ def seed_missing_cities():
                     status=status_choice,
                     supporters_count=random.randint(3, 42),
                     unmet_demand_score=round(random.uniform(15.0, 85.0), 1),
+                    requirements=reqs,
                     creator_id=admin.id,
                     created_at=now - timedelta(days=random.randint(2, 25), hours=random.randint(1, 12))
                 )

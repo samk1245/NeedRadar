@@ -222,3 +222,64 @@ export interface ServiceGapInsight {
   confidence: string;
   recommended_action: string;
 }
+
+export interface AITelemetry {
+  status: string;
+  active_concurrent_nodes: number;
+  target_concurrency_capacity: string;
+  peak_safe_concurrency: number;
+  ops_per_second: number;
+  avg_dispatch_latency_ms: number;
+  queue_depth: number;
+  cache_hit_rate_pct: number;
+  memory_footprint_mb: number;
+  ai_matching_accuracy_pct: number;
+}
+
+export interface AITriageRequirement {
+  item_name: string;
+  required_quantity: number;
+  unit: string;
+  pledged_quantity: number;
+  is_fulfilled: boolean;
+}
+
+export interface AITriageResult {
+  suggested_title: string;
+  suggested_category: NeedCategory;
+  suggested_urgency: NeedUrgency;
+  confidence: number;
+  suggested_scope: NeedScope;
+  timeframe: string;
+  detected_keywords: string[];
+  requirements: AITriageRequirement[];
+  concurrency_batch_id: string;
+}
+
+export interface AIMatchItem {
+  need_id: string;
+  title: string;
+  city: string;
+  locality: string;
+  category: string;
+  urgency: string;
+  compatibility_score: number;
+  matched_skills: string[];
+  match_reason: string;
+  requirements_count: number;
+  fulfilled_percent: number;
+  supporters_count: number;
+}
+
+export interface AIUserStreamItem {
+  id: string;
+  user_name: string;
+  city: string;
+  action_type: string;
+  description: string;
+  timestamp: string;
+  time_ago: string;
+  impact_units: string;
+  concurrency_node: string;
+}
+

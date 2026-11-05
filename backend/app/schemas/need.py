@@ -1,7 +1,17 @@
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional, List, Any
 from pydantic import BaseModel, Field, ConfigDict
 from app.models.need import NeedCategory, NeedUrgency, NeedScope, NeedStatus
+
+class WorkingRequirement(BaseModel):
+    id: str
+    title: str
+    category: str = "supplies"  # supplies, volunteers, logistics, funding
+    required_quantity: int = 1
+    pledged_quantity: int = 0
+    unit: str = "units"  # kits, people, hours, units
+    urgency: str = "medium"
+    is_fulfilled: bool = False
 
 class NeedCreate(BaseModel):
     title: str = Field(..., min_length=5, max_length=200)
@@ -21,6 +31,7 @@ class NeedCreate(BaseModel):
     is_location_approximate: bool = False
     is_sensitive: bool = False
     public_contact_preference: str = "in_app"
+    requirements: Optional[List[WorkingRequirement]] = None
 
 class NeedUpdate(BaseModel):
     title: Optional[str] = None
@@ -31,6 +42,7 @@ class NeedUpdate(BaseModel):
     desired_timeframe: Optional[str] = None
     affected_count: Optional[int] = None
     image_url: Optional[str] = None
+    requirements: Optional[List[WorkingRequirement]] = None
 
 class NeedStatusUpdate(BaseModel):
     status: NeedStatus
@@ -80,7 +92,16 @@ class NeedRead(BaseModel):
     has_supported: Optional[bool] = False
     has_followed: Optional[bool] = False
     responses_count: Optional[int] = 0
+    requirements: Optional[List[WorkingRequirement]] = None
     model_config = ConfigDict(from_attributes=True)
+
+class RequirementFulfillmentPayload(BaseModel):
+    requirement_id: str
+    quantity: int = 1
+    volunteer_name: str
+    volunteer_email: str
+    volunteer_phone: str
+    notes: Optional[str] = None
 
 class NeedMapItem(BaseModel):
     id: str
@@ -95,6 +116,8 @@ class NeedMapItem(BaseModel):
     status: NeedStatus
     supporters_count: int
     unmet_demand_score: float
+    requirements_count: Optional[int] = 0
+    fulfilled_percent: Optional[int] = 0
     created_at: datetime
 
 class DuplicateSuggestion(BaseModel):

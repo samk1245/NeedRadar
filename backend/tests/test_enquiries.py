@@ -1,10 +1,6 @@
 import pytest
-from fastapi.testclient import TestClient
-from app.main import app
 
-client = TestClient(app)
-
-def test_submit_enquiry():
+def test_submit_enquiry(client):
     payload = {
         "name": "Arjun Sharma",
         "email": "arjun.sharma@example.com",
@@ -25,7 +21,7 @@ def test_submit_enquiry():
     assert "Civic Action Response Desk" in data["assigned_desk"]
     assert "helpline" in data or "emergency_contact" in data
 
-def test_get_city_helplines():
+def test_get_city_helplines(client):
     response = client.get("/api/v1/enquiries/helplines?city=Lucknow")
     assert response.status_code == 200
     data = response.json()

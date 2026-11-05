@@ -13,8 +13,9 @@ from app.models.response import ProviderResponse, ResponseType, ResponseStatus, 
 from app.models.organisation import Organisation, VerificationStatus
 from app.schemas.need import (
     NeedCreate, NeedUpdate, NeedRead, NeedStatusUpdate,
-    NeedStatusHistoryRead, DuplicateSuggestion
+    NeedStatusHistoryRead, DuplicateSuggestion, RequirementFulfillmentPayload, WorkingRequirement
 )
+from app.models.volunteer import VolunteerPledge, PledgeType, PledgeStatus
 from app.schemas.provider import (
     ProviderResponseCreate, ProviderResponseRead,
     ResolutionProposalCreate, ResolutionProposalRead
@@ -321,6 +322,59 @@ def unfollow_need(
         db.commit()
     return {"message": "Unfollowed need"}
 
+@router.post("/{id}/fulfill-requirement")
+def fulfill_requirement(
+    id: str,
+    payload: RequirementFulfillmentPayload,
+    db: Session = Depends(get_db)
+):
+    need = db.query(Need).filter(Need.id == id).first()
+    if not need:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Need not found")
+
+    cat_str = need.category.value if hasattr(need.category, "value") else str(need.category)
+    reqs = [dict(r) for r in (need.requirements or generate_default_requirements(cat_str, need.title))]
+    
+    target_req = None
+    for r in reqs:
+        if r.get("id") == payload.requirement_id:
+            target_req = r
+            r["pledged_quantity"] = r.get("pledged_quantity", 0) + payload.quantity
+            if r["pledged_quantity"] >= r.get("required_quantity", 1):
+                r["is_fulfilled"] = True
+            break
+            
+    if not target_req and reqs:
+        target_req = reqs[0]
+        target_req["pledged_quantity"] = target_req.get("pledged_quantity", 0) + payload.quantity
+
+    need.requirements = reqs
+    
+    # Also log a volunteer pledge
+    pledge_type = PledgeType.SUPPLIES_KIT
+    if target_req and target_req.get("category") == "volunteers":
+        pledge_type = PledgeType.TIME_HOURS
+    elif target_req and target_req.get("category") == "logistics":
+        pledge_type = PledgeType.EMERGENCY_TRANSPORT
+
+    pledge = VolunteerPledge(
+        need_id=need.id,
+        volunteer_name=payload.volunteer_name.strip(),
+        volunteer_email=payload.volunteer_email.strip().lower(),
+        volunteer_phone=payload.volunteer_phone.strip(),
+        city=need.city,
+        pledge_type=pledge_type,
+        hours_committed=payload.quantity,
+        pledge_description=f"Pledged {payload.quantity} {target_req.get('unit', 'units') if target_req else 'units'} of '{target_req.get('title') if target_req else 'supplies'}'. {payload.notes or ''}".strip(),
+        availability="Confirmed",
+        status=PledgeStatus.ACCEPTED
+    )
+    db.add(pledge)
+    db.commit()
+    db.refresh(need)
+
+    return {"message": "Requirement pledge recorded successfully", "requirements": reqs, "pledge_id": pledge.id}
+
 @router.get("/{id}/responses", response_model=List[ProviderResponseRead])
 def get_need_responses(
     id: str,
@@ -481,6 +535,38 @@ def propose_need_resolution(
     out.organisation_name = org.name
     return out
 
+def generate_default_requirements(category: str, title: str) -> List[dict]:
+    title_lower = title.lower()
+    if "tutor" in title_lower or "school" in title_lower or "educat" in title_lower or category == "education":
+        return [
+            {"id": "req-1", "title": "Volunteer Math & Science Mentors", "category": "volunteers", "required_quantity": 3, "pledged_quantity": 2, "unit": "mentors", "urgency": "high", "is_fulfilled": False},
+            {"id": "req-2", "title": "Geometry, Books & Stationery Sets", "category": "supplies", "required_quantity": 35, "pledged_quantity": 22, "unit": "kits", "urgency": "medium", "is_fulfilled": False},
+            {"id": "req-3", "title": "Refurbished Study Desks & Lamps", "category": "supplies", "required_quantity": 5, "pledged_quantity": 5, "unit": "desks", "urgency": "low", "is_fulfilled": True}
+        ]
+    elif "blood" in title_lower or "clinic" in title_lower or "health" in title_lower or category == "healthcare":
+        return [
+            {"id": "req-1", "title": "On-Call Blood Donors (O+/B+)", "category": "volunteers", "required_quantity": 4, "pledged_quantity": 3, "unit": "donors", "urgency": "critical", "is_fulfilled": False},
+            {"id": "req-2", "title": "First-Aid & Emergency Medical Kits", "category": "supplies", "required_quantity": 20, "pledged_quantity": 14, "unit": "kits", "urgency": "high", "is_fulfilled": False},
+            {"id": "req-3", "title": "Elderly Patient Transport Vehicle", "category": "logistics", "required_quantity": 1, "pledged_quantity": 1, "unit": "van", "urgency": "medium", "is_fulfilled": True}
+        ]
+    elif "ration" in title_lower or "food" in title_lower or "water" in title_lower or category == "supplies":
+        return [
+            {"id": "req-1", "title": "Dry Ration & Grain Relief Bags", "category": "supplies", "required_quantity": 50, "pledged_quantity": 38, "unit": "packs", "urgency": "high", "is_fulfilled": False},
+            {"id": "req-2", "title": "Packaged Clean Drinking Water Jars", "category": "supplies", "required_quantity": 30, "pledged_quantity": 26, "unit": "20L jars", "urgency": "critical", "is_fulfilled": False},
+            {"id": "req-3", "title": "Distribution Crew Volunteers", "category": "volunteers", "required_quantity": 5, "pledged_quantity": 4, "unit": "volunteers", "urgency": "medium", "is_fulfilled": False}
+        ]
+    elif "drain" in title_lower or "road" in title_lower or "light" in title_lower or category == "infrastructure":
+        return [
+            {"id": "req-1", "title": "Solar LED Street Light Modules", "category": "supplies", "required_quantity": 6, "pledged_quantity": 4, "unit": "units", "urgency": "high", "is_fulfilled": False},
+            {"id": "req-2", "title": "Community Electrical / Repair Tech", "category": "volunteers", "required_quantity": 2, "pledged_quantity": 1, "unit": "technicians", "urgency": "medium", "is_fulfilled": False},
+            {"id": "req-3", "title": "Debris Clearing / Ground Crew", "category": "volunteers", "required_quantity": 8, "pledged_quantity": 8, "unit": "workers", "urgency": "low", "is_fulfilled": True}
+        ]
+    else:
+        return [
+            {"id": "req-1", "title": "Essential Civic Relief Packs", "category": "supplies", "required_quantity": 25, "pledged_quantity": 16, "unit": "kits", "urgency": "medium", "is_fulfilled": False},
+            {"id": "req-2", "title": "Community Action Volunteers", "category": "volunteers", "required_quantity": 4, "pledged_quantity": 3, "unit": "people", "urgency": "medium", "is_fulfilled": False}
+        ]
+
 def format_need_read(need: Need, user_id: Optional[str], db: Session) -> NeedRead:
     has_supp = False
     has_foll = False
@@ -501,6 +587,11 @@ def format_need_read(need: Need, user_id: Optional[str], db: Session) -> NeedRea
     lon = need.approx_longitude if (need.is_location_approximate and need.approx_longitude) else need.longitude
 
     creator_name = need.creator.full_name if need.creator else "Community Member"
+
+    reqs = need.requirements
+    if not reqs:
+        cat_str = need.category.value if hasattr(need.category, "value") else str(need.category)
+        reqs = generate_default_requirements(cat_str, need.title)
 
     return NeedRead(
         id=need.id,
@@ -530,7 +621,8 @@ def format_need_read(need: Need, user_id: Optional[str], db: Session) -> NeedRea
         updated_at=need.updated_at,
         has_supported=has_supp,
         has_followed=has_foll,
-        responses_count=resp_count
+        responses_count=resp_count,
+        requirements=[WorkingRequirement(**r) for r in reqs] if reqs else []
     )
 
 def datetime_now_utc():
