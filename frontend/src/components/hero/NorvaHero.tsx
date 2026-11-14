@@ -34,7 +34,7 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
     const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const isRecorder = window.location.search.includes('rec=1');
 
-    // Loader logic
+    // 1. Loader logic
     let loaderDismissed = false;
     const dismiss = () => {
       if (loaderDismissed) return;
@@ -45,12 +45,12 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
     if (isRecorder) {
       dismiss();
     } else {
-      const maxTimer = setTimeout(dismiss, 3500);
+      const maxTimer = setTimeout(dismiss, 3200);
       const onReady = () => {
         setTimeout(() => {
           clearTimeout(maxTimer);
           dismiss();
-        }, 350);
+        }, 300);
       };
 
       if (video.readyState >= 2) {
@@ -64,6 +64,8 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
     video.pause();
 
     const duration = 5.04;
+    let targetP = 0;
+    let smoothP = 0;
     let curTime = 0;
     let targetTime = 0;
     let animId: number;
@@ -82,21 +84,21 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
     };
 
     const updateVisuals = (p: number) => {
-      // 1. Headline transform & opacity
+      // 1. Headline transform & opacity with butter-smooth layback
       if (heroCopy) {
         const h = easeInOutQuad(p / 0.38);
-        const ty = -34 * h;
-        const rx = 62 * h;
-        const s = 1 - 0.12 * h;
-        heroCopy.style.transform = `translateY(${ty}vh) rotateX(${rx}deg) scale(${s})`;
+        const ty = -32 * h;
+        const rx = 60 * h;
+        const s = 1 - 0.11 * h;
+        heroCopy.style.transform = `translate3d(0, ${ty}vh, 0) rotateX(${rx}deg) scale(${s})`;
 
         let headOpacity = 1;
-        if (p <= 0.10) {
+        if (p <= 0.08) {
           headOpacity = 1;
-        } else if (p >= 0.24) {
+        } else if (p >= 0.23) {
           headOpacity = 0;
         } else {
-          headOpacity = 1 - (p - 0.10) / (0.24 - 0.10);
+          headOpacity = 1 - (p - 0.08) / (0.23 - 0.08);
         }
         heroCopy.style.opacity = headOpacity.toString();
       }
@@ -118,19 +120,19 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
         scrollCue.style.opacity = cueOp.toString();
       }
 
-      // 3. Process list
+      // 3. Process list elevation & opacity
       if (processList) {
         let procP = 0;
-        if (p <= 0.08) {
+        if (p <= 0.07) {
           procP = 0;
-        } else if (p >= 0.24) {
+        } else if (p >= 0.22) {
           procP = 1;
         } else {
-          procP = (p - 0.08) / (0.24 - 0.08);
+          procP = (p - 0.07) / (0.22 - 0.07);
         }
-        const procY = (1 - procP) * 40;
+        const procY = (1 - procP) * 36;
         processList.style.opacity = procP.toString();
-        processList.style.transform = `translateY(${procY}px)`;
+        processList.style.transform = `translate3d(0, ${procY}px, 0)`;
       }
 
       // Step active threshold
@@ -139,7 +141,7 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
     };
 
     const onSeeked = () => {
-      if (Math.abs(video.currentTime - targetTime) > 1 / 60) {
+      if (Math.abs(video.currentTime - targetTime) > 0.02) {
         if (!video.seeking) {
           video.currentTime = targetTime;
         }
@@ -147,31 +149,39 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
     };
     video.addEventListener('seeked', onSeeked);
 
+    // Butter-smooth double-dampened animation loop
     const tick = () => {
       if (!isRecorder) {
-        const p = getProgress();
+        targetP = getProgress();
+        // Progress dampening for 120fps buttery smoothness across all mice & touchpads
+        if (isReducedMotion) {
+          smoothP = targetP;
+        } else {
+          smoothP += (targetP - smoothP) * 0.12;
+        }
+
         const vidDur = video.duration || duration;
-        targetTime = p * Math.max(0, vidDur - 1 / 48);
+        targetTime = smoothP * Math.max(0, vidDur - 1 / 48);
 
         if (isReducedMotion) {
           curTime = targetTime;
-          if (!video.seeking && Math.abs(video.currentTime - curTime) > 1 / 60) {
+          if (!video.seeking && Math.abs(video.currentTime - curTime) > 0.02) {
             video.currentTime = curTime;
           }
         } else {
-          curTime += (targetTime - curTime) * 0.2;
-          if (!video.seeking && Math.abs(video.currentTime - curTime) > 1 / 60) {
+          curTime += (targetTime - curTime) * 0.14;
+          if (!video.seeking && Math.abs(video.currentTime - curTime) > 0.02) {
             video.currentTime = curTime;
           }
         }
 
-        updateVisuals(p);
+        updateVisuals(smoothP);
       }
       animId = requestAnimationFrame(tick);
     };
     animId = requestAnimationFrame(tick);
 
-    // Recorder mode
+    // Recorder mode support (?rec=1)
     if (isRecorder) {
       (window as unknown as { __recTime: (vid: HTMLVideoElement, t: number) => number }).__recTime = (
         v: HTMLVideoElement,
@@ -224,12 +234,12 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
   }, []);
 
   return (
-    <div className="relative w-full bg-[#0f1626] text-[#f4f6fa] font-['Inter_Tight',sans-serif]">
-      {/* Fullscreen Loader */}
+    <div className="relative w-full bg-slate-50 text-slate-900 font-['Inter_Tight',sans-serif]">
+      {/* Daylight Fullscreen Loader */}
       {loaderVisible && (
         <div
           ref={loaderRef}
-          className="fixed inset-0 bg-[#0f1626] z-50 flex items-center justify-center transition-opacity duration-600 pointer-events-auto"
+          className="fixed inset-0 bg-slate-50/98 backdrop-blur-md z-50 flex items-center justify-center transition-opacity duration-500 pointer-events-auto"
         >
           <div className="w-[calc(260*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] h-[calc(260*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] relative">
             <svg viewBox="0 0 240 240" className="w-full h-full fill-none">
@@ -239,8 +249,8 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
                 cy="120"
                 rx="100"
                 ry="52"
-                stroke="rgba(255, 255, 255, 0.22)"
-                strokeWidth="1.2"
+                stroke="rgba(15, 23, 42, 0.16)"
+                strokeWidth="1.4"
                 strokeDasharray="4 6"
               />
               {/* Inner Circular Ellipse (Dotted) */}
@@ -248,8 +258,8 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
                 cx="120"
                 cy="120"
                 r="76"
-                stroke="rgba(63, 216, 255, 0.35)"
-                strokeWidth="1.2"
+                stroke="rgba(14, 165, 233, 0.45)"
+                strokeWidth="1.4"
                 strokeDasharray="3 5"
               />
               {/* Spinning Central Mark */}
@@ -257,15 +267,15 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
                 className="animate-[spin_1.6s_cubic-bezier(0.4,0,0.2,1)_infinite]"
                 style={{ transformOrigin: '120px 120px' }}
               >
-                <rect x="145" y="117" width="6" height="6" rx="1" fill="#3fd8ff" />
-                <rect x="131" y="141" width="6" height="6" rx="1" fill="#3fd8ff" />
-                <rect x="103" y="141" width="6" height="6" rx="1" fill="#3fd8ff" />
-                <rect x="89" y="117" width="6" height="6" rx="1" fill="#3fd8ff" />
-                <rect x="103" y="93" width="6" height="6" rx="1" fill="#3fd8ff" />
-                <rect x="131" y="93" width="6" height="6" rx="1" fill="#3fd8ff" />
+                <rect x="145" y="117" width="6" height="6" rx="1.5" fill="#0284c7" />
+                <rect x="131" y="141" width="6" height="6" rx="1.5" fill="#0284c7" />
+                <rect x="103" y="141" width="6" height="6" rx="1.5" fill="#0284c7" />
+                <rect x="89" y="117" width="6" height="6" rx="1.5" fill="#0284c7" />
+                <rect x="103" y="93" width="6" height="6" rx="1.5" fill="#0284c7" />
+                <rect x="131" y="93" width="6" height="6" rx="1.5" fill="#0284c7" />
                 <path
                   d="M 113 116 L 120 124 L 127 116"
-                  stroke="#c6ff2e"
+                  stroke="#10b981"
                   strokeWidth="3.2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -277,9 +287,9 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
       )}
 
       {/* 420vh Scroll Track */}
-      <div ref={trackRef} className="relative w-full h-[420vh] bg-[#0f1626]">
+      <div ref={trackRef} className="relative w-full h-[420vh] bg-slate-50">
         <div className="sticky top-0 left-0 w-full h-screen overflow-hidden">
-          {/* Scrubbed Video Layer */}
+          {/* Scrubbed 3D Video Layer */}
           <video
             ref={videoRef}
             className="absolute inset-0 w-full h-full object-cover pointer-events-none z-1"
@@ -299,16 +309,16 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
             />
           </video>
 
-          {/* Light Contrast Shade */}
+          {/* Luminous Daylight Shader Overlays */}
           <div
             className="absolute inset-0 z-2 pointer-events-none"
             style={{
               background:
-                'linear-gradient(180deg, rgba(15, 22, 38, 0.55) 0%, rgba(15, 22, 38, 0) 34%), linear-gradient(0deg, rgba(15, 22, 38, 0.50) 0%, rgba(15, 22, 38, 0) 30%)',
+                'linear-gradient(180deg, rgba(248, 250, 252, 0.94) 0%, rgba(248, 250, 252, 0.72) 28%, rgba(248, 250, 252, 0) 52%), linear-gradient(0deg, rgba(248, 250, 252, 0.96) 0%, rgba(248, 250, 252, 0.75) 24%, rgba(248, 250, 252, 0) 48%)',
             }}
           />
 
-          {/* Hero Headline Stage (Perspective 900u) */}
+          {/* Hero Headline Stage (Perspective 900u) with Clean Daylight Typography */}
           <div
             className="fixed top-[calc(92*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:top-[96px] left-0 w-full flex justify-center z-20 pointer-events-none"
             style={{
@@ -321,58 +331,61 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
               style={{
                 transformOrigin: '50% 100%',
                 willChange: 'transform, opacity',
+                backfaceVisibility: 'hidden',
               }}
             >
-              <h1 className="text-[calc(84*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:text-[clamp(38px,11vw,48px)] font-semibold leading-[0.96] tracking-[-0.045em] text-[#f4f6fa] mb-[calc(24*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:mb-4">
-                The New Standard<br />in Staffing
+              <h1 className="text-[calc(80*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:text-[clamp(36px,10vw,48px)] font-black leading-[0.98] tracking-[-0.04em] text-slate-900 mb-[calc(22*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:mb-4 drop-shadow-xs">
+                See What Your City Needs.<br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 via-cyan-600 to-blue-600">
+                  Help Make It Happen.
+                </span>
               </h1>
-              <p className="text-[calc(18*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:text-[15px] font-normal leading-[1.42] text-[rgba(244,246,250,0.72)] max-w-[calc(720*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:max-w-[34ch]">
-                AI driven speed. Expert curation.<br className="hidden sm:inline" />
-                We mobilize verified crews to protect your schedule and<br className="hidden sm:inline" />
-                your bottom line in high-consequence environments.
+              <p className="text-[calc(18*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:text-[15px] font-medium leading-[1.45] text-slate-700 max-w-[calc(740*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:max-w-[34ch]">
+                AI-driven speed. Verified ground coordination.<br className="hidden sm:inline" />
+                We mobilize verified community resources and vetted NGOs to resolve unmet local needs in real-time.
               </p>
             </div>
           </div>
 
-          {/* Scroll Cue */}
+          {/* Daylight Scroll Cue */}
           <div
             ref={scrollCueRef}
             className="fixed bottom-[calc(36*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] left-1/2 -translate-x-1/2 z-25 flex flex-col items-center pointer-events-none"
             style={{ willChange: 'opacity' }}
           >
-            <div className="relative text-[calc(11.5*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-semibold uppercase tracking-[0.06em] text-[rgba(244,246,250,0.72)] pb-1">
+            <div className="relative text-[calc(11.5*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-bold uppercase tracking-[0.06em] text-slate-600 pb-1">
               SCROLL TO DISCOVER OUR PROCESS
               <span
                 ref={scrollCueLineRef}
-                className="absolute bottom-0 left-0 w-full h-[1px] bg-[rgba(244,246,250,0.72)] origin-left"
+                className="absolute bottom-0 left-0 w-full h-[1.5px] bg-teal-600 origin-left"
                 style={{ willChange: 'transform' }}
               />
             </div>
           </div>
 
-          {/* Process List (Bottom Left) */}
+          {/* Daylight Process List (Bottom Left Glass Card) */}
           <div
             ref={processListRef}
-            className="fixed left-[calc(36*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] bottom-[calc(28*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] w-[calc(430*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:left-[18px] max-md:right-[18px] max-md:bottom-[22px] max-md:w-auto z-25 flex flex-col gap-2 pointer-events-auto"
+            className="fixed left-[calc(36*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] bottom-[calc(28*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] w-[calc(430*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:left-[18px] max-md:right-[18px] max-md:bottom-[22px] max-md:w-auto z-25 flex flex-col gap-2.5 p-4 rounded-3xl bg-white/90 backdrop-blur-xl border border-slate-200/90 shadow-xl pointer-events-auto"
             style={{ willChange: 'transform, opacity' }}
           >
             {/* Row 01 */}
-            <div className={`flex flex-col transition-all duration-300 ${activeStep === 0 ? 'active' : ''}`}>
-              <div className="flex items-center gap-3.5 cursor-pointer">
+            <div className={`flex flex-col transition-all duration-350 ${activeStep === 0 ? 'active' : ''}`}>
+              <div className="flex items-center gap-3 cursor-pointer">
                 <div
-                  className={`w-[calc(36*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] h-[calc(36*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] flex items-center justify-center text-[calc(12.5*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-semibold rounded-[calc(8*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] transition-colors duration-350 ${
+                  className={`w-[calc(34*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] h-[calc(34*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] flex items-center justify-center text-[calc(12*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-bold rounded-xl transition-all duration-300 ${
                     activeStep === 0
-                      ? 'bg-[#f4f6fa] text-[#0f1626] font-bold'
-                      : 'text-[rgba(244,246,250,0.72)]'
+                      ? 'bg-teal-600 text-white shadow-sm'
+                      : 'bg-slate-100 text-slate-500'
                   }`}
                 >
                   01
                 </div>
                 <div
-                  className={`transition-all duration-350 tracking-tight ${
+                  className={`transition-all duration-300 tracking-tight ${
                     activeStep === 0
-                      ? 'text-[calc(18*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-semibold text-[#f4f6fa]'
-                      : 'text-[calc(12.5*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-medium text-[rgba(244,246,250,0.72)]'
+                      ? 'text-[calc(16.5*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-bold text-slate-900'
+                      : 'text-[calc(13*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-semibold text-slate-500'
                   }`}
                 >
                   Activation, simplified
@@ -383,8 +396,8 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
                   activeStep === 0 ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
                 }`}
               >
-                <div className="min-h-0 border-l border-[rgba(255,255,255,0.22)] pl-4 ml-[17px] mt-2 mb-2.5">
-                  <p className="text-[calc(13.5*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:text-[13px] leading-[1.48] text-[rgba(244,246,250,0.72)] font-normal">
+                <div className="min-h-0 border-l-2 border-teal-500/70 pl-3.5 ml-[16px] mt-2 mb-2">
+                  <p className="text-[calc(13*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:text-[13px] leading-[1.5] text-slate-600 font-normal">
                     One call starts mobilization. Craft, headcount and start date go straight to our vetted crews. No hand-offs. No escalations. Just boots on site within minutes.
                   </p>
                 </div>
@@ -392,22 +405,22 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
             </div>
 
             {/* Row 02 */}
-            <div className={`flex flex-col transition-all duration-300 ${activeStep === 1 ? 'active' : ''}`}>
-              <div className="flex items-center gap-3.5 cursor-pointer">
+            <div className={`flex flex-col transition-all duration-350 ${activeStep === 1 ? 'active' : ''}`}>
+              <div className="flex items-center gap-3 cursor-pointer">
                 <div
-                  className={`w-[calc(36*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] h-[calc(36*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] flex items-center justify-center text-[calc(12.5*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-semibold rounded-[calc(8*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] transition-colors duration-350 ${
+                  className={`w-[calc(34*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] h-[calc(34*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] flex items-center justify-center text-[calc(12*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-bold rounded-xl transition-all duration-300 ${
                     activeStep === 1
-                      ? 'bg-[#f4f6fa] text-[#0f1626] font-bold'
-                      : 'text-[rgba(244,246,250,0.72)]'
+                      ? 'bg-teal-600 text-white shadow-sm'
+                      : 'bg-slate-100 text-slate-500'
                   }`}
                 >
                   02
                 </div>
                 <div
-                  className={`transition-all duration-350 tracking-tight ${
+                  className={`transition-all duration-300 tracking-tight ${
                     activeStep === 1
-                      ? 'text-[calc(18*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-semibold text-[#f4f6fa]'
-                      : 'text-[calc(12.5*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-medium text-[rgba(244,246,250,0.72)]'
+                      ? 'text-[calc(16.5*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-bold text-slate-900'
+                      : 'text-[calc(13*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-semibold text-slate-500'
                   }`}
                 >
                   Cleared to count
@@ -418,8 +431,8 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
                   activeStep === 1 ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
                 }`}
               >
-                <div className="min-h-0 border-l border-[rgba(255,255,255,0.22)] pl-4 ml-[17px] mt-2 mb-2.5">
-                  <p className="text-[calc(13.5*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:text-[13px] leading-[1.48] text-[rgba(244,246,250,0.72)] font-normal">
+                <div className="min-h-0 border-l-2 border-teal-500/70 pl-3.5 ml-[16px] mt-2 mb-2">
+                  <p className="text-[calc(13*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:text-[13px] leading-[1.5] text-slate-600 font-normal">
                     Every worker is screened before dispatch: compliance, background, certifications and fitness for duty, so the whole crew clears the gate on day one.
                   </p>
                 </div>
@@ -428,11 +441,11 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
 
             {/* Row 03 */}
             <div className="flex flex-col transition-all duration-300">
-              <div className="flex items-center gap-3.5 cursor-pointer">
-                <div className="w-[calc(36*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] h-[calc(36*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] flex items-center justify-center text-[calc(12.5*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-semibold text-[rgba(244,246,250,0.72)]">
+              <div className="flex items-center gap-3 cursor-pointer">
+                <div className="w-[calc(34*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] h-[calc(34*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] flex items-center justify-center text-[calc(12*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-semibold text-slate-400 bg-slate-50 rounded-xl">
                   03
                 </div>
-                <div className="text-[calc(12.5*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-medium text-[rgba(244,246,250,0.72)] tracking-tight">
+                <div className="text-[calc(13*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-medium text-slate-500 tracking-tight">
                   Proven field match
                 </div>
               </div>
@@ -440,11 +453,11 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
 
             {/* Row 04 */}
             <div className="flex flex-col transition-all duration-300">
-              <div className="flex items-center gap-3.5 cursor-pointer">
-                <div className="w-[calc(36*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] h-[calc(36*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] flex items-center justify-center text-[calc(12.5*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-semibold text-[rgba(244,246,250,0.72)]">
+              <div className="flex items-center gap-3 cursor-pointer">
+                <div className="w-[calc(34*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] h-[calc(34*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] flex items-center justify-center text-[calc(12*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-semibold text-slate-400 bg-slate-50 rounded-xl">
                   04
                 </div>
-                <div className="text-[calc(12.5*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-medium text-[rgba(244,246,250,0.72)] tracking-tight">
+                <div className="text-[calc(13*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-medium text-slate-500 tracking-tight">
                   Seamless arrival
                 </div>
               </div>

@@ -25,7 +25,7 @@ export const App: React.FC = () => {
       <AuthProvider>
         <CityProvider>
           <NotificationProvider>
-            <div className="min-h-screen flex flex-col bg-[#0f1626] text-[#f4f6fa] selection:bg-[#3fd8ff] selection:text-[#0f1626]">
+            <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-teal-500 selection:text-white">
               <EmergencyBanner />
               <Navbar />
               <main className="flex-1">
