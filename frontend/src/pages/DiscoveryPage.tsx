@@ -14,7 +14,10 @@ import {
   CheckCircle2,
   AlertCircle,
   LifeBuoy,
-  HeartHandshake
+  HeartHandshake,
+  Waves,
+  Download,
+  Brain
 } from 'lucide-react';
 import { api } from '../services/api';
 import { useCity } from '../context/CityContext';
@@ -23,6 +26,7 @@ import { NeedMap } from '../components/map/NeedMap';
 import { TiltCard } from '../components/common/TiltCard';
 import { CityBadge } from '../components/common/CityBadge';
 import { SupportEnquiryModal } from '../components/support/SupportEnquiryModal';
+import { WaterFlow3D } from '../components/common/WaterFlow3D';
 
 const CATEGORIES: { id: NeedCategory | 'all'; label: string }[] = [
   { id: 'all', label: 'All Categories' },
@@ -37,7 +41,8 @@ const CATEGORIES: { id: NeedCategory | 'all'; label: string }[] = [
 export const DiscoveryPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { currentCity, cityData } = useCity();
-  const [viewMode, setViewMode] = useState<'map' | 'list'>('map');
+  const [viewMode, setViewMode] = useState<'map' | 'water' | 'list'>('map');
+  const [exporting, setExporting] = useState(false);
 
   const [items, setItems] = useState<NeedMapItem[]>([]);
   const [selectedItem, setSelectedItem] = useState<NeedMapItem | null>(null);
@@ -51,6 +56,26 @@ export const DiscoveryPage: React.FC = () => {
   const [localityFilter, setLocalityFilter] = useState<string>('');
   const [supportModalOpen, setSupportModalOpen] = useState(false);
   const [urgentFilterActive, setUrgentFilterActive] = useState(false);
+
+  const handleExportGeoJSON = async () => {
+    setExporting(true);
+    try {
+      const geojson = await api.get<any>(`/discovery/export?city=${encodeURIComponent(currentCity)}&format=geojson`);
+      const blob = new Blob([JSON.stringify(geojson, null, 2)], { type: 'application/geo+json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `NeedRadar-${currentCity.replace(/\s+/g, '_')}-OpenCivicData.geojson`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('GeoJSON export failed:', err);
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const fetchMarkers = async () => {
     setLoading(true);
@@ -141,6 +166,17 @@ export const DiscoveryPage: React.FC = () => {
               <span>Map View</span>
             </button>
             <button
+              onClick={() => setViewMode('water')}
+              className={`px-3 py-1.5 rounded-md font-medium flex items-center gap-1.5 transition-all ${
+                viewMode === 'water'
+                  ? 'bg-slate-900 text-cyan-300 shadow-sm font-semibold'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <Waves className="w-3.5 h-3.5 text-cyan-500" />
+              <span>3D Water Flow</span>
+            </button>
+            <button
               onClick={() => setViewMode('list')}
               className={`px-3 py-1.5 rounded-md font-medium flex items-center gap-1.5 transition-all ${
                 viewMode === 'list'
@@ -152,6 +188,16 @@ export const DiscoveryPage: React.FC = () => {
               <span>Accessible List</span>
             </button>
           </div>
+
+          <button
+            onClick={handleExportGeoJSON}
+            disabled={exporting}
+            className="px-3 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs disabled:opacity-50"
+            title="Download verified civic data in open GeoJSON standard"
+          >
+            <Download className="w-3.5 h-3.5 text-slate-600" />
+            <span>{exporting ? 'Exporting...' : 'Export GeoJSON'}</span>
+          </button>
 
           <Link
             to="/report"
@@ -278,6 +324,44 @@ export const DiscoveryPage: React.FC = () => {
             center={cityData ? [cityData.lon, cityData.lat] : undefined}
             zoom={cityData?.zoom || 12}
           />
+        </div>
+      ) : viewMode === 'water' ? (
+        <div className="h-[580px] relative rounded-3xl overflow-hidden border border-slate-800 shadow-2xl bg-slate-950">
+          <WaterFlow3D className="w-full h-full" showControls={true} />
+
+          {/* 3D Floating Overlay Controls */}
+          <div className="absolute top-4 left-4 z-10 pointer-events-none">
+            <div className="bg-slate-900/90 backdrop-blur-md border border-cyan-500/30 px-4 py-2 rounded-2xl text-white shadow-xl space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
+                <span className="font-bold text-sm">3D Fluid Sonar: {currentCity}</span>
+              </div>
+              <p className="text-[11px] text-slate-400 font-mono">
+                {filteredItems.length} Active Community Need Beacons Floating on Current
+              </p>
+            </div>
+          </div>
+
+          {/* Interactive Floating Needs Pills on Water */}
+          <div className="absolute bottom-6 left-4 right-4 z-10 overflow-x-auto flex gap-3 pb-2 scrollbar-none">
+            {filteredItems.slice(0, 5).map((item) => (
+              <Link
+                key={item.id}
+                to={`/needs/${item.id}`}
+                className="flex-shrink-0 bg-slate-900/85 backdrop-blur-md border border-cyan-500/30 hover:border-cyan-400 p-3 rounded-xl text-white shadow-lg transition-transform hover:-translate-y-1 w-64 block group"
+              >
+                <div className="flex items-center justify-between text-[10px] text-cyan-300 font-bold mb-1">
+                  <span className="capitalize">{item.category}</span>
+                  <span className="text-amber-400 uppercase">{item.urgency}</span>
+                </div>
+                <h4 className="text-xs font-bold truncate group-hover:text-cyan-200">{item.title}</h4>
+                <div className="flex items-center justify-between text-[10px] text-slate-400 mt-2 pt-1.5 border-t border-slate-800">
+                  <span>{item.locality}</span>
+                  <span className="text-cyan-400 font-mono">{item.supporters_count} supporters</span>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       ) : (
         /* Accessible List View with 3D Tilt Cards */

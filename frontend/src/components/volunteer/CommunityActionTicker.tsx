@@ -95,29 +95,29 @@ export const CommunityActionTicker: React.FC<CommunityActionTickerProps> = ({
       <>
         <div
           onClick={() => setModalOpen(true)}
-          className="group cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-xl border border-teal-200/80 bg-gradient-to-r from-teal-50/90 to-emerald-50/80 hover:from-teal-100 hover:to-emerald-100 text-teal-900 transition-all duration-300 shadow-xs hover:shadow-sm"
+          className="group cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-xl border border-cyan-500/30 bg-[#182238] hover:bg-[#202c46] text-[#f4f6fa] transition-all duration-300 shadow-xs hover:border-cyan-400"
           title="Click to view volunteer ledger or pledge community assistance"
         >
-          <div className="relative flex items-center justify-center w-6 h-6 rounded-lg bg-teal-600 text-white shadow-xs group-hover:scale-105 transition-transform">
+          <div className="relative flex items-center justify-center w-6 h-6 rounded-lg bg-[#2a3245] text-[#3fd8ff] border border-cyan-500/30 shadow-xs group-hover:scale-105 transition-transform">
             <HeartHandshake className="w-3.5 h-3.5" />
-            <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+            <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#c6ff2e] animate-ping" />
           </div>
 
           <div className="flex flex-col text-left">
             <div className="flex items-center gap-1.5">
-              <span className="text-[11px] font-extrabold tracking-tight text-slate-800">
+              <span className="text-[11px] font-extrabold tracking-tight text-[#f4f6fa]">
                 Civic Action Radar
               </span>
-              <span className="text-[9px] font-mono font-bold bg-teal-600/10 text-teal-700 px-1 rounded">
+              <span className="text-[9px] font-mono font-bold bg-cyan-950/60 border border-cyan-500/30 text-[#3fd8ff] px-1 rounded">
                 {stats?.total_volunteer_hours || 97}+ hrs
               </span>
             </div>
             {activePledge ? (
-              <span className="text-[10px] text-teal-800/90 font-medium truncate max-w-[200px] transition-all">
+              <span className="text-[10px] text-cyan-300 font-medium truncate max-w-[200px] transition-all">
                 ⚡ {activePledge.volunteer_name} ({activePledge.city})
               </span>
             ) : (
-              <span className="text-[10px] text-slate-500 font-medium truncate max-w-[190px]">
+              <span className="text-[10px] text-slate-400 font-medium truncate max-w-[190px]">
                 {stats?.total_pledges || 21} citizen pledges active
               </span>
             )}

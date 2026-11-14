@@ -123,3 +123,84 @@ def get_trending(
     db: Session = Depends(get_db)
 ):
     return detect_emerging_trends(db, city=city)
+
+@router.get("/export")
+def export_civic_data(
+    city: Optional[str] = None,
+    category: Optional[NeedCategory] = None,
+    format: str = Query("geojson", pattern="^(geojson|json)$"),
+    db: Session = Depends(get_db)
+):
+    """
+    Open Civic Data Exchange: Exports verified community needs in standard GeoJSON
+    or JSON for municipal GIS systems, civic researchers, and open-source contributors.
+    """
+    query = db.query(Need).filter(Need.status.notin_([NeedStatus.REJECTED]))
+    if city and city.lower() != "all":
+        query = query.filter(Need.city == city)
+    if category:
+        query = query.filter(Need.category == category)
+
+    needs = query.limit(1000).all()
+
+    if format == "geojson":
+        features = []
+        for n in needs:
+            lat = n.approx_latitude if (n.is_location_approximate and n.approx_latitude) else n.latitude
+            lon = n.approx_longitude if (n.is_location_approximate and n.approx_longitude) else n.longitude
+            reqs = n.requirements or []
+            fulfilled_count = sum(1 for r in reqs if isinstance(r, dict) and (r.get("is_fulfilled") or r.get("pledged_quantity", 0) >= r.get("required_quantity", 1)))
+            fulfilled_pct = round((fulfilled_count / len(reqs)) * 100) if reqs else 0
+
+            features.append({
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [lon, lat]
+                },
+                "properties": {
+                    "id": n.id,
+                    "title": n.title,
+                    "category": n.category.value if hasattr(n.category, "value") else str(n.category),
+                    "urgency": n.urgency.value if hasattr(n.urgency, "value") else str(n.urgency),
+                    "status": n.status.value if hasattr(n.status, "value") else str(n.status),
+                    "city": n.city,
+                    "locality": n.locality,
+                    "affected_count": n.affected_count,
+                    "supporters_count": n.supporters_count,
+                    "unmet_demand_score": n.unmet_demand_score,
+                    "requirements_count": len(reqs),
+                    "fulfilled_percent": fulfilled_pct,
+                    "created_at": n.created_at.isoformat() if n.created_at else None
+                }
+            })
+
+        return {
+            "type": "FeatureCollection",
+            "metadata": {
+                "generated_by": "NeedRadar Open Civic Data API",
+                "city_filter": city or "All Cities (Pan-India)",
+                "total_records": len(features),
+                "license": "Open Data Commons / CC-BY-4.0",
+                "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+            },
+            "features": features
+        }
+
+    # Standard JSON format
+    return [
+        {
+            "id": n.id,
+            "title": n.title,
+            "category": n.category.value if hasattr(n.category, "value") else str(n.category),
+            "urgency": n.urgency.value if hasattr(n.urgency, "value") else str(n.urgency),
+            "city": n.city,
+            "locality": n.locality,
+            "latitude": n.latitude,
+            "longitude": n.longitude,
+            "unmet_demand_score": n.unmet_demand_score,
+            "supporters_count": n.supporters_count
+        }
+        for n in needs
+    ]
+

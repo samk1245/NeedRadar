@@ -1,17 +1,40 @@
 @import 'maplibre-gl/dist/maplibre-gl.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..900;1,300..900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --night: #0f1626;
+  --ink: #f4f6fa;
+  --ink-72: rgba(244, 246, 250, 0.72);
+  --ink-46: rgba(244, 246, 250, 0.46);
+  --pill-grey: #2a3245;
+  --lime: #c6ff2e;
+  --cyan: #3fd8ff;
+  --hairline: rgba(255, 255, 255, 0.22);
+  --u: clamp(0.72px, min(100vw / 1440, 100vh / 960), 1.5px);
+}
+
+@media (max-width: 760px) {
+  :root {
+    --u: 1px;
+  }
+}
+
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 antialiased font-sans selection:bg-teal-500 selection:text-white min-h-screen overflow-x-hidden;
+    @apply bg-[#0f1626] text-[#f4f6fa] antialiased selection:bg-[#3fd8ff] selection:text-[#0f1626] min-h-screen overflow-x-hidden;
+    font-family: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 }
 
 /* 3D Depth, Perspective & Smooth UI Micro-interactions */
 @layer utilities {
+  .perspective-900 {
+    perspective: calc(900 * var(--u));
+  }
   .perspective-1000 {
     perspective: 1000px;
   }
@@ -34,7 +57,7 @@
 
   .card-3d:hover {
     transform: translateY(-6px) scale(1.01) rotateX(1.5deg);
-    box-shadow: 0 20px 30px -10px rgba(15, 23, 42, 0.08), 0 10px 15px -5px rgba(20, 184, 166, 0.08);
+    box-shadow: 0 20px 30px -10px rgba(15, 23, 42, 0.4), 0 10px 15px -5px rgba(63, 216, 255, 0.2);
   }
 
   .card-3d-tilt {
@@ -43,12 +66,12 @@
   }
 
   /* Smooth specular glow */
-  .glow-teal {
-    box-shadow: 0 0 25px -5px rgba(20, 184, 166, 0.4);
+  .glow-cyan {
+    box-shadow: 0 0 35px -5px rgba(63, 216, 255, 0.35);
   }
 
-  .glow-cyan {
-    box-shadow: 0 0 35px -5px rgba(6, 182, 212, 0.35);
+  .glow-lime {
+    box-shadow: 0 0 30px -5px rgba(198, 255, 46, 0.35);
   }
 
   /* Hologram & 3D radar ring animations */
@@ -100,17 +123,17 @@
 
 /* Glassmorphic 3D Sheen */
 .glass-panel-3d {
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(24, 34, 56, 0.82);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.05), inset 0 1px 1px 0 rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3), inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .glass-panel-dark-3d {
-  background: rgba(15, 23, 42, 0.88);
+  background: rgba(15, 22, 38, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4), inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
 }
