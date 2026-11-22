@@ -63,106 +63,101 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
     const duration = 5.04;
     let targetP = 0;
     let smoothP = 0;
-    let lastRenderedP = -1;
-    let trackTop = 0;
-    let maxScroll = 1;
+    let curTime = 0;
+    let targetTime = 0;
     let animId: number;
-
-    const measureTrack = () => {
-      if (!track) return;
-      const rect = track.getBoundingClientRect();
-      trackTop = rect.top + window.scrollY;
-      maxScroll = Math.max(1, track.offsetHeight - window.innerHeight);
-    };
-    measureTrack();
-
-    const updateScrollProgress = () => {
-      const scrollY = window.scrollY || window.pageYOffset;
-      const progress = (scrollY - trackTop) / maxScroll;
-      targetP = Math.max(0, Math.min(1, progress));
-    };
-    updateScrollProgress();
-
-    window.addEventListener('scroll', updateScrollProgress, { passive: true });
-    window.addEventListener('resize', measureTrack, { passive: true });
 
     const easeInOutQuad = (t: number) => {
       const clamped = Math.max(0, Math.min(1, t));
       return clamped < 0.5 ? 2 * clamped * clamped : 1 - Math.pow(-2 * clamped + 2, 2) / 2;
     };
 
+    const getProgress = () => {
+      const rect = track.getBoundingClientRect();
+      const maxScroll = track.offsetHeight - window.innerHeight;
+      if (maxScroll <= 0) return 0;
+      const scrolled = -rect.top;
+      return Math.max(0, Math.min(1, scrolled / maxScroll));
+    };
+
     const updateVisuals = (p: number) => {
       // 1. Headline transform & opacity with butter-smooth layback
       if (heroCopy) {
-        const h = easeInOutQuad(p / 0.42);
-        const ty = -24 * h;
-        const rx = 45 * h;
-        const s = 1 - 0.08 * h;
+        const h = easeInOutQuad(p / 0.38);
+        const ty = -32 * h;
+        const rx = 60 * h;
+        const s = 1 - 0.11 * h;
         heroCopy.style.transform = `translate3d(0, ${ty}vh, 0) rotateX(${rx}deg) scale(${s})`;
 
         let headOpacity = 1;
-        if (p <= 0.10) {
+        if (p <= 0.08) {
           headOpacity = 1;
-        } else if (p >= 0.32) {
+        } else if (p >= 0.23) {
           headOpacity = 0;
         } else {
-          headOpacity = 1 - (p - 0.10) / (0.32 - 0.10);
+          headOpacity = 1 - (p - 0.08) / (0.23 - 0.08);
         }
-        heroCopy.style.opacity = headOpacity.toFixed(3);
+        heroCopy.style.opacity = headOpacity.toString();
       }
 
-      // 2. Scroll cue fade & scale
+      // 2. Scroll cue
       if (scrollCueLine) {
-        const lineScale = Math.max(0, 1 - p / 0.14);
-        scrollCueLine.style.transform = `scaleX(${lineScale.toFixed(3)})`;
+        const lineScale = Math.max(0, 1 - p / 0.10);
+        scrollCueLine.style.transform = `scaleX(${lineScale})`;
       }
       if (scrollCue) {
         let cueOp = 1;
-        if (p <= 0.05) {
+        if (p <= 0.04) {
           cueOp = 1;
-        } else if (p >= 0.18) {
+        } else if (p >= 0.12) {
           cueOp = 0;
         } else {
-          cueOp = 1 - (p - 0.05) / (0.18 - 0.05);
+          cueOp = 1 - (p - 0.04) / (0.12 - 0.04);
         }
-        scrollCue.style.opacity = cueOp.toFixed(3);
+        scrollCue.style.opacity = cueOp.toString();
       }
     };
 
-    // Ultra-smooth critically dampened 120fps render loop
+    const onSeeked = () => {
+      if (Math.abs(video.currentTime - targetTime) > 0.02) {
+        if (!video.seeking) {
+          video.currentTime = targetTime;
+        }
+      }
+    };
+    video.addEventListener('seeked', onSeeked);
+
+    // Butter-smooth double-dampened animation loop
     const tick = () => {
       if (!isRecorder) {
+        targetP = getProgress();
+        // Progress dampening for 120fps buttery smoothness across all mice & touchpads
         if (isReducedMotion) {
           smoothP = targetP;
         } else {
-          // Critically dampened easing for jitter-free momentum
-          const delta = targetP - smoothP;
-          if (Math.abs(delta) > 0.0001) {
-            smoothP += delta * 0.085;
-          } else {
-            smoothP = targetP;
+          smoothP += (targetP - smoothP) * 0.12;
+        }
+
+        const vidDur = video.duration || duration;
+        targetTime = smoothP * Math.max(0, vidDur - 1 / 48);
+
+        if (isReducedMotion) {
+          curTime = targetTime;
+          if (!video.seeking && Math.abs(video.currentTime - curTime) > 0.02) {
+            video.currentTime = curTime;
+          }
+        } else {
+          curTime += (targetTime - curTime) * 0.14;
+          if (!video.seeking && Math.abs(video.currentTime - curTime) > 0.02) {
+            video.currentTime = curTime;
           }
         }
 
-        // Only update DOM styles when progress actually moves
-        if (Math.abs(smoothP - lastRenderedP) > 0.0001) {
-          lastRenderedP = smoothP;
-          updateVisuals(smoothP);
-
-          // Video scrub: seek with frame throttling to avoid decoder hardware locking
-          const vidDur = video.duration || duration;
-          const targetTime = smoothP * Math.max(0, vidDur - 0.04);
-          if (video.readyState >= 2 && !video.seeking && Math.abs(video.currentTime - targetTime) > 0.035) {
-            video.currentTime = targetTime;
-          }
-        }
+        updateVisuals(smoothP);
       }
       animId = requestAnimationFrame(tick);
     };
     animId = requestAnimationFrame(tick);
-
-    // Initial render
-    updateVisuals(0);
 
     // Recorder mode support (?rec=1)
     if (isRecorder) {
@@ -212,8 +207,7 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
 
     return () => {
       cancelAnimationFrame(animId);
-      window.removeEventListener('scroll', updateScrollProgress);
-      window.removeEventListener('resize', measureTrack);
+      video.removeEventListener('seeked', onSeeked);
     };
   }, []);
 
@@ -270,14 +264,13 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
         </div>
       )}
 
-      {/* Optimized 200vh Fluid Scroll Track (Zero Stutter, 120fps Stable) */}
-      <div ref={trackRef} className="relative w-full h-[200vh] bg-slate-50">
-        <div className="sticky top-0 left-0 w-full h-screen overflow-hidden overscroll-y-none">
-          {/* Scrubbed 3D Video Layer with GPU hardware compositing */}
+      {/* 420vh Scroll Track */}
+      <div ref={trackRef} className="relative w-full h-[420vh] bg-slate-50">
+        <div className="sticky top-0 left-0 w-full h-screen overflow-hidden">
+          {/* Scrubbed 3D Video Layer */}
           <video
             ref={videoRef}
-            className="absolute inset-0 w-full h-full object-cover pointer-events-none z-1 will-change-transform"
-            style={{ transform: 'translateZ(0)' }}
+            className="absolute inset-0 w-full h-full object-cover pointer-events-none z-1"
             poster="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/33150b94-09f7-47da-a7c9-3ae76c2dd7eb.jpg"
             playsInline
             muted
@@ -294,12 +287,12 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
             />
           </video>
 
-          {/* Crisp Daylight Vignette Overlays (Clean & Vivid, Non-Foggy) */}
+          {/* Luminous Daylight Shader Overlays */}
           <div
             className="absolute inset-0 z-2 pointer-events-none"
             style={{
               background:
-                'linear-gradient(180deg, rgba(248, 250, 252, 0.65) 0%, rgba(248, 250, 252, 0.25) 25%, rgba(248, 250, 252, 0) 50%), linear-gradient(0deg, rgba(248, 250, 252, 0.70) 0%, rgba(248, 250, 252, 0.30) 22%, rgba(248, 250, 252, 0) 45%)',
+                'linear-gradient(180deg, rgba(248, 250, 252, 0.94) 0%, rgba(248, 250, 252, 0.72) 28%, rgba(248, 250, 252, 0) 52%), linear-gradient(0deg, rgba(248, 250, 252, 0.96) 0%, rgba(248, 250, 252, 0.75) 24%, rgba(248, 250, 252, 0) 48%)',
             }}
           />
 
