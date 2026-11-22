@@ -34,6 +34,8 @@ import { NorvaHero } from '../components/hero/NorvaHero';
 import { CivicPulseTicker } from '../components/common/CivicPulseTicker';
 import { SonarRadarHUD } from '../components/common/SonarRadarHUD';
 import { PredictiveArcCanvas } from '@designcodeio/threeui';
+import { CinematicSlider3D } from '../components/common/CinematicSlider3D';
+import { CinematicKineticRibbon } from '../components/common/CinematicKineticRibbon';
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -252,12 +254,20 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
+      {/* Kinetic Infinite Sliding Telemetry Ribbon */}
+      <CinematicKineticRibbon />
+
       {/* 3. 3D Civic Action Workflow Pipeline */}
       <section className="relative z-10 py-6 border-t border-slate-200">
         <CivicWorkflow3D onSimulateClick={() => setAiCopilotOpen(true)} />
       </section>
 
-      {/* 4. Live Citizen Action & Volunteer Resource Network (VolunteerRadar) */}
+      {/* 4. 3D Cinematic Perspective Showcase Slider */}
+      <section className="relative z-10 bg-slate-950 py-12">
+        <CinematicSlider3D />
+      </section>
+
+      {/* 5. Live Citizen Action & Volunteer Resource Network (VolunteerRadar) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <CommunityActionTicker variant="hero" />
       </section>
