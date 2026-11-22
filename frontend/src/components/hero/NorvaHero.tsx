@@ -16,9 +16,7 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
   const heroCopyRef = useRef<HTMLDivElement>(null);
   const scrollCueRef = useRef<HTMLDivElement>(null);
   const scrollCueLineRef = useRef<HTMLSpanElement>(null);
-  const processListRef = useRef<HTMLDivElement>(null);
 
-  const [activeStep, setActiveStep] = useState<number>(0);
   const [loaderVisible, setLoaderVisible] = useState<boolean>(true);
 
   useEffect(() => {
@@ -27,7 +25,6 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
     const heroCopy = heroCopyRef.current;
     const scrollCue = scrollCueRef.current;
     const scrollCueLine = scrollCueLineRef.current;
-    const processList = processListRef.current;
 
     if (!track || !video) return;
 
@@ -119,25 +116,6 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
         }
         scrollCue.style.opacity = cueOp.toString();
       }
-
-      // 3. Process list elevation & opacity
-      if (processList) {
-        let procP = 0;
-        if (p <= 0.07) {
-          procP = 0;
-        } else if (p >= 0.22) {
-          procP = 1;
-        } else {
-          procP = (p - 0.07) / (0.22 - 0.07);
-        }
-        const procY = (1 - procP) * 36;
-        processList.style.opacity = procP.toString();
-        processList.style.transform = `translate3d(0, ${procY}px, 0)`;
-      }
-
-      // Step active threshold
-      const nextStep = p < 0.62 ? 0 : 1;
-      setActiveStep(nextStep);
     };
 
     const onSeeked = () => {
@@ -360,107 +338,6 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
                 className="absolute bottom-0 left-0 w-full h-[1.5px] bg-teal-600 origin-left"
                 style={{ willChange: 'transform' }}
               />
-            </div>
-          </div>
-
-          {/* Daylight Process List (Bottom Left Glass Card) */}
-          <div
-            ref={processListRef}
-            className="fixed left-[calc(36*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] bottom-[calc(28*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] w-[calc(430*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:left-[18px] max-md:right-[18px] max-md:bottom-[22px] max-md:w-auto z-25 flex flex-col gap-2.5 p-4 rounded-3xl bg-white/90 backdrop-blur-xl border border-slate-200/90 shadow-xl pointer-events-auto"
-            style={{ willChange: 'transform, opacity' }}
-          >
-            {/* Row 01 */}
-            <div className={`flex flex-col transition-all duration-350 ${activeStep === 0 ? 'active' : ''}`}>
-              <div className="flex items-center gap-3 cursor-pointer">
-                <div
-                  className={`w-[calc(34*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] h-[calc(34*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] flex items-center justify-center text-[calc(12*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-bold rounded-xl transition-all duration-300 ${
-                    activeStep === 0
-                      ? 'bg-teal-600 text-white shadow-sm'
-                      : 'bg-slate-100 text-slate-500'
-                  }`}
-                >
-                  01
-                </div>
-                <div
-                  className={`transition-all duration-300 tracking-tight ${
-                    activeStep === 0
-                      ? 'text-[calc(16.5*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-bold text-slate-900'
-                      : 'text-[calc(13*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-semibold text-slate-500'
-                  }`}
-                >
-                  Activation, simplified
-                </div>
-              </div>
-              <div
-                className={`grid transition-[grid-template-rows] duration-450 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${
-                  activeStep === 0 ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
-                }`}
-              >
-                <div className="min-h-0 border-l-2 border-teal-500/70 pl-3.5 ml-[16px] mt-2 mb-2">
-                  <p className="text-[calc(13*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:text-[13px] leading-[1.5] text-slate-600 font-normal">
-                    One call starts mobilization. Craft, headcount and start date go straight to our vetted crews. No hand-offs. No escalations. Just boots on site within minutes.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Row 02 */}
-            <div className={`flex flex-col transition-all duration-350 ${activeStep === 1 ? 'active' : ''}`}>
-              <div className="flex items-center gap-3 cursor-pointer">
-                <div
-                  className={`w-[calc(34*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] h-[calc(34*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] flex items-center justify-center text-[calc(12*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-bold rounded-xl transition-all duration-300 ${
-                    activeStep === 1
-                      ? 'bg-teal-600 text-white shadow-sm'
-                      : 'bg-slate-100 text-slate-500'
-                  }`}
-                >
-                  02
-                </div>
-                <div
-                  className={`transition-all duration-300 tracking-tight ${
-                    activeStep === 1
-                      ? 'text-[calc(16.5*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-bold text-slate-900'
-                      : 'text-[calc(13*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-semibold text-slate-500'
-                  }`}
-                >
-                  Cleared to count
-                </div>
-              </div>
-              <div
-                className={`grid transition-[grid-template-rows] duration-450 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${
-                  activeStep === 1 ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
-                }`}
-              >
-                <div className="min-h-0 border-l-2 border-teal-500/70 pl-3.5 ml-[16px] mt-2 mb-2">
-                  <p className="text-[calc(13*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:text-[13px] leading-[1.5] text-slate-600 font-normal">
-                    Every worker is screened before dispatch: compliance, background, certifications and fitness for duty, so the whole crew clears the gate on day one.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Row 03 */}
-            <div className="flex flex-col transition-all duration-300">
-              <div className="flex items-center gap-3 cursor-pointer">
-                <div className="w-[calc(34*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] h-[calc(34*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] flex items-center justify-center text-[calc(12*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-semibold text-slate-400 bg-slate-50 rounded-xl">
-                  03
-                </div>
-                <div className="text-[calc(13*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-medium text-slate-500 tracking-tight">
-                  Proven field match
-                </div>
-              </div>
-            </div>
-
-            {/* Row 04 */}
-            <div className="flex flex-col transition-all duration-300">
-              <div className="flex items-center gap-3 cursor-pointer">
-                <div className="w-[calc(34*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] h-[calc(34*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] flex items-center justify-center text-[calc(12*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-semibold text-slate-400 bg-slate-50 rounded-xl">
-                  04
-                </div>
-                <div className="text-[calc(13*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-medium text-slate-500 tracking-tight">
-                  Seamless arrival
-                </div>
-              </div>
             </div>
           </div>
         </div>
