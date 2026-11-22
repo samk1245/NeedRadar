@@ -4,6 +4,19 @@ import { NeedMapItem, NeedCategory } from '../../types';
 import { MapPin, ShieldAlert, Users, Calendar, ArrowRight, ExternalLink } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+// Configure worker URL safely for Vite and GitHub Pages
+try {
+  if (typeof window !== 'undefined' && (maplibregl as any).setWorkerUrl) {
+    const isGh = window.location.hostname.endsWith('github.io');
+    const workerUrl = isGh
+      ? `${window.location.origin}/NeedRadar/assets/maplibre-gl-worker.mjs`
+      : '/assets/maplibre-gl-worker.mjs';
+    (maplibregl as any).setWorkerUrl(workerUrl);
+  }
+} catch {
+  // worker URL setup error suppressed
+}
+
 interface NeedMapProps {
   items: NeedMapItem[];
   selectedItem?: NeedMapItem | null;

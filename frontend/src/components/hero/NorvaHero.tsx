@@ -264,8 +264,8 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
         </div>
       )}
 
-      {/* 420vh Scroll Track */}
-      <div ref={trackRef} className="relative w-full h-[420vh] bg-slate-50">
+      {/* Responsive Scroll Track */}
+      <div ref={trackRef} className="relative w-full h-[380vh] max-md:h-[130vh] bg-slate-50">
         <div className="sticky top-0 left-0 w-full h-screen overflow-hidden">
           {/* Scrubbed 3D Video Layer */}
           <video
@@ -298,30 +298,47 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
 
           {/* Hero Headline Stage (Perspective 900u) with Clean Daylight Typography */}
           <div
-            className="fixed top-[calc(92*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:top-[96px] left-0 w-full flex justify-center z-20 pointer-events-none"
+            className="fixed top-[calc(92*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:top-[128px] left-0 w-full flex justify-center z-20 pointer-events-none"
             style={{
               perspective: 'calc(900 * clamp(0.72px, min(100vw / 1440, 100vh / 960), 1.5px))',
             }}
           >
             <div
               ref={heroCopyRef}
-              className="flex flex-col items-center text-center px-6 max-w-4xl"
+              className="flex flex-col items-center text-center px-4 sm:px-6 max-w-4xl"
               style={{
                 transformOrigin: '50% 100%',
                 willChange: 'transform, opacity',
                 backfaceVisibility: 'hidden',
               }}
             >
-              <h1 className="text-[calc(80*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:text-[clamp(36px,10vw,48px)] font-black leading-[0.98] tracking-[-0.04em] text-slate-900 mb-[calc(22*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:mb-4 drop-shadow-xs">
+              <h1 className="text-[calc(80*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:text-[clamp(32px,8vw,44px)] font-black leading-[1.02] tracking-[-0.04em] text-slate-900 mb-3 sm:mb-[calc(22*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] drop-shadow-xs">
                 See What Your City Needs.<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 via-cyan-600 to-blue-600">
                   Help Make It Happen.
                 </span>
               </h1>
-              <p className="text-[calc(18*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:text-[15px] font-medium leading-[1.45] text-slate-700 max-w-[calc(740*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:max-w-[34ch]">
+              <p className="text-[calc(18*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:text-[14px] font-medium leading-[1.45] text-slate-700 max-w-[calc(740*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] max-md:max-w-[32ch]">
                 AI-driven speed. Verified ground coordination.<br className="hidden sm:inline" />
                 We mobilize verified community resources and vetted NGOs to resolve unmet local needs in real-time.
               </p>
+
+              {/* Quick Action CTAs */}
+              <div className="mt-4 sm:mt-6 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 pointer-events-auto">
+                <Link
+                  to="/discovery"
+                  className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-teal-600/25 transition-all flex items-center gap-1.5 active:scale-95"
+                >
+                  <span>Explore Needs</span>
+                  <span className="text-teal-200">→</span>
+                </Link>
+                <Link
+                  to="/report"
+                  className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-white/95 hover:bg-white text-slate-800 font-bold text-xs sm:text-sm shadow-xs border border-slate-200 transition-all flex items-center gap-1.5 active:scale-95"
+                >
+                  <span>Report Need</span>
+                </Link>
+              </div>
             </div>
           </div>
 
@@ -332,7 +349,7 @@ export const NorvaHero: React.FC<NorvaHeroProps> = ({
             style={{ willChange: 'opacity' }}
           >
             <div className="relative text-[calc(11.5*clamp(0.72px,min(100vw/1440,100vh/960),1.5px))] font-bold uppercase tracking-[0.06em] text-slate-600 pb-1">
-              SCROLL TO DISCOVER OUR PROCESS
+              SCROLL TO EXPLORE LIVE RADAR
               <span
                 ref={scrollCueLineRef}
                 className="absolute bottom-0 left-0 w-full h-[1.5px] bg-teal-600 origin-left"

@@ -15,7 +15,17 @@ function getMockFallback<T>(endpoint: string, options: RequestInit = {}): T {
     (c) => c.name.toLowerCase() === cityParam.toLowerCase()
   ) || SUPPORTED_CITIES[0];
 
-  // 1. Map Markers
+  // 1. Volunteer Impact Stats
+  if (pathname.includes('/volunteers/impact-stats')) {
+    return {
+      active_volunteers: 342,
+      resolved_needs_this_month: 87,
+      community_hours: 1250,
+      partner_ngos: 18,
+    } as unknown as T;
+  }
+
+  // 2. Map Markers
   if (pathname.includes('/discovery/map')) {
     const categories = ['healthcare', 'education', 'infrastructure', 'supplies', 'repairs'] as const;
     const urgencies = ['critical', 'high', 'medium', 'low'] as const;
@@ -117,6 +127,11 @@ function getMockFallback<T>(endpoint: string, options: RequestInit = {}): T {
 }
 
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+  // If hosted on GitHub Pages (static preview), return immediate mock to avoid 404 network errors
+  if (typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
+    return getMockFallback<T>(endpoint, options);
+  }
+
   const token = localStorage.getItem('needradar_token');
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',

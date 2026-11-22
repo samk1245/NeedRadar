@@ -106,7 +106,7 @@ export const TopRightSignIn: React.FC = () => {
 
           {/* User Menu Dropdown */}
           {dropdownOpen && (
-            <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200/90 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150 text-xs">
+            <div className="fixed sm:absolute left-3 right-3 sm:left-auto sm:right-0 top-18 sm:top-auto sm:mt-2 w-auto sm:w-64 bg-white rounded-2xl shadow-xl border border-slate-200/90 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150 text-xs">
               <div className="px-3.5 py-2.5 border-b border-slate-100 bg-slate-50/60 rounded-t-2xl">
                 <p className="font-bold text-slate-900">{user.full_name}</p>
                 <p className="text-slate-500 text-[11px] font-mono truncate">{user.email}</p>
@@ -172,30 +172,30 @@ export const TopRightSignIn: React.FC = () => {
         </div>
       ) : (
         /* Not Logged In - Dedicated Top-Right Sign In Option */
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           {/* Main Top-Right Sign In Button */}
           <button
             type="button"
             onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white hover:bg-slate-800 shadow-xs hover:shadow-slate-900/20 transition-all active:scale-95 cursor-pointer border border-slate-800"
+            className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white hover:bg-slate-800 shadow-xs hover:shadow-slate-900/20 transition-all active:scale-95 cursor-pointer border border-slate-800 shrink-0"
             title="Sign In to NeedRadar"
           >
-            <LogIn className="w-3.5 h-3.5 text-teal-400" />
-            <span>Sign In</span>
+            <LogIn className="w-3.5 h-3.5 text-teal-400 shrink-0" />
+            <span className="text-xs">Sign In</span>
             <span className="text-[9px] text-slate-400 ml-0.5">▾</span>
           </button>
 
           {/* Quick Join Link */}
           <Link
             to="/register"
-            className="hidden sm:inline-flex px-3 py-1.5 text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors border border-slate-200"
+            className="hidden sm:inline-flex px-3 py-1.5 text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors border border-slate-200 shrink-0"
           >
             Join
           </Link>
 
           {/* Quick Sign-In Flyout Dropdown */}
           {dropdownOpen && (
-            <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-150 text-xs">
+            <div className="fixed sm:absolute left-3 right-3 sm:left-auto sm:right-0 top-18 sm:top-auto sm:mt-2 w-auto sm:w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-150 text-xs">
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                 <div className="flex items-center gap-2">
                   <div className="w-7 h-7 rounded-lg bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-700">
