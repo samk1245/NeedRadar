@@ -85,7 +85,7 @@ export const LandingPage: React.FC = () => {
               <span className="w-2.5 h-2.5 rounded-full bg-teal-500 animate-ping" />
               <span className="font-mono">{currentCity}</span>
               <span className="text-slate-300">•</span>
-              <span>Active Radar Across {availableCities.length || 104} Cities (All 28 States & 8 UTs)</span>
+              <span>Active Radar Across {availableCities.length || 144} Cities (All 28 States & 8 UTs)</span>
             </div>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 leading-tight">

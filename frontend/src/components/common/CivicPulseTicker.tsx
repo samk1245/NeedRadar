@@ -77,6 +77,22 @@ const PULSE_ITEMS: PulseItem[] = [
     text: 'Winter insulated blanket drive reaches 85 unhoused transit workers',
     timeAgo: '55m ago',
     isUrgent: false
+  },
+  {
+    id: 'p-8',
+    city: 'Prayagraj',
+    category: 'Clean Water',
+    text: 'Triveni Sangam Ghat potable water filtration desks active for 450+ pilgrims',
+    timeAgo: '8m ago',
+    isUrgent: false
+  },
+  {
+    id: 'p-9',
+    city: 'Kanpur',
+    category: 'Eco Action',
+    text: 'Ganga Barrage plastic debris cleanup squad dispatched with 24 river volunteers',
+    timeAgo: '15m ago',
+    isUrgent: true
   }
 ];
 

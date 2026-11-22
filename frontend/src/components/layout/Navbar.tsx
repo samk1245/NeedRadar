@@ -25,6 +25,7 @@ import { AICopilotModal } from '../ai/AICopilotModal';
 import { CITY_CONFIGS } from '../common/CityBadge';
 import { CommunityActionTicker } from '../volunteer/CommunityActionTicker';
 import { CityCommandPalette } from '../common/CityCommandPalette';
+import { TopRightSignIn } from './TopRightSignIn';
 
 export const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
@@ -136,15 +137,15 @@ export const Navbar: React.FC = () => {
               <CommunityActionTicker variant="compact" />
             </div>
 
-            {/* Quick 104-City Command Palette Button */}
+            {/* Quick 144-City Command Palette Button */}
             <button
               type="button"
               onClick={() => setCommandPaletteOpen(true)}
               className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-xs hover:border-teal-400 transition-all cursor-pointer"
-              title="Search 104+ cities across all 28 states & 8 UTs (Ctrl+K)"
+              title={`Search ${availableCities.length || 144}+ cities across all 28 states & 8 UTs (Ctrl+K)`}
             >
               <Compass className="w-3.5 h-3.5 text-teal-600" />
-              <span className="font-mono text-[11px] text-slate-500">104 Cities</span>
+              <span className="font-mono text-[11px] text-slate-500">{availableCities.length || 144} Cities</span>
               <kbd className="px-1.5 py-0.2 rounded bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-400">
                 ⌘K
               </kbd>
@@ -315,93 +316,8 @@ export const Navbar: React.FC = () => {
               </div>
             )}
 
-            {/* User Profile / Auth State */}
-            {user ? (
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-2 p-1 pl-2 rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors"
-                >
-                  <div className="w-6 h-6 rounded-full bg-teal-600 text-white flex items-center justify-center text-xs font-bold">
-                    {user.full_name[0]?.toUpperCase() || 'U'}
-                  </div>
-                  <span className="text-xs font-bold text-slate-700 hidden sm:inline max-w-[100px] truncate">
-                    {user.full_name}
-                  </span>
-                </button>
-
-                {userDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-slate-200 py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150 text-xs">
-                    <div className="px-3 py-2 border-b border-slate-100">
-                      <p className="font-bold text-slate-900">{user.full_name}</p>
-                      <p className="text-slate-400 text-[11px] truncate">{user.email}</p>
-                      <span className="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-mono uppercase font-bold bg-teal-50 text-teal-700 border border-teal-200">
-                        {user.role}
-                      </span>
-                    </div>
-
-                    <Link
-                      to="/dashboard"
-                      onClick={() => setUserDropdownOpen(false)}
-                      className="block px-3 py-2 text-slate-700 hover:bg-slate-50 font-medium"
-                    >
-                      Resident Dashboard
-                    </Link>
-
-                    {user.role === 'provider' && (
-                      <Link
-                        to="/provider"
-                        onClick={() => setUserDropdownOpen(false)}
-                        className="block px-3 py-2 text-slate-700 hover:bg-slate-50 font-medium"
-                      >
-                        Provider Portal
-                      </Link>
-                    )}
-
-                    {(user.role === 'moderator' || user.role === 'admin') && (
-                      <Link
-                        to="/admin"
-                        onClick={() => setUserDropdownOpen(false)}
-                        className="block px-3 py-2 text-slate-700 hover:bg-slate-50 font-medium"
-                      >
-                        Moderation Console
-                      </Link>
-                    )}
-
-                    <div className="border-t border-slate-100 mt-1 pt-1">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          logout();
-                          setUserDropdownOpen(false);
-                          navigate('/');
-                        }}
-                        className="w-full text-left px-3 py-2 text-rose-600 hover:bg-rose-50 flex items-center gap-1.5 font-bold"
-                      >
-                        <LogOut className="w-3.5 h-3.5" />
-                        Sign Out
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="flex items-center gap-2">
-                <Link
-                  to="/login"
-                  className="px-3 py-1.5 text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to="/register"
-                  className="hidden sm:inline-flex px-3 py-1.5 text-xs font-bold bg-slate-900 text-white hover:bg-slate-800 rounded-xl transition-colors shadow-xs"
-                >
-                  Join
-                </Link>
-              </div>
-            )}
+            {/* Dedicated Top-Right Sign In / User Profile Section */}
+            <TopRightSignIn />
 
             {/* Mobile Menu Button */}
             <button
@@ -457,6 +373,39 @@ export const Navbar: React.FC = () => {
               <PlusCircle className="w-4 h-4" />
               Report a Need
             </Link>
+            {!user ? (
+              <div className="pt-2 border-t border-slate-100 grid grid-cols-2 gap-2">
+                <Link
+                  to="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-center py-2 px-3 rounded-xl bg-slate-900 text-white font-bold text-xs"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/register"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-center py-2 px-3 rounded-xl border border-slate-200 text-slate-700 font-bold text-xs hover:bg-slate-50"
+                >
+                  Join NeedRadar
+                </Link>
+              </div>
+            ) : (
+              <div className="pt-2 border-t border-slate-100 flex items-center justify-between px-3 py-1 text-xs">
+                <span className="font-bold text-slate-800">{user.full_name}</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    logout();
+                    setMobileMenuOpen(false);
+                    navigate('/');
+                  }}
+                  className="text-rose-600 font-bold"
+                >
+                  Sign Out
+                </button>
+              </div>
+            )}
           </div>
         )}
       </header>

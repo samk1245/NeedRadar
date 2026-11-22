@@ -118,7 +118,7 @@ export const CityCommandPalette: React.FC<CityCommandPaletteProps> = ({
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search 104+ cities across all 28 states & 8 UTs (e.g. Gangtok, Mysuru, Delhi, Kerala)..."
+              placeholder={`Search ${availableCities.length || 144}+ cities across all 28 states & 8 UTs (e.g. Prayagraj, Kanpur, Kolhapur, Gaya, Bengaluru)...`}
               className="w-full pl-11 pr-10 py-3 rounded-2xl bg-white border border-slate-200 text-sm font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 shadow-xs"
             />
             {query ? (
