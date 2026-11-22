@@ -31,6 +31,8 @@ import { WaterFlow3D } from '../components/common/WaterFlow3D';
 import { CivicWorkflow3D } from '../components/common/CivicWorkflow3D';
 import { AICopilotModal } from '../components/ai/AICopilotModal';
 import { NorvaHero } from '../components/hero/NorvaHero';
+import { CivicPulseTicker } from '../components/common/CivicPulseTicker';
+import { SonarRadarHUD } from '../components/common/SonarRadarHUD';
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -40,7 +42,7 @@ export const LandingPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [supportModalOpen, setSupportModalOpen] = useState(false);
   const [aiCopilotOpen, setAiCopilotOpen] = useState(false);
-  const [heroViewMode, setHeroViewMode] = useState<'map' | 'water'>('map');
+  const [heroViewMode, setHeroViewMode] = useState<'map' | 'sonar' | 'water'>('map');
 
   useEffect(() => {
     const fetchLandingData = async () => {
@@ -68,8 +70,11 @@ export const LandingPage: React.FC = () => {
         onRequestClick={() => navigate('/report')}
       />
 
+      {/* Real-time National Civic Pulse & Crisis Broadcast Strip */}
+      <CivicPulseTicker onSelectCity={(c) => setCity(c)} />
+
       {/* 2. Transition Bridge & Live Radar Intelligence Section */}
-      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-16">
+      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Left Column: Mission & Real Data Proof */}
           <div className="lg:col-span-7 space-y-6">
@@ -77,7 +82,7 @@ export const LandingPage: React.FC = () => {
               <span className="w-2.5 h-2.5 rounded-full bg-teal-500 animate-ping" />
               <span className="font-mono">{currentCity}</span>
               <span className="text-slate-300">•</span>
-              <span>Active Radar Across {availableCities.length || 42} Cities</span>
+              <span>Active Radar Across {availableCities.length || 104} Cities (All 28 States & 8 UTs)</span>
             </div>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 leading-tight">
@@ -158,6 +163,18 @@ export const LandingPage: React.FC = () => {
                   </button>
                   <button
                     type="button"
+                    onClick={() => setHeroViewMode('sonar')}
+                    className={`px-3 py-1 rounded-lg text-[11px] font-bold flex items-center gap-1 transition ${
+                      heroViewMode === 'sonar'
+                        ? 'bg-teal-500/20 text-teal-300 border border-teal-500/30'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    <Radar className="w-3 h-3 text-teal-400" />
+                    <span>Sonar HUD</span>
+                  </button>
+                  <button
+                    type="button"
                     onClick={() => setHeroViewMode('water')}
                     className={`px-3 py-1 rounded-lg text-[11px] font-bold flex items-center gap-1 transition ${
                       heroViewMode === 'water'
@@ -166,7 +183,7 @@ export const LandingPage: React.FC = () => {
                     }`}
                   >
                     <Waves className="w-3 h-3 text-cyan-400" />
-                    <span>3D Water Flow</span>
+                    <span>3D Fluid</span>
                   </button>
                 </div>
                 <button
@@ -196,6 +213,13 @@ export const LandingPage: React.FC = () => {
                       </div>
                     </div>
                   </>
+                ) : heroViewMode === 'sonar' ? (
+                  <SonarRadarHUD
+                    needs={mapItems}
+                    onSelectNeed={(item) => navigate(`/needs/${item.id}`)}
+                    className="w-full h-full"
+                    compact={true}
+                  />
                 ) : (
                   <WaterFlow3D className="w-full h-full" showControls={true} />
                 )}
@@ -224,7 +248,7 @@ export const LandingPage: React.FC = () => {
               <span>National Coverage Matrix</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-1">
-              Active Municipalities Across 42 Major Indian Cities
+              Active Municipalities Across {availableCities.length || 104} Major Indian Cities
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
               Select any city across 28 states & union territories to sync live ward telemetry, coordinates, and verified emergency helplines.

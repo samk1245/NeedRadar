@@ -17,7 +17,8 @@ import {
   HeartHandshake,
   Waves,
   Download,
-  Brain
+  Brain,
+  Radar
 } from 'lucide-react';
 import { api } from '../services/api';
 import { useCity } from '../context/CityContext';
@@ -27,6 +28,7 @@ import { TiltCard } from '../components/common/TiltCard';
 import { CityBadge } from '../components/common/CityBadge';
 import { SupportEnquiryModal } from '../components/support/SupportEnquiryModal';
 import { WaterFlow3D } from '../components/common/WaterFlow3D';
+import { SonarRadarHUD } from '../components/common/SonarRadarHUD';
 
 const CATEGORIES: { id: NeedCategory | 'all'; label: string }[] = [
   { id: 'all', label: 'All Categories' },
@@ -41,7 +43,7 @@ const CATEGORIES: { id: NeedCategory | 'all'; label: string }[] = [
 export const DiscoveryPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { currentCity, cityData } = useCity();
-  const [viewMode, setViewMode] = useState<'map' | 'water' | 'list'>('map');
+  const [viewMode, setViewMode] = useState<'map' | 'sonar' | 'water' | 'list'>('map');
   const [exporting, setExporting] = useState(false);
 
   const [items, setItems] = useState<NeedMapItem[]>([]);
@@ -166,6 +168,17 @@ export const DiscoveryPage: React.FC = () => {
               <span>Map View</span>
             </button>
             <button
+              onClick={() => setViewMode('sonar')}
+              className={`px-3 py-1.5 rounded-md font-medium flex items-center gap-1.5 transition-all ${
+                viewMode === 'sonar'
+                  ? 'bg-slate-900 text-teal-300 shadow-sm font-semibold'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <Radar className="w-3.5 h-3.5 text-teal-400" />
+              <span>Sonar Radar</span>
+            </button>
+            <button
               onClick={() => setViewMode('water')}
               className={`px-3 py-1.5 rounded-md font-medium flex items-center gap-1.5 transition-all ${
                 viewMode === 'water'
@@ -174,7 +187,7 @@ export const DiscoveryPage: React.FC = () => {
               }`}
             >
               <Waves className="w-3.5 h-3.5 text-cyan-500" />
-              <span>3D Water Flow</span>
+              <span>3D Fluid</span>
             </button>
             <button
               onClick={() => setViewMode('list')}
@@ -323,6 +336,15 @@ export const DiscoveryPage: React.FC = () => {
             onSelectItem={(it) => setSelectedItem(it)}
             center={cityData ? [cityData.lon, cityData.lat] : undefined}
             zoom={cityData?.zoom || 12}
+          />
+        </div>
+      ) : viewMode === 'sonar' ? (
+        <div className="h-[580px] rounded-3xl overflow-hidden border border-slate-800 shadow-2xl bg-slate-950">
+          <SonarRadarHUD
+            needs={filteredItems}
+            onSelectNeed={(it) => setSelectedItem(it)}
+            className="w-full h-full"
+            compact={false}
           />
         </div>
       ) : viewMode === 'water' ? (

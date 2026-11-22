@@ -14,7 +14,8 @@ import {
   ShieldCheck,
   LifeBuoy,
   PhoneCall,
-  Brain
+  Brain,
+  Compass
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useNotifications } from '../../context/NotificationContext';
@@ -23,6 +24,7 @@ import { SupportEnquiryModal } from '../support/SupportEnquiryModal';
 import { AICopilotModal } from '../ai/AICopilotModal';
 import { CITY_CONFIGS } from '../common/CityBadge';
 import { CommunityActionTicker } from '../volunteer/CommunityActionTicker';
+import { CityCommandPalette } from '../common/CityCommandPalette';
 
 export const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
@@ -34,6 +36,7 @@ export const Navbar: React.FC = () => {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [supportModalOpen, setSupportModalOpen] = useState(false);
   const [aiCopilotOpen, setAiCopilotOpen] = useState(false);
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -132,6 +135,20 @@ export const Navbar: React.FC = () => {
             <div className="hidden sm:block">
               <CommunityActionTicker variant="compact" />
             </div>
+
+            {/* Quick 104-City Command Palette Button */}
+            <button
+              type="button"
+              onClick={() => setCommandPaletteOpen(true)}
+              className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-xs hover:border-teal-400 transition-all cursor-pointer"
+              title="Search 104+ cities across all 28 states & 8 UTs (Ctrl+K)"
+            >
+              <Compass className="w-3.5 h-3.5 text-teal-600" />
+              <span className="font-mono text-[11px] text-slate-500">104 Cities</span>
+              <kbd className="px-1.5 py-0.2 rounded bg-slate-100 border border-slate-200 text-[10px] font-mono text-slate-400">
+                ⌘K
+              </kbd>
+            </button>
           </div>
 
           {/* Desktop Navigation */}
@@ -468,6 +485,11 @@ export const Navbar: React.FC = () => {
         isOpen={aiCopilotOpen}
         onClose={() => setAiCopilotOpen(false)}
         onSelectNeed={(id) => navigate(`/needs/${id}`)}
+      />
+
+      <CityCommandPalette
+        isOpen={commandPaletteOpen}
+        onClose={() => setCommandPaletteOpen(false)}
       />
     </>
   );

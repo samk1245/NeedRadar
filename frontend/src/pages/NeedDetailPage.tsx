@@ -33,6 +33,7 @@ import { NgoLogo } from '../components/common/NgoLogo';
 import { TiltCard } from '../components/common/TiltCard';
 import { SupportEnquiryModal } from '../components/support/SupportEnquiryModal';
 import { VolunteerPledgeModal } from '../components/volunteer/VolunteerPledgeModal';
+import { NeedRequirementsWidget } from '../components/common/NeedRequirementsWidget';
 
 export const NeedDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -308,6 +309,13 @@ export const NeedDetailPage: React.FC = () => {
               </div>
             </div>
           </div>
+
+          {/* Working Requirements & Itemized Resource Fulfillment Breakdown */}
+          <NeedRequirementsWidget
+            needId={need.id}
+            needTitle={need.title}
+            city={need.city}
+          />
 
           {/* Resolution Proposals Section */}
           {proposals.length > 0 && (

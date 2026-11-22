@@ -40,22 +40,58 @@ NeedRadar answers five critical civic questions with verified real-world data:
 
 ---
 
-## 🏙️ Pan-India Multi-City Deployment (89 Cities Covered)
+## 🏙️ Pan-India Multi-City Deployment (104 Cities Covered — All 28 States & 8 UTs)
 
-NeedRadar features a dynamic multi-city geospatial architecture supporting live data, coordinates, landmarks, and municipal helplines across **89 major cities spanning all 28 states & 8 union territories**:
+NeedRadar features a dynamic multi-city geospatial architecture supporting live data, coordinates, landmarks, and municipal helplines across **104 major cities spanning 100% of India's 28 states & 8 union territories**:
 
 | Region | Featured Cities Covered | State / UT | Municipal Authority & Helplines |
 | :--- | :--- | :--- | :--- |
-| **North** | **Delhi (NCR)**, **Gurugram**, **Faridabad**, **Ghaziabad**, **Noida**, **Meerut**, **Lucknow**, **Prayagraj**, **Kanpur**, **Varanasi**, **Agra**, **Gorakhpur**, **Ayodhya**, **Mathura**, **Amritsar**, **Ludhiana**, **Chandigarh**, **Jaipur**, **Jodhpur**, **Udaipur**, **Kota**, **Ajmer**, **Bikaner**, **Dehradun**, **Haridwar**, **Shimla**, **Jammu**, **Srinagar**, **Leh** | DL, HR, UP, PB, CH, RJ, UK, HP, JK, LA | MCD, MCG, MCF, GNN, LMC (1533), PNN, ANN, JMC, HMC |
-| **South** | **Bengaluru**, **Mysuru**, **Hubballi-Dharwad**, **Belagavi**, **Chennai**, **Coimbatore**, **Madurai**, **Tiruchirappalli**, **Salem**, **Tirunelveli**, **Thanjavur**, **Hyderabad**, **Warangal**, **Visakhapatnam**, **Vijayawada**, **Guntur**, **Nellore**, **Tirupati**, **Kochi**, **Thiruvananthapuram**, **Kozhikode**, **Thrissur**, **Kollam**, **Alappuzha**, **Puducherry** | KA, TN, TG, AP, KL, PY | BBMP (1533), GCC (1913), GHMC, HDMC, SCMC, TCMC, GVMC, KMC, TMC |
-| **West** | **Mumbai**, **Navi Mumbai**, **Thane**, **Pune**, **Nagpur**, **Nashik**, **Chhatrapati Sambhajinagar**, **Ahmedabad**, **Surat**, **Vadodara**, **Rajkot**, **Panaji** | MH, GJ, GA | BMC (022-24308911), NMMC, TMC, PMC, NMC, AMC, SMC, RMC, CCP |
-| **East & Central** | **Kolkata**, **Siliguri**, **Asansol**, **Bhubaneswar**, **Cuttack**, **Rourkela**, **Patna**, **Ranchi**, **Jamshedpur**, **Dhanbad**, **Bokaro**, **Bhopal**, **Indore**, **Gwalior**, **Jabalpur**, **Ujjain**, **Raipur**, **Bilaspur** | WB, OD, BR, JH, MP, CG | KMC, SMC, AMC, BMC, RMC, PMC, DMC, BMC, IMC, JMC, UMC |
-| **North-East & Islands** | **Guwahati**, **Shillong**, **Agartala**, **Imphal**, **Port Blair** | AS, ML, TR, MN, AN | GMC, SMB, AMC, IMC, PBMC |
+| **North** | **Delhi (NCR)**, **Gurugram**, **Faridabad**, **Ghaziabad**, **Noida**, **Meerut**, **Lucknow**, **Prayagraj**, **Kanpur**, **Varanasi**, **Agra**, **Gorakhpur**, **Ayodhya**, **Mathura**, **Jhansi**, **Amritsar**, **Ludhiana**, **Chandigarh**, **Jaipur**, **Jodhpur**, **Udaipur**, **Kota**, **Ajmer**, **Bikaner**, **Alwar**, **Bhilwara**, **Dehradun**, **Haridwar**, **Rishikesh**, **Shimla**, **Jammu**, **Srinagar**, **Leh** | DL, HR, UP, PB, CH, RJ, UK, HP, JK, LA | MCD, MCG, MCF, GNN, LMC (1533), PNN, ANN, JMC, HMC |
+| **South** | **Bengaluru**, **Mysuru**, **Hubballi-Dharwad**, **Belagavi**, **Chennai**, **Coimbatore**, **Madurai**, **Tiruchirappalli**, **Salem**, **Tirunelveli**, **Thanjavur**, **Hyderabad**, **Warangal**, **Visakhapatnam**, **Vijayawada**, **Guntur**, **Nellore**, **Tirupati**, **Kochi**, **Thiruvananthapuram**, **Kozhikode**, **Thrissur**, **Kollam**, **Alappuzha**, **Puducherry**, **Kavaratti** | KA, TN, TG, AP, KL, PY, LD | BBMP (1533), GCC (1913), GHMC, HDMC, SCMC, TCMC, GVMC, KMC, TMC, LD-Panchayat |
+| **West** | **Mumbai**, **Navi Mumbai**, **Thane**, **Pune**, **Nagpur**, **Nashik**, **Chhatrapati Sambhajinagar**, **Ahmedabad**, **Surat**, **Vadodara**, **Rajkot**, **Panaji**, **Daman**, **Silvassa** | MH, GJ, GA, DN-DD | BMC (022-24308911), NMMC, TMC, PMC, NMC, AMC, SMC, RMC, CCP, DMC, SMC |
+| **East & Central** | **Kolkata**, **Siliguri**, **Asansol**, **Bhubaneswar**, **Cuttack**, **Rourkela**, **Patna**, **Muzaffarpur**, **Bhagalpur**, **Ranchi**, **Jamshedpur**, **Dhanbad**, **Bokaro**, **Bhopal**, **Indore**, **Gwalior**, **Jabalpur**, **Ujjain**, **Raipur**, **Bilaspur**, **Durg-Bhilai** | WB, OD, BR, JH, MP, CG | KMC, SMC, AMC, BMC, RMC, PMC, DMC, BMC, IMC, JMC, UMC, BMC-CG |
+| **North-East & Islands** | **Guwahati**, **Shillong**, **Agartala**, **Imphal**, **Gangtok**, **Aizawl**, **Kohima**, **Itanagar**, **Port Blair** | AS, ML, TR, MN, SK, MZ, NL, AR, AN | GMC, SMB, AMC, IMC, GMC-SK, AMC-MZ, KMC-NL, IMC-AR, PBMC |
 
 Every city profile includes:
 - Exact coordinates & geospatial bounding box with 5+ localized micro-neighborhoods
 - Municipal authorities & verified disaster/civic emergency contacts (112, 108, 1533)
-- 242+ pre-seeded verified community needs with multi-item requirements
+- Verified community needs with multi-item requirements and coordinates
+- Instant switching via the **`Ctrl + K` Pan-India Command Palette**
+
+---
+
+## 🛰️ Civic Sonar Radar HUD & Sound Synthesizer (`SonarRadarHUD.tsx`)
+
+NeedRadar introduces a real-time sweep radar interface inspired by tactical marine and aerospace sonar:
+- **Rotary Sweep Beam**: Continuous 360-degree SVG scanning beam with angle indicators and concentric distance range rings (1 km to 10 km).
+- **Web Audio API Acoustic Synthesizer**: Procedural acoustic ping audio synthesized via HTML5 Web Audio oscillators when targets enter the sweep field (with polite user-controlled toggle).
+- **Interactive Target Inspection**: Click any detected blip on the radar scope to view localized need details, urgency levels, supporter count, and route directly to resolution.
+
+---
+
+## 📋 Working Requirements & Direct Pledge Fulfillment (`NeedRequirementsWidget.tsx`)
+
+Each community need features an operational breakdown of supplies, personnel, and logistics required to achieve full resolution:
+- **Multi-Category Tracking**: Supplies (ration bags, water, blankets), Volunteers (tutors, clean-up crews), Logistics (transit vans, fuel), and Medical gear.
+- **Visual Progress Ledgers**: Dynamic fulfillment progress bar displaying percentage and pending quantities.
+- **1-Click Pledge Modal**: Donors and volunteers can commit specific quantities or hours directly through the UI, instantly updating the community ledger.
+
+---
+
+## ⌨️ Pan-India Command Palette (`CityCommandPalette.tsx`)
+
+Keyboard-first civic navigation at scale:
+- Press **`Ctrl + K`** (or **`Cmd + K`** on macOS) from anywhere in the platform.
+- Filter instantly across **104 cities** by name, state, or geographic zone (**North, South, West, East, North-East, UTs**).
+- Displays active coordinates, weather conditions, local time, and primary municipal authority.
+
+---
+
+## 🔴 Live National Civic Pulse Marquee (`CivicPulseTicker.tsx`)
+
+Real-time streaming broadcast strip running across the platform:
+- Live volunteer dispatch alerts, urgent blood calls, and fulfilled resolution updates.
+- Interactive controls: pause on hover, manual play/pause toggle, and click-to-teleport to city radar.
 
 ---
 

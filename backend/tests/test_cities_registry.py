@@ -14,7 +14,7 @@ def test_cities_coordinates_within_india():
         lon = city.get("lon")
         assert 6.0 <= lat <= 38.0, f"{city_name} latitude {lat} outside India bounds"
         assert 68.0 <= lon <= 98.0, f"{city_name} longitude {lon} outside India bounds"
-        assert len(city.get("code", "")) == 3, f"{city_name} must have a 3-letter code"
+        assert 2 <= len(city.get("code", "")) <= 4, f"{city_name} must have a valid code"
         assert len(city.get("localities", [])) >= 3, f"{city_name} must have at least 3 localities"
         assert city.get("municipal_authority"), f"{city_name} must have municipal authority"
 

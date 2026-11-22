@@ -137,3 +137,43 @@
   border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
 }
+
+/* Modern Frosted Glass and Radar HUD Effects */
+.glass-pill {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.05);
+}
+
+.glass-pill-dark {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.35);
+}
+
+.scanline-grid {
+  background-size: 24px 24px;
+  background-image: 
+    linear-gradient(to right, rgba(20, 184, 166, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(20, 184, 166, 0.05) 1px, transparent 1px);
+}
+
+.glow-teal-ring {
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.25), 0 0 20px rgba(20, 184, 166, 0.2);
+}
+
+.glow-rose-ring {
+  box-shadow: 0 0 0 2px rgba(244, 63, 94, 0.25), 0 0 20px rgba(244, 63, 94, 0.2);
+}
+
+.smooth-spring {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+
+.smooth-spring:hover {
+  transform: translateY(-4px) scale(1.015);
+}
