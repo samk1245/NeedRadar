@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { NotificationProvider } from './context/NotificationContext';
 import { CityProvider } from './context/CityContext';
@@ -21,7 +21,7 @@ import { RegisterPage } from './pages/RegisterPage';
 
 export const App: React.FC = () => {
   return (
-    <BrowserRouter>
+    <Router>
       <AuthProvider>
         <CityProvider>
           <NotificationProvider>
@@ -49,7 +49,7 @@ export const App: React.FC = () => {
           </NotificationProvider>
         </CityProvider>
       </AuthProvider>
-    </BrowserRouter>
+    </Router>
   );
 };
 
