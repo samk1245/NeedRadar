@@ -33,6 +33,7 @@ import { AICopilotModal } from '../components/ai/AICopilotModal';
 import { NorvaHero } from '../components/hero/NorvaHero';
 import { CivicPulseTicker } from '../components/common/CivicPulseTicker';
 import { SonarRadarHUD } from '../components/common/SonarRadarHUD';
+import { PredictiveArcCanvas } from '@designcodeio/threeui';
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ export const LandingPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [supportModalOpen, setSupportModalOpen] = useState(false);
   const [aiCopilotOpen, setAiCopilotOpen] = useState(false);
-  const [heroViewMode, setHeroViewMode] = useState<'map' | 'sonar' | 'water'>('map');
+  const [heroViewMode, setHeroViewMode] = useState<'map' | 'sonar' | 'water' | 'arcs'>('map');
 
   useEffect(() => {
     const fetchLandingData = async () => {
@@ -185,6 +186,18 @@ export const LandingPage: React.FC = () => {
                     <Waves className="w-3 h-3 text-cyan-400" />
                     <span>3D Fluid</span>
                   </button>
+                  <button
+                    type="button"
+                    onClick={() => setHeroViewMode('arcs')}
+                    className={`px-3 py-1 rounded-lg text-[11px] font-bold flex items-center gap-1 transition ${
+                      heroViewMode === 'arcs'
+                        ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    <Sparkles className="w-3 h-3 text-cyan-400" />
+                    <span>Predictive Arcs</span>
+                  </button>
                 </div>
                 <button
                   type="button"
@@ -220,6 +233,16 @@ export const LandingPage: React.FC = () => {
                     className="w-full h-full"
                     compact={true}
                   />
+                ) : heroViewMode === 'arcs' ? (
+                  <div className="w-full h-full relative overflow-hidden bg-slate-950 flex items-center justify-center">
+                    <PredictiveArcCanvas />
+                    <div className="absolute top-3 left-3 z-10 pointer-events-none">
+                      <div className="px-3 py-1.5 rounded-xl bg-slate-900/90 backdrop-blur-md border border-cyan-500/30 text-cyan-300 text-[11px] font-bold flex items-center gap-2 shadow-lg">
+                        <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-spin" />
+                        <span>3D Predictive Arcs • {currentCity}</span>
+                      </div>
+                    </div>
+                  </div>
                 ) : (
                   <WaterFlow3D className="w-full h-full" showControls={true} />
                 )}
