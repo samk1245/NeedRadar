@@ -127,12 +127,12 @@ export const CivicPulseTicker: React.FC<CivicPulseTickerProps> = ({
 
         {/* Marquee ticker stream */}
         <div
-          className="relative flex-1 overflow-hidden"
+          className="relative flex-1 overflow-hidden contain-paint"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
           <div
-            className={`flex items-center gap-8 whitespace-nowrap text-xs font-medium text-slate-300 ${
+            className={`flex items-center gap-8 whitespace-nowrap text-xs font-medium text-slate-300 will-change-transform transform-gpu ${
               isPaused ? '' : 'animate-marquee'
             }`}
           >

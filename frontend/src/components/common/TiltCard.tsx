@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
 interface TiltCardProps {
   children: React.ReactNode;
@@ -18,14 +18,12 @@ export const TiltCard: React.FC<TiltCardProps> = ({
   onClick,
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const [sheenPosition, setSheenPosition] = useState({ x: 50, y: 50 });
+  const rafId = useRef<number | null>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
+    const card = cardRef.current;
+    const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
@@ -35,22 +33,22 @@ export const TiltCard: React.FC<TiltCardProps> = ({
     const rotX = -((y - centerY) / centerY) * maxTilt;
     const rotY = ((x - centerX) / centerX) * maxTilt;
 
-    setRotateX(rotX);
-    setRotateY(rotY);
-    setSheenPosition({
-      x: (x / rect.width) * 100,
-      y: (y / rect.height) * 100,
+    if (rafId.current) cancelAnimationFrame(rafId.current);
+    rafId.current = requestAnimationFrame(() => {
+      card.style.transform = `rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(${scale}, ${scale}, ${scale})`;
     });
   };
 
   const handleMouseEnter = () => {
-    setIsHovered(true);
+    if (!cardRef.current) return;
+    cardRef.current.style.transition = 'transform 0.12s ease-out, box-shadow 0.2s ease-out';
   };
 
   const handleMouseLeave = () => {
-    setIsHovered(false);
-    setRotateX(0);
-    setRotateY(0);
+    if (rafId.current) cancelAnimationFrame(rafId.current);
+    if (!cardRef.current) return;
+    cardRef.current.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease';
+    cardRef.current.style.transform = 'rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
   };
 
   return (
@@ -64,27 +62,13 @@ export const TiltCard: React.FC<TiltCardProps> = ({
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        className={`relative overflow-hidden will-change-transform transform-gpu ${className}`}
         style={{
-          transform: isHovered
-            ? `rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(${scale}, ${scale}, ${scale})`
-            : 'rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
-          transition: isHovered
-            ? 'transform 0.1s ease-out, box-shadow 0.2s ease-out'
-            : 'transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)',
+          transform: 'rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
+          transition: 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease',
         }}
-        className={`relative overflow-hidden preserve-3d will-change-transform ${className}`}
       >
         {children}
-
-        {/* Dynamic 3D Sheen reflection on hover */}
-        {isHovered && (
-          <div
-            className="pointer-events-none absolute inset-0 z-30 transition-opacity duration-300"
-            style={{
-              background: `radial-gradient(circle at ${sheenPosition.x}% ${sheenPosition.y}%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 65%)`,
-            }}
-          />
-        )}
       </div>
     </div>
   );

@@ -36,8 +36,8 @@ export const CinematicKineticRibbon: React.FC = () => {
       <div className="absolute top-0 bottom-0 right-0 w-24 sm:w-48 bg-gradient-to-l from-slate-950 via-slate-950/80 to-transparent z-20 pointer-events-none" />
 
       {/* TRACK 1: Continuous High-Velocity Telemetry Sliding Left */}
-      <div className="flex overflow-hidden group">
-        <div className="flex shrink-0 animate-marquee items-center gap-6 group-hover:[animation-play-state:paused]">
+      <div className="flex overflow-hidden group contain-paint">
+        <div className="flex shrink-0 animate-marquee items-center gap-6 group-hover:[animation-play-state:paused] will-change-transform transform-gpu">
           {[...track1, ...track1].map((item, i) => {
             const Icon = item.icon;
             return (
@@ -57,9 +57,9 @@ export const CinematicKineticRibbon: React.FC = () => {
       </div>
 
       {/* TRACK 2: Live Ground Action Sliding Right */}
-      <div className="flex overflow-hidden group mt-4">
+      <div className="flex overflow-hidden group mt-4 contain-paint">
         <div
-          className="flex shrink-0 items-center gap-6 group-hover:[animation-play-state:paused]"
+          className="flex shrink-0 items-center gap-6 group-hover:[animation-play-state:paused] will-change-transform transform-gpu"
           style={{
             animation: 'marquee 34s linear infinite reverse'
           }}

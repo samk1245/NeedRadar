@@ -41,8 +41,8 @@ export default {
           '50%': { opacity: '1', transform: 'scale(1.08)' },
         },
         marquee: {
-          '0%': { transform: 'translateX(0%)' },
-          '100%': { transform: 'translateX(-50%)' },
+          '0%': { transform: 'translate3d(0%, 0, 0)' },
+          '100%': { transform: 'translate3d(-50%, 0, 0)' },
         },
         floatSlow: {
           '0%, 100%': { transform: 'translateY(0px)' },

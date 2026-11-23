@@ -7,8 +7,7 @@ import {
   Compass,
   CheckCircle2,
   Database,
-  ArrowRight,
-  Maximize2
+  ArrowRight
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -36,15 +35,15 @@ export const CinematicSlider3D: React.FC = () => {
     {
       id: 'geospatial',
       tag: '01 / GEOSPATIAL INTELLIGENCE',
-      badge: 'Pan-India 89 Cities',
+      badge: 'Pan-India 144 Cities',
       title: 'Real-Time Spatial Radar Telemetry',
       subtitle: 'Monitoring Unmet Community Needs Across All 28 States & 8 UTs',
       description: 'Autonomous micro-locality clustering pinpoints critical supply gaps, broken municipal water mains, and emergency medical calls with high-precision geographic resolution.',
-      metric: '89',
+      metric: '144',
       metricLabel: 'Cities In Active Telemetry',
       icon: Compass,
       accent: 'from-sky-400 to-cyan-500',
-      bgGlow: 'rgba(14, 165, 233, 0.15)',
+      bgGlow: 'rgba(14, 165, 233, 0.12)',
       link: '/discovery'
     },
     {
@@ -54,11 +53,11 @@ export const CinematicSlider3D: React.FC = () => {
       title: 'Hydraulic Civic Dispatch Pipeline',
       subtitle: 'Streaming Citizen Signals Directly into Verified Local Volunteer Hubs',
       description: 'High-throughput concurrency engine processes citizen requests in parallel, auto-generating multi-item fulfillment manifests and routing them directly to verified NGOs.',
-      metric: '242+',
+      metric: '408+',
       metricLabel: 'Verified Crises Resolved',
       icon: Activity,
       accent: 'from-teal-400 to-emerald-500',
-      bgGlow: 'rgba(20, 184, 166, 0.15)',
+      bgGlow: 'rgba(20, 184, 166, 0.12)',
       link: '/discovery'
     },
     {
@@ -72,7 +71,7 @@ export const CinematicSlider3D: React.FC = () => {
       metricLabel: 'Private & Obfuscated',
       icon: Shield,
       accent: 'from-indigo-400 to-blue-500',
-      bgGlow: 'rgba(99, 102, 241, 0.15)',
+      bgGlow: 'rgba(99, 102, 241, 0.12)',
       link: '/discovery'
     },
     {
@@ -86,7 +85,7 @@ export const CinematicSlider3D: React.FC = () => {
       metricLabel: 'Audited Resolution Rate',
       icon: CheckCircle2,
       accent: 'from-emerald-400 to-teal-500',
-      bgGlow: 'rgba(16, 185, 129, 0.15)',
+      bgGlow: 'rgba(16, 185, 129, 0.12)',
       link: '/analytics'
     },
     {
@@ -100,17 +99,17 @@ export const CinematicSlider3D: React.FC = () => {
       metricLabel: 'GeoJSON Open Export',
       icon: Database,
       accent: 'from-cyan-400 to-sky-600',
-      bgGlow: 'rgba(6, 182, 212, 0.15)',
+      bgGlow: 'rgba(6, 182, 212, 0.12)',
       link: '/discovery'
     }
   ];
 
-  // Smooth auto-slide
+  // Smooth auto-slide (pauses on hover)
   useEffect(() => {
     if (isPaused) return;
     const timer = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % slides.length);
-    }, 6500);
+    }, 6000);
     return () => clearInterval(timer);
   }, [isPaused, slides.length]);
 
@@ -128,53 +127,44 @@ export const CinematicSlider3D: React.FC = () => {
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     const diff = touchStartX.current - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) {
+    if (Math.abs(diff) > 40) {
       if (diff > 0) handleNext();
       else handlePrev();
     }
   };
 
-  const currentSlide = slides[activeIndex];
-  const Icon = currentSlide.icon;
-
   return (
     <div
-      className="relative w-full overflow-hidden py-8 select-none"
+      className="relative w-full overflow-hidden py-8 select-none contain-paint"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Cinematic Ambient Glow */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full blur-[140px] pointer-events-none transition-all duration-1000"
-        style={{ background: currentSlide.bgGlow }}
-      />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Cinematic Header with Timecode & Navigation */}
-        <div className="flex items-center justify-between border-b border-slate-800/80 pb-4 mb-8 text-xs font-mono">
-          <div className="flex items-center gap-3">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-            <span className="text-slate-400 tracking-wider">CIVIC_RADAR // PERSPECTIVE SHOWCASE</span>
-            <span className="text-slate-600">|</span>
-            <span className="text-cyan-400 font-bold">{currentSlide.tag}</span>
+        {/* Header with Tag & Navigation */}
+        <div className="flex items-center justify-between border-b border-slate-800/80 pb-4 mb-6 text-xs font-mono">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping shrink-0" />
+            <span className="text-slate-400 tracking-wider truncate hidden sm:inline">CIVIC_RADAR // PERSPECTIVE SHOWCASE</span>
+            <span className="text-slate-600 hidden sm:inline">|</span>
+            <span className="text-cyan-400 font-bold truncate">{slides[activeIndex].tag}</span>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-slate-500 mr-2">
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="text-slate-500 mr-2 font-mono">
               {String(activeIndex + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
             </span>
             <button
               onClick={handlePrev}
-              className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 transition active:scale-95"
+              className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 transition active:scale-95 cursor-pointer"
               aria-label="Previous Slide"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={handleNext}
-              className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 transition active:scale-95"
+              className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 transition active:scale-95 cursor-pointer"
               aria-label="Next Slide"
             >
               <ChevronRight className="w-4 h-4" />
@@ -182,96 +172,110 @@ export const CinematicSlider3D: React.FC = () => {
           </div>
         </div>
 
-        {/* 3D Perspective Card Stage */}
-        <div
-          className="relative rounded-3xl p-8 sm:p-12 md:p-16 border border-slate-800/90 bg-gradient-to-b from-slate-900/95 via-slate-950/98 to-slate-950 shadow-2xl overflow-hidden transition-all duration-700 backdrop-blur-2xl"
-          style={{
-            perspective: '1200px',
-            transformStyle: 'preserve-3d'
-          }}
-        >
+        {/* Rock-Solid Card Stage (Zero Layout Shift, Fixed Stable Bounds) */}
+        <div className="relative rounded-3xl p-6 sm:p-10 md:p-12 border border-slate-800/90 bg-slate-950/90 shadow-2xl overflow-hidden min-h-[460px] sm:min-h-[420px] flex flex-col justify-between">
           {/* Subtle Hairline Gradient on Top */}
           <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left Content */}
-            <div className="lg:col-span-8 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-800/70 border border-slate-700/80 text-xs font-semibold text-cyan-300 shadow-sm">
-                <Icon className="w-3.5 h-3.5 text-cyan-400" />
-                <span>{currentSlide.badge}</span>
-              </div>
+          {/* Smooth Hardware-Accelerated Sliding Track */}
+          <div className="overflow-hidden w-full flex-1">
+            <div
+              className="flex w-full will-change-transform transform-gpu"
+              style={{
+                transform: `translate3d(-${activeIndex * 100}%, 0, 0)`,
+                transition: 'transform 550ms cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            >
+              {slides.map((slide, idx) => {
+                const SlideIcon = slide.icon;
+                const isCurrent = activeIndex === idx;
 
-              <div className="space-y-3">
-                <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
-                  {currentSlide.title}
-                </h3>
-                <p className="text-base sm:text-lg font-medium text-slate-300">
-                  {currentSlide.subtitle}
-                </p>
-              </div>
+                return (
+                  <div
+                    key={slide.id}
+                    className="w-full shrink-0 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center"
+                    style={{
+                      opacity: isCurrent ? 1 : 0.45,
+                      transition: 'opacity 400ms ease-out',
+                    }}
+                  >
+                    {/* Left Content */}
+                    <div className="lg:col-span-8 space-y-5 text-left">
+                      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-700/80 text-xs font-semibold text-cyan-300 shadow-sm">
+                        <SlideIcon className="w-3.5 h-3.5 text-cyan-400" />
+                        <span>{slide.badge}</span>
+                      </div>
 
-              <p className="text-sm sm:text-base text-slate-400 leading-relaxed max-w-2xl">
-                {currentSlide.description}
-              </p>
+                      <div className="space-y-2">
+                        <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight leading-tight">
+                          {slide.title}
+                        </h3>
+                        <p className="text-sm sm:text-base font-medium text-slate-300">
+                          {slide.subtitle}
+                        </p>
+                      </div>
 
-              <div className="pt-2 flex flex-wrap items-center gap-4">
-                <Link
-                  to={currentSlide.link}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-slate-950 text-xs font-extrabold tracking-wide hover:bg-slate-100 transition shadow-lg active:scale-95 group"
-                >
-                  <span>Explore Live Telemetry</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                </Link>
+                      <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-2xl">
+                        {slide.description}
+                      </p>
 
-                <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-400 font-mono">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                  <span>Direct Citizen Impact</span>
-                </div>
-              </div>
-            </div>
+                      <div className="pt-2 flex flex-wrap items-center gap-3">
+                        <Link
+                          to={slide.link}
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-slate-950 text-xs font-extrabold tracking-wide hover:bg-slate-100 transition shadow-lg active:scale-95 group"
+                        >
+                          <span>Explore Live Telemetry</span>
+                          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                        </Link>
 
-            {/* Right Metric Card with 3D Depth */}
-            <div className="lg:col-span-4 flex flex-col justify-center">
-              <div
-                className="relative rounded-2xl p-8 bg-slate-900/60 border border-slate-800/80 backdrop-blur-xl shadow-xl space-y-6 text-center transform transition-transform duration-500 hover:rotate-1"
-                style={{
-                  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)'
-                }}
-              >
-                <div className={`w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr ${currentSlide.accent} p-3 text-slate-950 flex items-center justify-center shadow-lg`}>
-                  <Icon className="w-7 h-7" />
-                </div>
+                        <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-400 font-mono">
+                          <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                          <span>Direct Citizen Impact</span>
+                        </div>
+                      </div>
+                    </div>
 
-                <div className="space-y-1">
-                  <div className="text-4xl sm:text-5xl font-black text-white tracking-tight font-mono">
-                    {currentSlide.metric}
+                    {/* Right Metric Card */}
+                    <div className="lg:col-span-4 flex flex-col justify-center">
+                      <div className="relative rounded-2xl p-6 sm:p-8 bg-slate-900/80 border border-slate-800 shadow-xl space-y-4 text-center">
+                        <div className={`w-12 h-12 mx-auto rounded-xl bg-gradient-to-tr ${slide.accent} p-2.5 text-slate-950 flex items-center justify-center shadow-lg`}>
+                          <SlideIcon className="w-6 h-6" />
+                        </div>
+
+                        <div className="space-y-1">
+                          <div className="text-3xl sm:text-4xl font-black text-white tracking-tight font-mono">
+                            {slide.metric}
+                          </div>
+                          <div className="text-[11px] uppercase font-bold text-slate-400 tracking-wider">
+                            {slide.metricLabel}
+                          </div>
+                        </div>
+
+                        <div className="pt-3 border-t border-slate-800 text-[10px] text-slate-400 font-mono flex items-center justify-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                          <span>VERIFIED GROUND SIGNATURE</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-xs uppercase font-bold text-slate-400 tracking-wider">
-                    {currentSlide.metricLabel}
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t border-slate-800/80 text-[11px] text-slate-400 font-mono flex items-center justify-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-                  <span>VERIFIED GROUND SIGNATURE</span>
-                </div>
-              </div>
+                );
+              })}
             </div>
           </div>
 
           {/* Bottom Sliding Timeline Bar */}
-          <div className="mt-12 pt-6 border-t border-slate-800/60 flex items-center gap-2">
+          <div className="mt-8 pt-5 border-t border-slate-800/60 flex items-center gap-2">
             {slides.map((s, idx) => (
               <button
                 key={s.id}
                 onClick={() => setActiveIndex(idx)}
-                className="flex-1 py-1 group relative"
+                className="flex-1 py-1.5 group relative cursor-pointer"
                 aria-label={`Go to slide ${idx + 1}`}
               >
                 <div
-                  className={`h-1.5 rounded-full transition-all duration-500 ${
+                  className={`h-1.5 rounded-full transition-all duration-400 ${
                     activeIndex === idx
-                      ? 'bg-gradient-to-r from-cyan-400 to-teal-400 shadow-md shadow-cyan-500/50'
+                      ? 'bg-gradient-to-r from-cyan-400 to-teal-400 shadow-md shadow-cyan-500/40'
                       : 'bg-slate-800 group-hover:bg-slate-700'
                   }`}
                 />
